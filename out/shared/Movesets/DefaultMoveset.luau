@@ -1,0 +1,11 @@
+-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local CreateMoveset = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").CreateMoveset
+local Attack = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skills", "Attack").Attack
+local Block = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skills", "Block").Block
+local Dash = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skills", "Dash").Dash
+local Spotlights = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skills", "Spotlights").Spotlights
+local DefaultMoveset = CreateMoveset("DefaultMoveset", { Attack, Block, Dash, Spotlights })
+return {
+	DefaultMoveset = DefaultMoveset,
+}
