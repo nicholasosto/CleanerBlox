@@ -1,103 +1,108 @@
-type Domain = "Exsanguination" | "Consumption" | "Corruption" | "Blood" | "Hunger" | "Rage" | "Fateless";
+export interface CharacterClassData {
+	ClassId: string;
+	ClassLevel: number;
+	ClassPoints: number;
+	ClassExperience: number;
+	ClassExperienceToNextLevel: number;
+}
 
-type Modifier = {
-	name: string;
-	effect: string;
-	value: number;
-};
+export interface StatsData {
+	Strength: number;
+	Speed: number;
+	Dexterity: number;
+	Intelligence: number;
+	Constitution: number;
+}
 
-type Equipment = {
-	name: string;
-	type: "Helmet" | "Chest Armor" | "Accessory" | "Siphon" | "Familiar";
-	level: number;
-	equipped: boolean;
-	storedSouls: number;
-	modifiers: Modifier[];
-};
+export interface SkillsData {
+	Slot_1: string;
+	Slot_2: string;
+	Slot_3: string;
+	Slot_4: string;
+	Slot_5: string;
+}
 
-type Transformation = {
-	id: string;
-	name: string;
-	animationId: string;
-	duration: number; // in seconds
-	description: string;
-	ready: boolean;
-};
+export interface EquipmentData {
+	Weapon: string;
+	Armor: string;
+	Helmet: string;
+	Boots: string;
+	Familiar: string;
+	Accessory: string;
+}
 
-type Combatant = {
-	id: string;
-	name: string;
-	health: number;
-	maxHealth: number;
-	energy: number;
-	maxEnergy: number;
-	siphonLevel: number;
-	buffs: Modifier[];
-	debuffs: Modifier[];
-};
+export interface PlayerData {
+	key: string;
+	version: number;
 
-type PlayerData = {
-	id: string;
-	name: string;
-	level: number;
-	domain: Domain;
-	allies: Combatant[];
-	enemies: Combatant[];
-	equipment: Equipment[];
-	transformationProgress: number; // value between 0-100 representing transformation readiness
-	activeTransformation?: Transformation;
-	stats: {
-		strength: number;
-		agility: number;
-		intelligence: number;
-		vitality: number;
-	};
-	combatHistory: {
-		combatants: Combatant[];
-		damageDone: number;
-		damageTaken: number;
-	};
-};
+	Level: number;
+	Experience: number;
+	ExperienceToNextLevel: number;
 
-type GameData = {
-	players: PlayerData[];
-	worldState: {
-		domainTerritories: Record<Domain, boolean>; // true if controlled by players
-		fatelessPlayers: string[]; // player IDs that are 'Fateless'
-	};
-	events: {
-		tutorialCompleted: boolean;
-		firstTimeDomainSelection: boolean;
-		domainBattle: {
-			active: boolean;
-			participants: PlayerData[];
-		};
-	};
-};
+	CharacterName: string;
+	CharacterClass: CharacterClassData;
+	Stats: StatsData;
+	Skills: SkillsData;
+	Equipment: EquipmentData;
 
-// Example usage:
-const gameData: GameData = {
-	players: [],
-	worldState: {
-		domainTerritories: {
-			Exsanguination: false,
-			Consumption: false,
-			Corruption: false,
-			Blood: false,
-			Hunger: false,
-			Rage: false,
-			Fateless: false,
-		},
-		fatelessPlayers: [],
+	SkillInventory: string[];
+	WeaponInventory: string[];
+	ArmorInventory: string[];
+	HelmetInventory: string[];
+	BootsInventory: string[];
+	FamiliarInventory: string[];
+	AccessoryInventory: string[];
+}
+
+export const DataTemplate: PlayerData = {
+	key: "Datatemplate",
+	version: 1,
+
+	Level: 1,
+	Experience: 0,
+	ExperienceToNextLevel: 100,
+
+	CharacterName: "Default Name",
+
+	CharacterClass: {
+		ClassId: "Vampire",
+		ClassLevel: 1,
+		ClassPoints: 0,
+		ClassExperience: 0,
+		ClassExperienceToNextLevel: 100,
 	},
-	events: {
-		tutorialCompleted: false,
-		firstTimeDomainSelection: true,
-		domainBattle: {
-			active: false,
-			participants: [],
-		},
+
+	Stats: {
+		Strength: 10,
+		Speed: 10,
+		Dexterity: 10,
+		Intelligence: 10,
+		Constitution: 200,
 	},
+
+	Skills: {
+		Slot_1: "Attack",
+		Slot_2: "Block",
+		Slot_3: "Spotlights",
+		Slot_4: "Empty",
+		Slot_5: "Empty",
+	},
+
+	Equipment: {
+		Weapon: "Fists",
+		Armor: "Cloth",
+		Helmet: "None",
+		Boots: "None",
+		Familiar: "None",
+		Accessory: "None",
+	},
+
+	SkillInventory: ["Attack", "Block", "Spotlights", "Heal", "Buff", "Debuff", "Stun"],
+	WeaponInventory: ["Fists", "Dagger", "Sword", "Axe", "Bow", "Staff"],
+	ArmorInventory: ["Cloth", "Leather", "Chainmail", "Plate"],
+	HelmetInventory: ["None", "Hood", "Helmet", "Crown"],
+	BootsInventory: ["None", "Shoes", "Boots", "Greaves"],
+	FamiliarInventory: ["None", "Bat", "Cat", "Dog", "Owl"],
+	AccessoryInventory: ["None", "Ring", "Amulet", "Bracelet", "Belt"],
 };
 
-export { Domain, Modifier, Equipment, Transformation, Combatant, PlayerData, GameData };

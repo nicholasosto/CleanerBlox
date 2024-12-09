@@ -1,5 +1,5 @@
 import { Skill, SkillDecorator, Message } from "@rbxts/wcs";
-import { Stun } from "shared/StatusEffects/Stun";
+import { Stun } from "shared/WCS/StatusEffects/Stun";
 
 @SkillDecorator
 export class Dash extends Skill {

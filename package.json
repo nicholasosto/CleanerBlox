@@ -24,6 +24,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@rbxts/maid": "^1.1.0",
     "@rbxts/wcs": "^2.4.1",
     "flamework": "^4.2.1"
   }

@@ -6,6 +6,8 @@ local ReplicatedStorage = _services.ReplicatedStorage
 local Players = _services.Players
 local UserInputService = _services.UserInputService
 local KeyboardClient = TS.import(script, script.Parent, "Keyboard").KeyboardClient
+local UIService = TS.import(script, script.Parent, "UI", "UIService").UIService
+--import { ActionBar } from "./ActionBar";
 -- Keyboard Client
 -- To use this class
 local keyboardClient = KeyboardClient.new()
@@ -26,17 +28,19 @@ if skillsFolder and movesetFolder and statusEffectsFolder then
 end
 -- WCS: start the client
 Client:Start()
+-- UI Service
+local uiService = UIService.new(Players.LocalPlayer:WaitForChild("PlayerGui"))
 -- WCS: get the current character
 local function getCurrentWCS_Character()
 	local characterModel = Players.LocalPlayer.Character
-	if not characterModel then
+	local character = Character.GetCharacterFromInstance(characterModel)
+	if not character then
 		return nil
 	end
-	local character = Character.GetCharacterFromInstance(characterModel)
-	return Character.GetCharacterFromInstance(characterModel)
+	return character
 end
 -- Input Handling
-local function handleKeyboardInput(Input, character)
+local function handleKeyboardInputBegan(Input, character)
 	local _exp = Input.KeyCode
 	repeat
 		if _exp == (Enum.KeyCode.F) then
@@ -55,6 +59,25 @@ local function handleKeyboardInput(Input, character)
 		end
 	until true
 end
+local function handleKeyboardInputEnded(Input, character)
+	local _exp = Input.KeyCode
+	repeat
+		if _exp == (Enum.KeyCode.F) then
+			local _result = character:GetSkillFromString("Block")
+			if _result ~= nil then
+				_result:Stop()
+			end
+			break
+		end
+		if _exp == (Enum.KeyCode.E) then
+			local _result = character:GetSkillFromString("Spotlights")
+			if _result ~= nil then
+				_result:Stop()
+			end
+			break
+		end
+	until true
+end
 local function handleInputBegan(Input, GameProcessed)
 	if GameProcessed then
 		return nil
@@ -66,7 +89,7 @@ local function handleInputBegan(Input, GameProcessed)
 	local _exp = Input.UserInputType
 	repeat
 		if _exp == (Enum.UserInputType.Keyboard) then
-			handleKeyboardInput(Input, character)
+			handleKeyboardInputBegan(Input, character)
 			break
 		end
 		if _exp == (Enum.UserInputType.MouseButton1) then
@@ -95,7 +118,28 @@ local function handleInputEnded(Input, GameProcessed)
 	if not character then
 		return nil
 	end
-	print("Input Ended", Input.KeyCode)
+	local _exp = Input.UserInputType
+	repeat
+		if _exp == (Enum.UserInputType.Keyboard) then
+			handleKeyboardInputEnded(Input, character)
+			break
+		end
+		if _exp == (Enum.UserInputType.MouseButton1) then
+			local _result = character:GetSkillFromString("Attack")
+			if _result ~= nil then
+				_result:Stop()
+			end
+			break
+		end
+		if _exp == (Enum.UserInputType.MouseButton2) then
+			local _result = character:GetSkillFromString("Block")
+			if _result ~= nil then
+				_result:Stop()
+			end
+			break
+		end
+		print("Unhandled Input", Input.KeyCode)
+	until true
 end
 UserInputService.InputBegan:Connect(handleInputBegan)
 UserInputService.InputEnded:Connect(handleInputEnded)

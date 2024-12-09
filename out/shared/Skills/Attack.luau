@@ -95,7 +95,7 @@ do
 	end
 	function Attack:OnStartServer()
 		print("Hi, attack just started!")
-		self:initiation()
+		--this.initiation();
 		--const humanoid = this.Character.Humanoid;
 		--const animationTrack = this.Character.Humanoid.LoadAnimation(MeleeAnimations[0]);
 		--animationTrack.Play();

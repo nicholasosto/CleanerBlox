@@ -4,7 +4,7 @@ local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_incl
 local Skill = _wcs.Skill
 local SkillDecorator = _wcs.SkillDecorator
 local Message = _wcs.Message
-local Stun = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "StatusEffects", "Stun").Stun
+local Stun = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "StatusEffects", "Stun").Stun
 local Dash
 do
 	local super = Skill

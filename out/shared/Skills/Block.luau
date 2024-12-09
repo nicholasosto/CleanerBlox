@@ -39,6 +39,9 @@ do
 	end
 	function Block:OnStartServer()
 		warn("Block Started")
+		self.HoldTimer.secondReached:Connect(function(second)
+			warn("Block Held: ", second)
+		end)
 		local humanoid = self.Character.Humanoid
 		local animator = humanoid:FindFirstChildOfClass("Animator")
 		if not animator then
@@ -54,10 +57,6 @@ do
 	function Block:OnConstructServer()
 		warn("Block Constructed")
 		self:SetMaxHoldTime(3)
-		self.HoldTimer.secondReached:Connect(function(second)
-			warn("Block Held: ", second)
-		end)
-		self.HoldTimer:start()
 	end
 	local _descriptor = Message({
 		Type = "Event",

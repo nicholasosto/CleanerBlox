@@ -9,6 +9,7 @@ local Character = _wcs.Character
 local DefaultMoveset = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Movesets", "DefaultMoveset").DefaultMoveset
 local DataService = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataService").DataService
 local CharacterConfigurator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Test Ideas", "CharacterConfigurator").CharacterConfigurator
+local dataService = DataService.new()
 local skillsFolder = ReplicatedStorage:FindFirstChild("Skills", true)
 local movesetFolder = ReplicatedStorage:FindFirstChild("Movesets", true)
 local statusEffectsFolder = ReplicatedStorage:FindFirstChild("StatusEffects", true)
@@ -21,14 +22,22 @@ end
 Server:Start()
 local characterConfigurator = CharacterConfigurator.new()
 Players.PlayerAdded:Connect(function(Player)
-	local DataServiceInstance = DataService.new()
-	local playerData = DataServiceInstance:loadPlayerData(tostring(Player.UserId))
+	local userId = Player.UserId
 	Player.CharacterAdded:Connect(function(CharacterModel)
 		-- apply the wrap when character model gets created
 		local WCS_Character = Character.new(CharacterModel)
+		local spotlightButton = Player:WaitForChild("PlayerGui"):WaitForChild("Action Bar"):FindFirstChild("SpotlightButton", true)
+		print("SpotlightButton: ", spotlightButton)
 		WCS_Character:ApplyMoveset(DefaultMoveset)
 		WCS_Character.SkillStarted:Connect(function(skill)
 			print(`Skill {skill:GetName()} started`)
+		end)
+		spotlightButton.Activated:Connect(function()
+			print("Spotlight Button Activated")
+			local _result = WCS_Character:GetSkillFromString("Spotlights")
+			if _result ~= nil then
+				_result:Start()
+			end
 		end)
 		-- destroy it when humanoid dies
 		local humanoid = CharacterModel:WaitForChild("Humanoid")

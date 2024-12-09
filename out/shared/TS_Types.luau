@@ -1,26 +1,48 @@
 -- Compiled with roblox-ts v3.0.0
--- Example usage:
-local gameData = {
-	players = {},
-	worldState = {
-		domainTerritories = {
-			Exsanguination = false,
-			Consumption = false,
-			Corruption = false,
-			Blood = false,
-			Hunger = false,
-			Rage = false,
-			Fateless = false,
-		},
-		fatelessPlayers = {},
+local DataTemplate = {
+	key = "Datatemplate",
+	version = 1,
+	Level = 1,
+	Experience = 0,
+	ExperienceToNextLevel = 100,
+	CharacterName = "Default Name",
+	CharacterClass = {
+		ClassId = "Vampire",
+		ClassLevel = 1,
+		ClassPoints = 0,
+		ClassExperience = 0,
+		ClassExperienceToNextLevel = 100,
 	},
-	events = {
-		tutorialCompleted = false,
-		firstTimeDomainSelection = true,
-		domainBattle = {
-			active = false,
-			participants = {},
-		},
+	Stats = {
+		Strength = 10,
+		Speed = 10,
+		Dexterity = 10,
+		Intelligence = 10,
+		Constitution = 200,
 	},
+	Skills = {
+		Slot_1 = "Attack",
+		Slot_2 = "Block",
+		Slot_3 = "Spotlights",
+		Slot_4 = "Empty",
+		Slot_5 = "Empty",
+	},
+	Equipment = {
+		Weapon = "Fists",
+		Armor = "Cloth",
+		Helmet = "None",
+		Boots = "None",
+		Familiar = "None",
+		Accessory = "None",
+	},
+	SkillInventory = { "Attack", "Block", "Spotlights", "Heal", "Buff", "Debuff", "Stun" },
+	WeaponInventory = { "Fists", "Dagger", "Sword", "Axe", "Bow", "Staff" },
+	ArmorInventory = { "Cloth", "Leather", "Chainmail", "Plate" },
+	HelmetInventory = { "None", "Hood", "Helmet", "Crown" },
+	BootsInventory = { "None", "Shoes", "Boots", "Greaves" },
+	FamiliarInventory = { "None", "Bat", "Cat", "Dog", "Owl" },
+	AccessoryInventory = { "None", "Ring", "Amulet", "Bracelet", "Belt" },
 }
-return nil
+return {
+	DataTemplate = DataTemplate,
+}

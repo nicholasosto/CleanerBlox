@@ -1,7 +1,7 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { ReplicatedStorage, Debris } from "@rbxts/services";
 import { Workspace } from "@rbxts/services";
-import { rotateModel, rotatePart } from "shared/PartEffects";
+import { rotateModel, rotatePart } from "shared/Utility/PartEffects";
 import { ParticleEmitter, TParts } from "../TRef";
 
 // Folder References
@@ -15,7 +15,7 @@ const CastingAnimations = CastingAnimationsFolder.GetChildren().map((animation) 
 
 @SkillDecorator
 export class Attack extends Skill {
-	protected duration = 2.5;
+	protected duration: number = 2.5;
 
 	protected initiation() {
 		print("Attack initiated");
@@ -60,7 +60,7 @@ export class Attack extends Skill {
 
 	public OnStartServer() {
 		print("Hi, attack just started!");
-		this.initiation();
+		//this.initiation();
 		//const humanoid = this.Character.Humanoid;
 		//const animationTrack = this.Character.Humanoid.LoadAnimation(MeleeAnimations[0]);
 		//animationTrack.Play();

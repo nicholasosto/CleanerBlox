@@ -1,6 +1,8 @@
 // Game Services
 import { ReplicatedStorage, Players, UserInputService } from "@rbxts/services";
 import { KeyboardClient } from "./Keyboard";
+import { UIService } from "./UI/UIService";
+//import { ActionBar } from "./ActionBar";
 
 // Keyboard Client
 // To use this class
@@ -28,25 +30,36 @@ if (skillsFolder && movesetFolder && statusEffectsFolder) {
 // WCS: start the client
 Client.Start();
 
+// UI Service
+const uiService = new UIService(Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui);
+
 // WCS: get the current character
 function getCurrentWCS_Character() {
-	const characterModel = Players.LocalPlayer.Character;
-
-	if (!characterModel) return;
-
-	const character = Character.GetCharacterFromInstance(characterModel);
-
-	return Character.GetCharacterFromInstance(characterModel);
+	const characterModel = Players.LocalPlayer.Character as Model;
+	const character = Character.GetCharacterFromInstance(characterModel) as Character;
+	if (!character) return undefined;
+	return character;
 }
 
 // Input Handling
-function handleKeyboardInput(Input: InputObject, character: Character) {
+function handleKeyboardInputBegan(Input: InputObject, character: Character) {
 	switch (Input.KeyCode) {
 		case Enum.KeyCode.F:
 			character.GetSkillFromString("Block")?.Start();
 			break;
 		case Enum.KeyCode.E:
 			character.GetSkillFromString("Spotlights")?.Start();
+			break;
+	}
+}
+
+function handleKeyboardInputEnded(Input: InputObject, character: Character) {
+	switch (Input.KeyCode) {
+		case Enum.KeyCode.F:
+			character.GetSkillFromString("Block")?.Stop();
+			break;
+		case Enum.KeyCode.E:
+			character.GetSkillFromString("Spotlights")?.Stop();
 			break;
 	}
 }
@@ -59,7 +72,7 @@ function handleInputBegan(Input: InputObject, GameProcessed: boolean) {
 
 	switch (Input.UserInputType) {
 		case Enum.UserInputType.Keyboard:
-			handleKeyboardInput(Input, character);
+			handleKeyboardInputBegan(Input, character);
 			break;
 		case Enum.UserInputType.MouseButton1:
 			character.GetSkillFromString("Attack")?.Start();
@@ -79,9 +92,22 @@ function handleInputEnded(Input: InputObject, GameProcessed: boolean) {
 	const character = getCurrentWCS_Character();
 	if (!character) return;
 
-	print("Input Ended", Input.KeyCode);
+	switch (Input.UserInputType) {
+		case Enum.UserInputType.Keyboard:
+			handleKeyboardInputEnded(Input, character);
+			break;
+		case Enum.UserInputType.MouseButton1:
+			character.GetSkillFromString("Attack")?.Stop();
+			break;
+		case Enum.UserInputType.MouseButton2:
+			character.GetSkillFromString("Block")?.Stop();
+			break;
+		default:
+			print("Unhandled Input", Input.KeyCode);
+	}
 }
 
 UserInputService.InputBegan.Connect(handleInputBegan);
 
 UserInputService.InputEnded.Connect(handleInputEnded);
+

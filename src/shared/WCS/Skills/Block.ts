@@ -16,7 +16,9 @@ export class Block extends HoldableSkill {
 
 	public OnStartServer() {
 		warn("Block Started");
-
+		this.HoldTimer.secondReached.Connect((second) => {
+			warn("Block Held: ", second);
+		});
 		const humanoid: Humanoid = this.Character.Humanoid;
 		const animator = humanoid.FindFirstChildOfClass("Animator") as Animator | undefined;
 		if (!animator) {
@@ -34,9 +36,5 @@ export class Block extends HoldableSkill {
 	public OnConstructServer() {
 		warn("Block Constructed");
 		this.SetMaxHoldTime(3);
-		this.HoldTimer.secondReached.Connect((second) => {
-			warn("Block Held: ", second);
-		});
-		this.HoldTimer.start();
 	}
 }

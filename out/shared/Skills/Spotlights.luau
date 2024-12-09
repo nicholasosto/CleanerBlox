@@ -4,15 +4,11 @@ local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_incl
 local HoldableSkill = _wcs.HoldableSkill
 local SkillDecorator = _wcs.SkillDecorator
 local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
-local rotateModel = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "PartEffects").rotateModel
-local SkillModels = {
-	Spotlight = ReplicatedStorage:FindFirstChild("CastingSpotlight", true),
-	Casting_Circle = ReplicatedStorage:FindFirstChild("CastingCircle", true),
-}
+local Spotlight = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Spotlight").Spotlight
+local _TCFrame = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "TCFrame")
+local FormationFrames = _TCFrame.FormationFrames
+local TCFrame = _TCFrame.TCFrame
 local SkillConfiguration = ReplicatedStorage:FindFirstChild("Config_Spotlights", true)
-local Sounds = SkillConfiguration:FindFirstChild("_Sounds")
-local Animations = SkillConfiguration:FindFirstChild("_Animations")
-local Models = SkillConfiguration:FindFirstChild("_Ref_Models")
 local Spotlights
 do
 	local super = HoldableSkill
@@ -29,68 +25,65 @@ do
 	end
 	function Spotlights:constructor(...)
 		super.constructor(self, ...)
+		self.Attachments = {}
 	end
-	function Spotlights:initiate()
-		print("Spotlights initiated")
-		local numSpotlights = 3
-		-- Get the casting FLOOR attachment
-		local characterModel = self.Character.Instance
-		local castingAttachment = characterModel:FindFirstChild("CastingFloor", true)
-		print(castingAttachment.Position)
-		-- Clone Model Parts
-		-- (1) Casting Circle
-		local castingCircle = SkillModels.Casting_Circle:Clone()
-		castingCircle:PivotTo(castingAttachment.WorldCFrame)
-		castingCircle.Parent = castingAttachment
-		-- Spotlights
-		local castingSpotlights = {}
-		for i = 0, numSpotlights - 1 do
-			local spotlight = SkillModels.Spotlight:Clone()
-			table.insert(castingSpotlights, spotlight)
-			--castingSpotlights[i].Parent = characterModel;
-			--castingSpotlights[i].PivotTo(characterModel.GetPivot().mul(new CFrame(1, 1, 1.5)));
-		end
-	end
-	function Spotlights:stage1()
-		print("Spotlights stage 1")
-	end
-	function Spotlights:stage2()
-		print("Spotlights stage 2")
-	end
-	function Spotlights:stage3()
-		print("Spotlights stage 3")
-		rotateModel(self.Character.Instance, 1)
+	function Spotlights:OnConstructServer()
+		-- Set the Max Hold Time for the skill
+		self:SetMaxHoldTime(5)
 	end
 	function Spotlights:OnStartServer()
-		warn("Spotlights Started")
-		self:initiate()
+		task.wait(0.3)
+		-- Generate the attachments
+		local character = self.Character.Instance
+		local sourceAttachment = character:FindFirstChild("CastingFloor", true)
+		self.Attachments = TCFrame:generateAttachments(sourceAttachment, FormationFrames.Line, false)
+		-- Connect to the HoldTimer's secondReached event
+		self.HoldTimer.secondReached:Connect(function(seconds)
+			return self:stageActivated(seconds)
+		end)
+	end
+	function Spotlights:stageActivated(stage)
+		repeat
+			if stage == 1 then
+				self:Stage1()
+				break
+			end
+			if stage == 2 then
+				self:Stage2()
+				break
+			end
+			if stage == 3 then
+				self:Stage3()
+				break
+			end
+			break
+		until true
+	end
+	function Spotlights:Stage1()
+		for i = 1, #self.Attachments - 1 do
+			local attachment = self.Attachments[i + 1]
+			local spotlight = Spotlight.new(self.Character.Instance, attachment)
+			spotlight:SpawnSpotlight()
+		end
+	end
+	function Spotlights:Stage2()
+		print("Stage 2")
+	end
+	function Spotlights:Stage3()
+		print("Stage 3")
 	end
 	function Spotlights:OnEndServer()
 		warn("Spotlights Ended")
-	end
-	function Spotlights:OnConstructServer()
-		warn("Spotlights Constructed")
-		-- Set the Max Hold Time for the skill
-		self:SetMaxHoldTime(5)
-		-- Connect to the HoldTimer's secondReached event
-		self.HoldTimer.secondReached:Connect(function(second)
-			repeat
-				if second == 3 then
-					self:stage1()
-					break
-				end
-				if second == 2 then
-					self:stage2()
-					break
-				end
-				if second == 1 then
-					self:stage3()
-					break
-				end
-				break
-			until true
-		end)
-		self.HoldTimer:start()
+		self.Character.Humanoid.WalkSpeed = 16
+		local _exp = self.Attachments
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback = function(attachment)
+			return attachment:Destroy()
+		end
+		for _k, _v in _exp do
+			_callback(_v, _k - 1, _exp)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
 	end
 	Spotlights = SkillDecorator(Spotlights) or Spotlights
 end
