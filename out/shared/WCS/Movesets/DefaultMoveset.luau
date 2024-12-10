@@ -5,7 +5,8 @@ local Attack = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WC
 local Block = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "Block").Block
 local Dash = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "Dash").Dash
 local Spotlights = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "Spotlights").Spotlights
-local DefaultMoveset = CreateMoveset("DefaultMoveset", { Attack, Block, Dash, Spotlights })
+local BigRed = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BigRed").BigRed
+local DefaultMoveset = CreateMoveset("DefaultMoveset", { Attack, Block, Dash, Spotlights, BigRed })
 return {
 	DefaultMoveset = DefaultMoveset,
 }

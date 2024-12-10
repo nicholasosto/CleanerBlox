@@ -34,18 +34,18 @@ do
 	end
 	function PlayerAttributes:setHealthStat(player, level, constitution)
 		local maxHealth = math.round(constitution * (level / 3) + 100)
-		player:SetAttribute("Health", maxHealth)
 		player:SetAttribute("CurrentHealth", maxHealth)
+		player:SetAttribute("MaxHealth", maxHealth)
 	end
 	function PlayerAttributes:setManaStat(player, level, intelligence)
 		local maxMana = math.round(intelligence * (level / 3) + 100)
-		player:SetAttribute("Mana", maxMana)
 		player:SetAttribute("CurrentMana", maxMana)
+		player:SetAttribute("MaxMana", maxMana)
 	end
 	function PlayerAttributes:setStaminaStat(player, level, strength, constitution)
 		local maxStamina = math.round((strength + constitution) * (level / 3) + 100)
-		player:SetAttribute("Stamina", maxStamina)
 		player:SetAttribute("CurrentStamina", maxStamina)
+		player:SetAttribute("MaxStamina", maxStamina)
 	end
 	function PlayerAttributes:setExperienceStats(player, playerData)
 		player:SetAttribute("Level", playerData.Level)

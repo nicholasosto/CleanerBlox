@@ -32,22 +32,22 @@ export class PlayerAttributes {
 	// Health Stat: Derived from [Constitution and Level]
 	private static setHealthStat(player: Player, level: number, constitution: number): void {
 		const maxHealth = math.round(constitution * (level / 3) + 100);
-		player.SetAttribute("Health", maxHealth);
 		player.SetAttribute("CurrentHealth", maxHealth);
+		player.SetAttribute("MaxHealth", maxHealth);
 	}
 
 	// Mana Stat: Derived from [Intelligence and Level]
 	private static setManaStat(player: Player, level: number, intelligence: number): void {
 		const maxMana = math.round(intelligence * (level / 3) + 100);
-		player.SetAttribute("Mana", maxMana);
 		player.SetAttribute("CurrentMana", maxMana);
+		player.SetAttribute("MaxMana", maxMana);
 	}
 
 	// Stamina Stat: Derived from [Strength, Constitution, and Level]
 	private static setStaminaStat(player: Player, level: number, strength: number, constitution: number): void {
 		const maxStamina = math.round((strength + constitution) * (level / 3) + 100);
-		player.SetAttribute("Stamina", maxStamina);
 		player.SetAttribute("CurrentStamina", maxStamina);
+		player.SetAttribute("MaxStamina", maxStamina);
 	}
 
 	// Experience Stats
