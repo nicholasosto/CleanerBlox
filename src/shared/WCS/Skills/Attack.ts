@@ -2,7 +2,7 @@ import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { ReplicatedStorage, Debris } from "@rbxts/services";
 import { Workspace } from "@rbxts/services";
 import { rotateModel, rotatePart } from "shared/Utility/PartEffects";
-import { ParticleEmitter, TParts } from "../TRef";
+import { ParticleEmitter, TParts } from "../../TRef";
 
 // Folder References
 const ParticlePack = ReplicatedStorage.FindFirstChild("PARTICLE_PACK", true) as Folder;

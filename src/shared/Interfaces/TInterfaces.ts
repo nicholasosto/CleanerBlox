@@ -105,4 +105,3 @@ export const DataTemplate: PlayerData = {
 	FamiliarInventory: ["None", "Bat", "Cat", "Dog", "Owl"],
 	AccessoryInventory: ["None", "Ring", "Amulet", "Bracelet", "Belt"],
 };
-

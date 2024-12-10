@@ -1,24 +1,26 @@
-import { ReplicatedStorage, Players } from "@rbxts/services";
+import { ReplicatedStorage, Players, Workspace } from "@rbxts/services";
 import { CreateServer, Character } from "@rbxts/wcs";
-import { DefaultMoveset } from "shared/WCS/Movesets/DefaultMoveset";
 import { DataService } from "./Data/DataService";
-import { PlayerData } from "../shared/TS_Types";
 import { CharacterConfigurator } from "./Test Ideas/CharacterConfigurator";
+import { DefaultMoveset } from "shared/WCS/Movesets/DefaultMoveset";
+import { AnimationManager } from "shared/Utility/AnimationManager";
 
 const dataService = new DataService();
 const skillsFolder = ReplicatedStorage.FindFirstChild("Skills", true);
 const movesetFolder = ReplicatedStorage.FindFirstChild("Movesets", true);
 const statusEffectsFolder = ReplicatedStorage.FindFirstChild("StatusEffects", true);
 
-const Server = CreateServer();
+const ToadiesFolder = Workspace.WaitForChild("ToadArmy") as Model;
+
+const WCSServer = CreateServer();
 
 if (skillsFolder && movesetFolder && statusEffectsFolder) {
-	Server.RegisterDirectory(skillsFolder);
-	Server.RegisterDirectory(movesetFolder);
-	Server.RegisterDirectory(statusEffectsFolder);
+	WCSServer.RegisterDirectory(skillsFolder);
+	WCSServer.RegisterDirectory(movesetFolder);
+	WCSServer.RegisterDirectory(statusEffectsFolder);
 }
 
-Server.Start();
+WCSServer.Start();
 
 const characterConfigurator = new CharacterConfigurator();
 
@@ -28,21 +30,19 @@ Players.PlayerAdded.Connect((Player) => {
 	Player.CharacterAdded.Connect((CharacterModel) => {
 		// apply the wrap when character model gets created
 		const WCS_Character = new Character(CharacterModel);
+		const ToadieModels: Model[] = ToadiesFolder.GetChildren().filter((child): child is Model => child.IsA("Model"));
+		const WCS_Toadies: Character[] = [];
 
-		const spotlightButton: ImageButton = Player.WaitForChild("PlayerGui").WaitForChild("Action Bar").FindFirstChild("SpotlightButton",true) as ImageButton;
-		print("SpotlightButton: ",spotlightButton);
+		ToadieModels.forEach((ToadieModel) => { 
+			const ToadieCharacter = new Character(ToadieModel);
+			WCS_Toadies.push(ToadieCharacter);
+			ToadieCharacter.ApplySkillsFromMoveset(DefaultMoveset);
+			AnimationManager.RegisterAnimationsFor(ToadieCharacter);
+		});
 
+		WCS_Character.ApplySkillsFromMoveset(DefaultMoveset);
+		AnimationManager.RegisterAnimationsFor(WCS_Character);
 		
-		WCS_Character.ApplyMoveset(DefaultMoveset);
-		WCS_Character.SkillStarted.Connect((skill) => {
-			print(`Skill ${skill.GetName()} started`);
-		});
-
-		spotlightButton.Activated.Connect(() => {
-			print("Spotlight Button Activated");
-			WCS_Character.GetSkillFromString("Spotlights")?.Start();
-			
-		});
 
 		// destroy it when humanoid dies
 		const humanoid = CharacterModel.WaitForChild("Humanoid") as Humanoid;

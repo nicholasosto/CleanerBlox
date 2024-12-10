@@ -1,9 +1,9 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
--- KeyboardClient.ts
-local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
-local Players = _services.Players
-local UserInputService = _services.UserInputService
+-- Begin: KeyboardClient.ts
+local UserInputService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").UserInputService
+local TNums = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Enums", "TNums").TNums
+local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local KeyboardClient
 do
 	KeyboardClient = setmetatable({}, {
@@ -16,55 +16,64 @@ do
 		local self = setmetatable({}, KeyboardClient)
 		return self:constructor(...) or self
 	end
-	function KeyboardClient:constructor()
-		self.player = Players.LocalPlayer
-		self:bindKeyboardEvents()
-	end
-	function KeyboardClient:bindKeyboardEvents()
-		UserInputService.InputBegan:Connect(function(input, isProcessed)
+	function KeyboardClient:constructor(character)
+		-- Set the wcsCharacter
+		repeat
+			do
+				self.wcsCharacter = Character.GetLocalCharacter()
+				task.wait(0.3)
+			end
+		until not (self.wcsCharacter == nil)
+		-- Get the skills from WCS
+		local skills = self.wcsCharacter:GetSkills()
+		-- INPUT BEGAN
+		self.inputBeganConnection = UserInputService.InputBegan:Connect(function(input, isProcessed)
 			if isProcessed then
 				return nil
 			end
 			if input.UserInputType == Enum.UserInputType.Keyboard then
 				local keyCode = input.KeyCode
-				repeat
-					if keyCode == (Enum.KeyCode.W) then
-						self:onWKeyPress()
-						break
-					end
-					if keyCode == (Enum.KeyCode.A) then
-						self:onAKeyPress()
-						break
-					end
-					if keyCode == (Enum.KeyCode.S) then
-						self:onSKeyPress()
-						break
-					end
-					if keyCode == (Enum.KeyCode.D) then
-						self:onDKeyPress()
-						break
-					end
-				until true
+				self:onKeyPress(keyCode, true)
+			end
+		end)
+		-- INPUT ENDED
+		self.inputEndedConnection = UserInputService.InputEnded:Connect(function(input, isProcessed)
+			if isProcessed then
+				return nil
+			end
+			if input.UserInputType == Enum.UserInputType.Keyboard then
+				local keyCode = input.KeyCode
+				self:onKeyPress(keyCode, false)
 			end
 		end)
 	end
-	function KeyboardClient:onWKeyPress()
-		-- Implement logic for when 'W' is pressed
-		print("W key pressed")
+	function KeyboardClient:SkillToggle(skillName, begin)
+		local character = self.wcsCharacter
+		local skill = character:GetSkillFromString(skillName)
+		if skill then
+			if begin then
+				skill:Start()
+			else
+				skill:Stop()
+			end
+		end
 	end
-	function KeyboardClient:onAKeyPress()
-		-- Implement logic for when 'A' is pressed
-		print("A key pressed")
-	end
-	function KeyboardClient:onSKeyPress()
-		-- Implement logic for when 'S' is pressed
-		print("S key pressed")
-	end
-	function KeyboardClient:onDKeyPress()
-		-- Implement logic for when 'D' is pressed
-		print("D key pressed")
+	function KeyboardClient:onKeyPress(key, begin)
+		repeat
+			if key == (Enum.KeyCode.Q) then
+				self:SkillToggle(TNums.SkillNames.Spotlights, begin)
+				break
+			end
+			if key == (Enum.KeyCode.E) then
+				self:SkillToggle(TNums.SkillNames.Dash, begin)
+				break
+			end
+			warn(`Unhandled key: {key}`)
+			break
+		until true
 	end
 end
+-- End: KeyboardClient.ts
 return {
 	KeyboardClient = KeyboardClient,
 }

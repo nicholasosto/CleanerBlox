@@ -89,7 +89,7 @@ do
 	end
 	function TCFrame:LineFormation(modelSourceAttachment, numPositions, distanceFromSource)
 		if numPositions == nil then
-			numPositions = 5
+			numPositions = 2
 		end
 		if distanceFromSource == nil then
 			distanceFromSource = 70

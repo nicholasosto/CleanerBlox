@@ -80,7 +80,7 @@ export class TCFrame {
 	// Line Formation
 	private static LineFormation(
 		modelSourceAttachment: Attachment,
-		numPositions: number = 5,
+		numPositions: number = 2,
 		distanceFromSource: number = 70,
 	) {
 		// Create an array of attachments to return

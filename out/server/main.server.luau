@@ -3,42 +3,61 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
 local ReplicatedStorage = _services.ReplicatedStorage
 local Players = _services.Players
+local Workspace = _services.Workspace
 local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
 local CreateServer = _wcs.CreateServer
 local Character = _wcs.Character
-local DefaultMoveset = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Movesets", "DefaultMoveset").DefaultMoveset
 local DataService = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataService").DataService
 local CharacterConfigurator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Test Ideas", "CharacterConfigurator").CharacterConfigurator
+local DefaultMoveset = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Movesets", "DefaultMoveset").DefaultMoveset
+local AnimationManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "AnimationManager").AnimationManager
 local dataService = DataService.new()
 local skillsFolder = ReplicatedStorage:FindFirstChild("Skills", true)
 local movesetFolder = ReplicatedStorage:FindFirstChild("Movesets", true)
 local statusEffectsFolder = ReplicatedStorage:FindFirstChild("StatusEffects", true)
-local Server = CreateServer()
+local ToadiesFolder = Workspace:WaitForChild("ToadArmy")
+local WCSServer = CreateServer()
 if skillsFolder and movesetFolder and statusEffectsFolder then
-	Server:RegisterDirectory(skillsFolder)
-	Server:RegisterDirectory(movesetFolder)
-	Server:RegisterDirectory(statusEffectsFolder)
+	WCSServer:RegisterDirectory(skillsFolder)
+	WCSServer:RegisterDirectory(movesetFolder)
+	WCSServer:RegisterDirectory(statusEffectsFolder)
 end
-Server:Start()
+WCSServer:Start()
 local characterConfigurator = CharacterConfigurator.new()
 Players.PlayerAdded:Connect(function(Player)
 	local userId = Player.UserId
 	Player.CharacterAdded:Connect(function(CharacterModel)
 		-- apply the wrap when character model gets created
 		local WCS_Character = Character.new(CharacterModel)
-		local spotlightButton = Player:WaitForChild("PlayerGui"):WaitForChild("Action Bar"):FindFirstChild("SpotlightButton", true)
-		print("SpotlightButton: ", spotlightButton)
-		WCS_Character:ApplyMoveset(DefaultMoveset)
-		WCS_Character.SkillStarted:Connect(function(skill)
-			print(`Skill {skill:GetName()} started`)
-		end)
-		spotlightButton.Activated:Connect(function()
-			print("Spotlight Button Activated")
-			local _result = WCS_Character:GetSkillFromString("Spotlights")
-			if _result ~= nil then
-				_result:Start()
+		local _exp = ToadiesFolder:GetChildren()
+		-- ▼ ReadonlyArray.filter ▼
+		local _newValue = {}
+		local _callback = function(child)
+			return child:IsA("Model")
+		end
+		local _length = 0
+		for _k, _v in _exp do
+			if _callback(_v, _k - 1, _exp) == true then
+				_length += 1
+				_newValue[_length] = _v
 			end
-		end)
+		end
+		-- ▲ ReadonlyArray.filter ▲
+		local ToadieModels = _newValue
+		local WCS_Toadies = {}
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback_1 = function(ToadieModel)
+			local ToadieCharacter = Character.new(ToadieModel)
+			table.insert(WCS_Toadies, ToadieCharacter)
+			ToadieCharacter:ApplySkillsFromMoveset(DefaultMoveset)
+			AnimationManager:RegisterAnimationsFor(ToadieCharacter)
+		end
+		for _k, _v in ToadieModels do
+			_callback_1(_v, _k - 1, ToadieModels)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
+		WCS_Character:ApplySkillsFromMoveset(DefaultMoveset)
+		AnimationManager:RegisterAnimationsFor(WCS_Character)
 		-- destroy it when humanoid dies
 		local humanoid = CharacterModel:WaitForChild("Humanoid")
 		humanoid.Died:Once(function()

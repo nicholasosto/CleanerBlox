@@ -4,7 +4,7 @@ local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts
 local Players = _services.Players
 local DataStoreService = _services.DataStoreService
 local HttpService = _services.HttpService
-local DataTemplate = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "TS_Types").DataTemplate
+local DataTemplate = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Interfaces", "TInterfaces").DataTemplate
 local PlayerAttributes = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "PlayerAttributes").PlayerAttributes
 local DATASTORE_NAME = "SoulSteel_TS"
 local DataService

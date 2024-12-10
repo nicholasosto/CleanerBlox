@@ -1,58 +1,72 @@
-// KeyboardClient.ts
-import { Players, UserInputService } from "@rbxts/services";
+// Begin: KeyboardClient.ts
+import { UserInputService } from "@rbxts/services";
+import { TNums } from "shared/Enums/TNums";
+import { Character, Skill } from "@rbxts/wcs";
 
 export class KeyboardClient {
-    private player: Player;
+	private wcsCharacter: Character | Promise<Character> | undefined;
+	private inputBeganConnection: RBXScriptConnection;
+	private inputEndedConnection: RBXScriptConnection;
 
-    constructor() {
-        this.player = Players.LocalPlayer;
-        this.bindKeyboardEvents();
-    }
+	// Constructor
+	constructor(character: Model) {
+		// Set the wcsCharacter
+		do {
+			this.wcsCharacter = Character.GetLocalCharacter();
+			task.wait(0.3);
+		} while (this.wcsCharacter === undefined);
 
-    private bindKeyboardEvents(): void {
-        UserInputService.InputBegan.Connect((input, isProcessed) => {
-            if (isProcessed) return; // Prevent handling if another context has processed this input
+		// Get the skills from WCS
+		const skills = this.wcsCharacter.GetSkills();
 
-            if (input.UserInputType === Enum.UserInputType.Keyboard) {
-                const keyCode = input.KeyCode;
+		// INPUT BEGAN
+		this.inputBeganConnection = UserInputService.InputBegan.Connect((input, isProcessed) => {
+			if (isProcessed) return; // Prevent handling if another context has processed this input
 
-                switch (keyCode) {
-                    case Enum.KeyCode.W:
-                        this.onWKeyPress();
-                        break;
-                    case Enum.KeyCode.A:
-                        this.onAKeyPress();
-                        break;
-                    case Enum.KeyCode.S:
-                        this.onSKeyPress();
-                        break;
-                    case Enum.KeyCode.D:
-                        this.onDKeyPress();
-                        break;
-                    // Add additional keys as needed
-                }
-            }
-        });
-    }
+			if (input.UserInputType === Enum.UserInputType.Keyboard) {
+				const keyCode = input.KeyCode;
+				this.onKeyPress(keyCode, true);
+			}
+		});
 
-    private onWKeyPress(): void {
-        // Implement logic for when 'W' is pressed
-        print("W key pressed");
-    }
+		// INPUT ENDED
+		this.inputEndedConnection = UserInputService.InputEnded.Connect((input, isProcessed) => {
+			if (isProcessed) return; // Prevent handling if another context has processed this input
 
-    private onAKeyPress(): void {
-        // Implement logic for when 'A' is pressed
-        print("A key pressed");
-    }
+			if (input.UserInputType === Enum.UserInputType.Keyboard) {
+				const keyCode = input.KeyCode;
+				this.onKeyPress(keyCode, false);
+			}
+		});
+	}
+	// Helper: Skill Toggle
+	private SkillToggle(skillName: string, begin: boolean): void {
+		const character = this.wcsCharacter as Character;
 
-    private onSKeyPress(): void {
-        // Implement logic for when 'S' is pressed
-        print("S key pressed");
-    }
+		const skill = character.GetSkillFromString(skillName) as Skill;
 
-    private onDKeyPress(): void {
-        // Implement logic for when 'D' is pressed
-        print("D key pressed");
-    }
+		if (skill) {
+			if (begin) {
+				skill.Start();
+			} else {
+				skill.Stop();
+			}
+		}
+	}
+
+	// Main Function: onKeyPress
+	private onKeyPress(key: Enum.KeyCode, begin: boolean): void {
+		switch (key) {
+			case Enum.KeyCode.Q:
+				this.SkillToggle(TNums.SkillNames.Spotlights, begin);
+				break;
+			case Enum.KeyCode.E:
+				this.SkillToggle(TNums.SkillNames.Dash, begin);
+				break;
+			default:
+				warn(`Unhandled key: ${key}`);
+				break;
+		}
+	}
 }
-
+// End: KeyboardClient.ts

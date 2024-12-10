@@ -1,65 +1,136 @@
-import { ReplicatedStorage, Workspace, TweenService } from "@rbxts/services";
-const SoulSteelStorage = ReplicatedStorage.FindFirstChild("SoulSteelStorage", true) as Folder;
+import { ReplicatedStorage, Workspace, TweenService, Players } from "@rbxts/services";
+import { CFrameGenerator } from "shared/Utility/CFrameGenerator";
+import { GameStorage } from "shared/GameStorage";
 
 export class Spotlight {
-	//create a contructor that takes in the spotlight model
-	private instance: Model;
-	private hitPart: Part;
+	// Static Properties
+	private static template: Model = GameStorage.getModel("Spotlight").Clone();
+	private static cFrameGenerator = new CFrameGenerator();
+
+	// Instance Properties
+	public instance: Model;
 	private Character: Model;
-	private StateValue: StringValue;
-	public imageId: string = "rbxassetid://82703415014111";
-	public AttachmentParent: Attachment | undefined;
+	private PrimaryPart: BasePart | undefined;
+	private HitPart: BasePart | undefined;
+	private SpotlightTween: Tween | undefined;
+	private HomingTween: Tween | undefined
+	private CFrame: CFrame | undefined;
+	private Target: Model | undefined;
+	private HitConnection: RBXScriptConnection | undefined;
+	private StateChangeConnection: RBXScriptConnection | undefined;
 
 	// Constructor
-	constructor(character: Model, attachment: Attachment) {
-		// Validate the model and configuration
-		// Model Validation
-		const _spotlightModel = SoulSteelStorage.FindFirstChild("Spotlight", true)?.Clone() as Model;
-		const _spotlightConfiguration = _spotlightModel.FindFirstChildOfClass("Configuration") as Configuration;
-		const _hitpart = _spotlightModel.FindFirstChild("HitPart") as Part;
+	constructor(cFrame: CFrame, character: Model) {
+		// Set the instance
+		this.instance = Spotlight.template.Clone();
+		this.Character = character as Model;
 
-		if (!_spotlightModel || !_spotlightConfiguration || !_hitpart) {
-			error("Spotlight model or configuration not found.");
-		}
+		print("Spotlight Instance: ", this.instance, cFrame);
 
-		// Initialize the spotlight
-		this.instance = _spotlightModel; // Cloned already
-		this.hitPart = _hitpart;
-		this.instance.PrimaryPart = this.hitPart; // Set the PrimaryPart
-		this.Character = character;
-		this.AttachmentParent = attachment;
+		this.PrimaryPart = this.instance.PrimaryPart as BasePart;
+		this.HitPart = this.instance.FindFirstChild("HitPart") as BasePart;
+		this.CFrame = cFrame;
 
-		// Initialize the StateValue reference object
-		this.StateValue = _spotlightConfiguration.FindFirstChild("State") as StringValue;
+		this.instance.Parent = Workspace;
+		this.instance.PivotTo(cFrame);
+
+		// Set the Attribute "State" to "UNK"
+		this.instance.SetAttribute("State", "UNK");
+
+		this.SpotlightTween = this.CreateRandomTween() as Tween;
+		this.HomingTween = this.CreateHomingTween() as Tween;
 
 		// Listen for property changes
-		this.InitializePropertyChangeListeners();
+		this.HitConnection = this.PrimaryPart.Touched.Connect((hit) => this.handlePartTouched(hit));
 
-		// Set the initial state
-		this.StateValue.Value = "Idle";
+		// Listen for state changes
+		this.StateChangeConnection = this.instance
+			.GetAttributeChangedSignal("State")
+			.Connect(() => this.OnStateChanged());
+
+		// Set the State to Idle
+		this.instance.SetAttribute("State", "Idle");
 		return this;
 	}
 
-	// Initialize Property Change Listeners
-	protected InitializePropertyChangeListeners() {
-		// State Value Changed
-		this.StateValue.GetPropertyChangedSignal("Value").Connect(() => {
-			this.OnStateChanged();
+	protected handlePartTouched(hit: BasePart) {
+		const parent = hit.Parent as Model;
+
+		if (!parent) return;
+
+		if (!parent.FindFirstChild("Humanoid")) return;
+
+		if(parent === this.Character) return;
+
+		this.Target = parent;
+
+		this.instance.SetAttribute("State", "Triggered");
+
+	}
+
+	protected CreateRandomTween() {
+		const hitPart = this.PrimaryPart as BasePart;
+		// Tween Properties
+		const _duration = 2;
+		const _easingStyle = Enum.EasingStyle.Linear;
+		const _easingDirection = Enum.EasingDirection.InOut;
+		const _repeatCount = -1;
+		const _reverses = false;
+
+		// Create the TweenInfo object
+		const tweenInfo = new TweenInfo(_duration, _easingStyle, _easingDirection, _repeatCount, _reverses);
+
+		// Spotlight Base Position
+		if (!this.CFrame) {
+			return;
+		}
+
+		// Randomize the Goal Position
+		const GoalCFrame = this.CFrame.mul(new CFrame(math.random(-30, 30), 0, math.random(-30, 30)));
+
+		// Create the Tween
+		const spotlightTween = TweenService.Create(hitPart, tweenInfo, {
+			CFrame: GoalCFrame,
 		});
 
-		// Hit Part Touched
-		this.hitPart.Touched.Connect((hit) => {
-			print("Hit Part Touched");
-			if (hit.Parent !== this.Character && hit.Parent?.IsA("Model")) {
-				this.hitPart.Color = Color3.fromRGB(255, 0, 0);
-				this.StateValue.Value = "Triggered";
-			}
+		return spotlightTween;
+	}
+
+	protected CreateHomingTween() {
+		const hitPart = this.PrimaryPart as BasePart;
+		// Tween Properties
+		const _duration = 1;
+		const _easingStyle = Enum.EasingStyle.Linear;
+		const _easingDirection = Enum.EasingDirection.InOut;
+		const _repeatCount = -1;
+		const _reverses = false;
+
+		// Create the TweenInfo object
+		const tweenInfo = new TweenInfo(_duration, _easingStyle, _easingDirection, _repeatCount, _reverses);
+
+		// Spotlight Base Position
+		if (!this.CFrame) {
+			return;
+		}
+
+		// Create the Tween
+		if(!this.Target) {
+			warn("Target not found");
+			return;
+		}
+		const goalFrame = this.Target.GetPivot() as CFrame;
+
+		const homingTween = TweenService.Create(hitPart, tweenInfo, {
+			CFrame: goalFrame,
 		});
+
+		return homingTween;
 	}
 
 	// State Changed
 	protected OnStateChanged() {
-		switch (this.StateValue.Value) {
+		print("State Changed: ", this.instance.GetAttribute("State"));
+		switch (this.instance.GetAttribute("State")) {
 			case "Idle":
 				this.OnIdle();
 				break;
@@ -67,99 +138,74 @@ export class Spotlight {
 				this.OnTriggered();
 				break;
 			case "Inactive":
-				this.OnInactive();
+				print("TODO: Spotlight is Inactive");
+				break;
+			case "Homing":
+				this.OnHoming();
+				break;
+			case "Exploding":
+				this.OnExploding();
 				break;
 			default:
 				break;
 		}
 	}
 
+	// State: Idle
 	protected OnIdle() {
 		print("Spotlight is Idle");
-		const tweenInfo = new TweenInfo(2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut);
+		const PrimaryPart = this.PrimaryPart as BasePart;
 
-		const spotlightBasePosition = this.instance.PrimaryPart?.Position as Vector3;
-		const tweenService = TweenService;
-
-		//TweenTest
-		const part = new Instance("Part");
-		part.Size = new Vector3(4, 4, 4);
-		part.Anchored = false;
-		part.Position = new Vector3(0, 10, 0);
-		part.Parent = Workspace;
-
-		const testTween = TweenService.Create(part, new TweenInfo(2), {
-			Position: new Vector3(20, 10, 0),
-		});
-
-		testTween.Play();
-		//TweenTest
-
-		const moveSpotlight = () => {
-			if (this.StateValue.Value !== "Idle") return;
-
-			const randomOffset = new Vector3(
-				math.random(-20, 20),
-				math.random(0, 2), // Adjust for vertical range if needed
-				math.random(-20, 20),
-			);
-
-			const targetPosition = spotlightBasePosition.add(randomOffset);
-
-			// Ensure the CFrame is constructed with the target position
-			const targetCFrame = new CFrame(targetPosition);
-
-			// Create the tween to move the spotlight
-			const tween = tweenService.Create(this.instance.PrimaryPart as BasePart, tweenInfo, {
-				CFrame: targetCFrame.mul(CFrame.Angles(0, 0, math.rad(90))),
-			});
-
-			tween.Completed.Connect(() => {
-				if (this.StateValue.Value === "Idle") {
-					print("Spotlight has reached the target position");
-					moveSpotlight(); // Continue the idle behavior
-				}
-			});
-
-			tween.Play();
-		};
-
-		moveSpotlight();
-	}
-
-	protected OnTriggered() {
-		print("Spotlight is Triggered");
-	}
-
-	protected OnInactive() {
-		print("Spotlight is Inactive");
-	}
-
-	public SpawnSpotlight() {
-		this.instance.Parent = Workspace;
-		const WorldCFrame = this.AttachmentParent?.WorldCFrame;
-
-		if (!WorldCFrame) {
-			warn("AttachmentParent WorldCFrame is not set.");
+		if (!PrimaryPart) {
 			return;
 		}
 
-		// Apply a rotation to adjust the orientation
-		let adjustedCFrame = WorldCFrame.mul(CFrame.Angles(0, 0, math.rad(90))); // Rotate 90 degrees around the Z-axis
+		PrimaryPart.Color = Color3.fromRGB(255, 255, 255);
+		print("Tween Play: ", this.SpotlightTween);
+		this.SpotlightTween?.Play();
+	}
 
-		adjustedCFrame = adjustedCFrame.add(new Vector3(0, 13, 0)); // Adjust the position if needed
+	// State: Exploding
+	protected OnExploding() {
+		print("Spotlight is Exploding");
+		const PrimaryPart = this.PrimaryPart as BasePart;
+		PrimaryPart.Color = Color3.fromRGB(74, 74, 135);
+		const humanoidTarget = this.Target?.FindFirstChild("Humanoid") as Humanoid;
 
-		this.instance.PivotTo(adjustedCFrame);
+		if (humanoidTarget) {
+			humanoidTarget.TakeDamage(110);
+		}
+		this.instance.Destroy();
+	}
 
-		const stringVector =
-			"Location: [" +
-			math.round(this.instance.GetPivot().Position.X) +
-			", " +
-			math.round(this.instance.GetPivot().Position.Y) +
-			", " +
-			math.round(this.instance.GetPivot().Position.Z) +
-			"]";
-		print("Spawning spotlight at position: ", stringVector);
-		return this.instance;
+	// State: Triggered
+	protected OnTriggered() {
+		print("Spotlight is Triggered");
+		const HitPart = this.HitPart as BasePart;
+		HitPart.Color = Color3.fromRGB(255, 0, 0);
+		this.instance.SetAttribute("State", "Homing");
+	}
+
+	protected OnHoming() {
+		print("Spotlight is Homing");
+		const PrimaryPart = this.PrimaryPart as BasePart;
+		PrimaryPart.Color = Color3.fromRGB(0, 255, 0);
+		this.HomingTween = this.CreateHomingTween();
+		this.HomingTween?.Completed.Connect(() => {
+			this.instance.SetAttribute("State", "Exploding");
+		});
+		this.HomingTween?.Play();
+	}
+
+	// Destroy
+	public Destroy() {
+		this.HitConnection?.Disconnect();
+		this.StateChangeConnection?.Disconnect();
+
+		const state = this.instance.GetAttribute("State");
+		const PrimaryPart = this.PrimaryPart as BasePart;
+
+		this.instance.Destroy();
+		//this.Destroy();
 	}
 }
