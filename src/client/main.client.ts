@@ -6,35 +6,18 @@ import { Character, CreateClient } from "@rbxts/wcs";
 import { WCSFolders } from "shared/WCS/Folders";
 import { Logger } from "shared/Utility/Logger";
 
+// UI Service Start
 UIService.Start();
 UIService.LoadActionBar();
+
+// WCS Client Start
 const wcsClient = CreateClient();
 wcsClient.RegisterDirectory(WCSFolders.Skills);
 wcsClient.RegisterDirectory(WCSFolders.Movesets);
 wcsClient.RegisterDirectory(WCSFolders.StatusEffects);
 wcsClient.Start();
 
-// function loadSignalButtonInstance(instanceName: string) {
-// 	const matchingInstanceNames = Players.LocalPlayer.WaitForChild("PlayerGui")
-// 		.GetDescendants()
-// 		.filter((descendant) => descendant.Name === instanceName);
-
-// 	// Button Instance
-// 	const buttonInstance = matchingInstanceNames.filter((instance) => instance.IsA("GuiButton"))[0];
-
-// 	// Check if button is already loaded
-// 	const existingButton = signalButtons.find((button) => button.getInstance() === buttonInstance);
-
-// 	// Create Signal Button
-// 	if (!existingButton) {
-// 		const signalButton = new SignalButton(buttonInstance, { name: instanceName });
-// 		signalButtons.push(signalButton);
-// 		Logger.Log("SignalButton", "Button Loaded: ", buttonInstance);
-// 	} else {
-// 		Logger.Log("SignalButton", "Button Already Loaded: ", buttonInstance);
-// 	}
-// }
-
+// Handle Character Added
 function handleCharacterAdded(character: Model) {
 	const keyboardClient = new KeyboardClient(character);
 
@@ -44,10 +27,10 @@ function handleCharacterAdded(character: Model) {
 	wcsCharacter?.GetSkills().forEach((skill) => Logger.Log("Client", "Skill", skill.GetName()));
 }
 
+// Handle Character Removing
 function handleCharacterRemoving(character: Model) {
 	Logger.Log("Client", "Character Removed: ", character);
 }
-
 
 // Get character from LocalPlayer
 const character = Players.LocalPlayer.Character;
@@ -59,5 +42,4 @@ if (character) {
 
 // Character Added/Removing Events
 Players.LocalPlayer.CharacterAdded.Connect(handleCharacterAdded);
-
 Players.LocalPlayer.CharacterRemoving.Connect(handleCharacterRemoving);

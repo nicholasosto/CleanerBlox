@@ -9,30 +9,16 @@ local Character = _wcs.Character
 local CreateClient = _wcs.CreateClient
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+-- UI Service Start
 UIService:Start()
 UIService:LoadActionBar()
+-- WCS Client Start
 local wcsClient = CreateClient()
 wcsClient:RegisterDirectory(WCSFolders.Skills)
 wcsClient:RegisterDirectory(WCSFolders.Movesets)
 wcsClient:RegisterDirectory(WCSFolders.StatusEffects)
 wcsClient:Start()
--- function loadSignalButtonInstance(instanceName: string) {
--- 	const matchingInstanceNames = Players.LocalPlayer.WaitForChild("PlayerGui")
--- 		.GetDescendants()
--- 		.filter((descendant) => descendant.Name === instanceName);
--- 	// Button Instance
--- 	const buttonInstance = matchingInstanceNames.filter((instance) => instance.IsA("GuiButton"))[0];
--- 	// Check if button is already loaded
--- 	const existingButton = signalButtons.find((button) => button.getInstance() === buttonInstance);
--- 	// Create Signal Button
--- 	if (!existingButton) {
--- 		const signalButton = new SignalButton(buttonInstance, { name: instanceName });
--- 		signalButtons.push(signalButton);
--- 		Logger.Log("SignalButton", "Button Loaded: ", buttonInstance);
--- 	} else {
--- 		Logger.Log("SignalButton", "Button Already Loaded: ", buttonInstance);
--- 	}
--- }
+-- Handle Character Added
 local function handleCharacterAdded(character)
 	local keyboardClient = KeyboardClient.new(character)
 	Logger:Log("Client", "Character Added: ", character)
@@ -50,6 +36,7 @@ local function handleCharacterAdded(character)
 		-- ▲ ReadonlyArray.forEach ▲
 	end
 end
+-- Handle Character Removing
 local function handleCharacterRemoving(character)
 	Logger:Log("Client", "Character Removed: ", character)
 end
