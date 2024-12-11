@@ -1,4 +1,4 @@
-import { GameStorage } from "shared/GameStorage";
+import { GameStorage } from "shared/Utility/GameStorage";
 import { Character } from "@rbxts/wcs";
 
 export class AnimationManager {

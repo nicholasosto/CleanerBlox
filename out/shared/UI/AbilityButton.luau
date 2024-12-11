@@ -2,7 +2,7 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- AbilityButton Class
 -- GameStorage
-local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameStorage").GameStorage
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 -- Template
 local Template = GameStorage:getGUI("Ability Button Template")
 -- Attribute Label Class

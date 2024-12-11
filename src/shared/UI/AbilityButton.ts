@@ -1,7 +1,7 @@
 // AbilityButton Class
 
 // GameStorage
-import { GameStorage } from "shared/GameStorage";
+import { GameStorage } from "shared/Utility/GameStorage";
 import { ProgressBar } from "./ProgressBar";
 import { Character } from "@rbxts/wcs";
 

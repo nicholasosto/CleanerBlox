@@ -1,7 +1,7 @@
 // AttributeLabel Class
 
 // GameStorage
-import { GameStorage } from "shared/GameStorage";
+import { GameStorage } from "shared/Utility/GameStorage";
 
 // Template
 const Template = GameStorage.getGUI("Attribute Label Template") as Frame;

@@ -1,7 +1,7 @@
 // Objective: Progress Bar Class
 
 // GameStorage
-import { GameStorage } from "shared/GameStorage";
+import { GameStorage } from "shared/Utility/GameStorage";
 
 // ProgressBar Template
 const Template: Frame = GameStorage.getGUI("Progress Bar Template") as Frame;

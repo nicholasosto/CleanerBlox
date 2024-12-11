@@ -1,5 +1,5 @@
 import { HttpService } from "@rbxts/services";
-import { PlayerData, StatsData } from "shared/Interfaces/TInterfaces";
+import { PlayerData, StatsData } from "shared/Interfaces/IData";
 
 export class PlayerAttributes {
 	private constructor() {

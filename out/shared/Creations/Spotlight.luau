@@ -4,7 +4,7 @@ local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts
 local Workspace = _services.Workspace
 local TweenService = _services.TweenService
 local CFrameGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "CFrameGenerator").CFrameGenerator
-local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameStorage").GameStorage
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local Spotlight
 do
 	Spotlight = setmetatable({}, {

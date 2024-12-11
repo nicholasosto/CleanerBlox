@@ -8,6 +8,7 @@ local Workspace = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts
 local Spotlight = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Creations", "Spotlight").Spotlight
 local CFrameGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "CFrameGenerator").CFrameGenerator
 local AnimationManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "AnimationManager").AnimationManager
+local EffectList = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Effects", "TEffect").EffectList
 local cFrameGenerator = CFrameGenerator.new()
 local BigRed
 do
@@ -61,6 +62,7 @@ do
 			return self:stageActivated(seconds)
 		end)
 		AnimationManager:RegisterAnimationsFor(self.Character)
+		local effect = EffectList.BlackHole_01
 	end
 	function BigRed:OnStartServer()
 		self:ToadDance()

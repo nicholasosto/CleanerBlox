@@ -2,7 +2,7 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- Objective: Progress Bar Class
 -- GameStorage
-local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameStorage").GameStorage
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 -- ProgressBar Template
 local Template = GameStorage:getGUI("Progress Bar Template")
 -- ProgressBar Class

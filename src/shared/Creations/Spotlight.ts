@@ -1,6 +1,6 @@
 import { ReplicatedStorage, Workspace, TweenService, Players } from "@rbxts/services";
 import { CFrameGenerator } from "shared/Utility/CFrameGenerator";
-import { GameStorage } from "shared/GameStorage";
+import { GameStorage } from "shared/Utility/GameStorage";
 
 export class Spotlight {
 	// Static Properties

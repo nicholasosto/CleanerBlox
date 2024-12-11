@@ -112,17 +112,17 @@ export class GameStorage {
 	}
 
 	// Particles Storage
-	public static getParticle(particleName: string): ParticleEmitter {
-		// Get the particle from the storage
-		const _particle = this._particlesStorage.FindFirstChild(particleName, true) as ParticleEmitter;
+	public static getParticleGroupPart(particleGroupName: string): Part {
+		// Get the particle group part from the storage
+		const _particleGroupPart = this._particlesStorage.FindFirstChild(particleGroupName, true) as Part;
 
-		// Validate the particle
-		if (!_particle) {
+		// Validate the particle group part
+		if (!_particleGroupPart) {
 			this.printAvailableItems(this._particlesStorage);
-			error(`Particle ${particleName} not found in storage.`);
+			error(`Particle Group Part ${particleGroupName} not found in storage.`);
 		}
 
-		return _particle;
+		return _particleGroupPart;
 	}
 
 	// HELPER FUNCTIONS

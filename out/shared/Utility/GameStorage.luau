@@ -75,15 +75,15 @@ do
 		end
 		return _model
 	end
-	function GameStorage:getParticle(particleName)
-		-- Get the particle from the storage
-		local _particle = self._particlesStorage:FindFirstChild(particleName, true)
-		-- Validate the particle
-		if not _particle then
+	function GameStorage:getParticleGroupPart(particleGroupName)
+		-- Get the particle group part from the storage
+		local _particleGroupPart = self._particlesStorage:FindFirstChild(particleGroupName, true)
+		-- Validate the particle group part
+		if not _particleGroupPart then
 			self:printAvailableItems(self._particlesStorage)
-			error(`Particle {particleName} not found in storage.`)
+			error(`Particle Group Part {particleGroupName} not found in storage.`)
 		end
-		return _particle
+		return _particleGroupPart
 	end
 	function GameStorage:printAvailableItems(storage)
 		local _items = storage:GetChildren()

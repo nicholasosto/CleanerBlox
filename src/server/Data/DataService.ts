@@ -1,5 +1,5 @@
 import { Players, DataStoreService, HttpService } from "@rbxts/services";
-import { PlayerData, DataTemplate, StatsData } from "shared/Interfaces/TInterfaces";
+import { PlayerData, DataTemplate, StatsData } from "shared/Interfaces/IData";
 import { PlayerAttributes } from "./PlayerAttributes";
 
 const DATASTORE_NAME = "SoulSteel_TS";

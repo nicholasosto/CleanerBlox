@@ -3,6 +3,7 @@ import { Workspace } from "@rbxts/services";
 import { Spotlight } from "shared/Creations/Spotlight";
 import { CFrameGenerator } from "shared/Utility/CFrameGenerator";
 import { AnimationManager } from "shared/Utility/AnimationManager";
+import { EffectList } from "shared/Effects/TEffect";
 
 
 const cFrameGenerator = new CFrameGenerator();
@@ -30,7 +31,10 @@ export class BigRed extends HoldableSkill {
 		this.SetMaxHoldTime(5);
 		// Connect to the HoldTimer's secondReached event
 		this.HoldTimer.secondReached.Connect((seconds) => this.stageActivated(seconds));
+
 		AnimationManager.RegisterAnimationsFor(this.Character);
+
+		const effect = EffectList.BlackHole_01;
 	}
 
 	// MOVE START
