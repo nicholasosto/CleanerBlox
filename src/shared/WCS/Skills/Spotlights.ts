@@ -1,33 +1,37 @@
 import { HoldableSkill, SkillDecorator, Message, Character } from "@rbxts/wcs";
+import { GameStorage } from "shared/Utility/GameStorage";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { Spotlight } from "shared/Creations/Spotlight";
+import { Spotlight } from "shared/Skill Parts/Spotlight";
 import { CFrameGenerator } from "shared/Utility/CFrameGenerator";
 import { AnimationManager } from "shared/Utility/AnimationManager";
+import { Logger } from "shared/Utility/Logger";
 
 const SkillConfiguration: Configuration = ReplicatedStorage.FindFirstChild("Config_Spotlights", true) as Configuration;
 const cFrameGenerator = new CFrameGenerator();
 
 @SkillDecorator
 export class Spotlights extends HoldableSkill {
+
+	// Configuration Properties
+	private readonly Cooldown = 10; // Cooldown in seconds
+	private readonly HoldTime = 5; // Hold Time in seconds
+	private readonly SkillId = "Spotlights"; // Skill Id
+
 	// Properties
-	private Spotlights: Spotlight[] = [];
+	private Spotlights: Array<Spotlight> = new Array<Spotlight>();
 
-	protected ToadDance() {
-		const toadies = Workspace.WaitForChild("ToadArmy")
-			.GetChildren()
-			.filter((child): child is Model => child.IsA("Model"));
-
-		toadies.forEach((toadie) => {
-			const wcsToadie = Character.GetCharacterFromInstance(toadie) as Character;
-
-			AnimationManager.PlayAnimationFor(wcsToadie, "DanteBackflip");
-		});
+	private createSpotlight(cFrame: CFrame) {
+		const spotlightModel = GameStorage.getModel("Spotlight").Clone();
+		spotlightModel.Parent = Workspace;
+		spotlightModel.PivotTo(cFrame);
+		const spotlight = new Spotlight(spotlightModel);
 	}
 
 	// Move Constructor
 	public OnConstructServer() {
 		// Set the Max Hold Time for the skill
 		this.SetMaxHoldTime(5);
+
 		// Connect to the HoldTimer's secondReached event
 		this.HoldTimer.secondReached.Connect((seconds) => this.stageActivated(seconds));
 		AnimationManager.RegisterAnimationsFor(this.Character);
@@ -35,14 +39,12 @@ export class Spotlights extends HoldableSkill {
 
 	// MOVE START
 	public OnStartServer() {
-		this.ToadDance();
-		task.wait(0.1);
-
-		AnimationManager.PlayAnimationFor(this.Character, "Godlike");
+		this.ApplyCooldown(10);
 	}
 
 	// Stages
 	private stageActivated(stage: number) {
+		print("Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
 		switch (stage) {
 			case 1:
 				this.Stage3();
@@ -61,60 +63,23 @@ export class Spotlights extends HoldableSkill {
 	// STAGE 1
 	private Stage1() {
 		const userCFrame = (this.Character.Instance as Model).GetPivot();
-		const spotlight = new Spotlight(
-			cFrameGenerator.createTargetFrame(userCFrame, 10),
-			this.Character.Instance as Model,
-		);
-		const PrimaryPart = spotlight.instance.PrimaryPart as BasePart;
-
-		if (!PrimaryPart) {
-			error("PrimaryPart not found");
-		}
-		PrimaryPart.Anchored = true;
-		this.Spotlights.push(spotlight);
-		print("Stage 1 User CFrame: ", userCFrame);
+		const spotlightCFrame = cFrameGenerator.createTargetFrame(userCFrame, 10);
+		this.createSpotlight(spotlightCFrame);
+		Logger.Log("Spotlights", "Stage 1", spotlightCFrame);
 	}
 
 	// STAGE 2
 	private Stage2() {
-		const userCFrame = (this.Character.Instance as Model).GetPivot();
-		const spotlightCFrames = cFrameGenerator.createRing(userCFrame, 10, 8);
-
-		spotlightCFrames.forEach((cFrame) => {
-			const spotlight = new Spotlight(cFrame, this.Character.Instance as Model);
-			const PrimaryPart = spotlight.instance.PrimaryPart as BasePart;
-
-			if (!PrimaryPart) {
-				error("PrimaryPart not found");
-			}
-			PrimaryPart.Anchored = true;
-			this.Spotlights.push(spotlight);
-		});
+		Logger.Log("Spotlights", "Stage 2");
 	}
 
 	// STAGE 3
 	private Stage3() {
-		const userCFrame = (this.Character.Instance as Model).GetPivot();
-		const spotlightCFrames = cFrameGenerator.createRing(userCFrame, 50, 18);
-
-		spotlightCFrames.forEach((cFrame) => {
-			const spotlight = new Spotlight(cFrame, this.Character.Instance as Model);
-			const PrimaryPart = spotlight.instance.PrimaryPart as BasePart;
-
-			if (!PrimaryPart) {
-				error("PrimaryPart not found");
-			}
-			PrimaryPart.Anchored = true;
-			this.Spotlights.push(spotlight);
-		});
+		Logger.Log("Spotlights", "Stage 3");
 	}
 
 	// END SERVER
 	public OnEndServer() {
-		warn("Spotlights Ended");
-		this.Character.Humanoid.WalkSpeed = 16;
-		this.Spotlights.forEach((spotlight) => {
-			spotlight.Destroy();
-		});
+		Logger.Log("Spotlights", "End");
 	}
 }

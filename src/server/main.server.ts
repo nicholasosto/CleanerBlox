@@ -1,51 +1,52 @@
-import { ReplicatedStorage, Players, Workspace } from "@rbxts/services";
+import { CollectionService, Players, Workspace } from "@rbxts/services";
 import { CreateServer, Character } from "@rbxts/wcs";
 import { DataService } from "./Data/DataService";
 import { CharacterConfigurator } from "./Test Ideas/CharacterConfigurator";
 import { DefaultMoveset } from "shared/WCS/Movesets/DefaultMoveset";
 import { AnimationManager } from "shared/Utility/AnimationManager";
+import { WCSFolders } from "shared/WCS/Folders";
+import { Logger } from "shared/Utility/Logger";
+import { SkillPartClass } from "shared/Skill Parts/SkillPart";
 
 const dataService = new DataService();
-const skillsFolder = ReplicatedStorage.FindFirstChild("Skills", true);
-const movesetFolder = ReplicatedStorage.FindFirstChild("Movesets", true);
-const statusEffectsFolder = ReplicatedStorage.FindFirstChild("StatusEffects", true);
 
-const ToadiesFolder = Workspace.WaitForChild("ToadArmy") as Model;
+// Collection Service Tests
+const skillParts = CollectionService.GetTagged("SkillPart");
 
+skillParts.forEach((skillPart) => {
+	const spotlightInstance = new SkillPartClass(skillPart as Model);
+});
+// WCS Server Start
 const WCSServer = CreateServer();
 
-if (skillsFolder && movesetFolder && statusEffectsFolder) {
-	WCSServer.RegisterDirectory(skillsFolder);
-	WCSServer.RegisterDirectory(movesetFolder);
-	WCSServer.RegisterDirectory(statusEffectsFolder);
-}
+WCSServer.RegisterDirectory(WCSFolders.Skills);
+WCSServer.RegisterDirectory(WCSFolders.Movesets);
+WCSServer.RegisterDirectory(WCSFolders.StatusEffects);
 
 WCSServer.Start();
+// WCS Server End
 
 const characterConfigurator = new CharacterConfigurator();
 
+function handleCharacterAdded(character: Model) {
+	// WCS Character setup
+	const WCS_Character = new Character(character);
+	WCS_Character.ApplySkillsFromMoveset(DefaultMoveset);
+	WCS_Character.GetSkills().forEach((skill) => Logger.Log("WCS", "Skill", skill.GetName()));
+	// Animation Manager
+	AnimationManager.RegisterAnimationsFor(WCS_Character);
+
+	// WCS Cleanup
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+	humanoid.Died.Connect(() => {
+		Logger.Log("WCS", "Character Destroying", character);
+		WCS_Character.Destroy();
+	});
+}
+
 Players.PlayerAdded.Connect((Player) => {
 	const userId = Player.UserId;
-
-	Player.CharacterAdded.Connect((CharacterModel) => {
-		// apply the wrap when character model gets created
-		const WCS_Character = new Character(CharacterModel);
-		const ToadieModels: Model[] = ToadiesFolder.GetChildren().filter((child): child is Model => child.IsA("Model"));
-		const WCS_Toadies: Character[] = [];
-
-		ToadieModels.forEach((ToadieModel) => { 
-			const ToadieCharacter = new Character(ToadieModel);
-			WCS_Toadies.push(ToadieCharacter);
-			ToadieCharacter.ApplySkillsFromMoveset(DefaultMoveset);
-			AnimationManager.RegisterAnimationsFor(ToadieCharacter);
-		});
-
-		WCS_Character.ApplySkillsFromMoveset(DefaultMoveset);
-		AnimationManager.RegisterAnimationsFor(WCS_Character);
-		
-
-		// destroy it when humanoid dies
-		const humanoid = CharacterModel.WaitForChild("Humanoid") as Humanoid;
-		humanoid.Died.Once(() => WCS_Character.Destroy());
+	Player.CharacterAdded.Connect((character) => {
+		handleCharacterAdded(character);
 	});
 });
