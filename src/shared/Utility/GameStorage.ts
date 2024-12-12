@@ -111,10 +111,20 @@ export class GameStorage {
 		return _model;
 	}
 
+	// Clone Model
+	public static cloneModel(modelName: string): Model {
+		const _model = this.getModel(modelName) as Model;
+		if (_model === undefined) {
+			error(`Model ${modelName} not found in storage.`);
+		}
+		return _model.Clone();
+	}
+
 	// Particles Storage
-	public static getParticleGroupPart(particleGroupName: string): Part {
+	public static cloneParticleGroupAttachment(particleGroupName: string): Attachment {
 		// Get the particle group part from the storage
 		const _particleGroupPart = this._particlesStorage.FindFirstChild(particleGroupName, true) as Part;
+		const _attachment = _particleGroupPart?.FindFirstChildWhichIsA("Attachment") as Attachment;
 
 		// Validate the particle group part
 		if (!_particleGroupPart) {
@@ -122,7 +132,7 @@ export class GameStorage {
 			error(`Particle Group Part ${particleGroupName} not found in storage.`);
 		}
 
-		return _particleGroupPart;
+		return _attachment;
 	}
 
 	// HELPER FUNCTIONS

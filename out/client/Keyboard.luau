@@ -68,6 +68,10 @@ do
 				self:SkillToggle(TNums.SkillNames.Dash, begin)
 				break
 			end
+			if key == (Enum.KeyCode.R) then
+				self:SkillToggle("BigRed", begin)
+				break
+			end
 			warn(`Unhandled key: {key}`)
 			break
 		until true

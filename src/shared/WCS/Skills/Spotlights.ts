@@ -6,12 +6,12 @@ import { CFrameGenerator } from "shared/Utility/CFrameGenerator";
 import { AnimationManager } from "shared/Utility/AnimationManager";
 import { Logger } from "shared/Utility/Logger";
 
-const SkillConfiguration: Configuration = ReplicatedStorage.FindFirstChild("Config_Spotlights", true) as Configuration;
+
 const cFrameGenerator = new CFrameGenerator();
 
 @SkillDecorator
 export class Spotlights extends HoldableSkill {
-
+	
 	// Configuration Properties
 	private readonly Cooldown = 10; // Cooldown in seconds
 	private readonly HoldTime = 5; // Hold Time in seconds

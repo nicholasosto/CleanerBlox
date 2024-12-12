@@ -4,14 +4,11 @@ local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_incl
 local HoldableSkill = _wcs.HoldableSkill
 local SkillDecorator = _wcs.SkillDecorator
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
-local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
-local ReplicatedStorage = _services.ReplicatedStorage
-local Workspace = _services.Workspace
+local Workspace = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Workspace
 local Spotlight = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skill Parts", "Spotlight").Spotlight
 local CFrameGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "CFrameGenerator").CFrameGenerator
 local AnimationManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "AnimationManager").AnimationManager
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local SkillConfiguration = ReplicatedStorage:FindFirstChild("Config_Spotlights", true)
 local cFrameGenerator = CFrameGenerator.new()
 local Spotlights
 do

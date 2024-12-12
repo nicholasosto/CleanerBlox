@@ -1,6 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 -- States for HomingSphere
 local HSState = {
 	Created = "Created",
@@ -21,9 +22,10 @@ do
 		local self = setmetatable({}, HomingSphere)
 		return self:constructor(...) or self
 	end
-	function HomingSphere:constructor(sphereModel, owner)
+	function HomingSphere:constructor(owner)
 		self._state = HSState.Created
-		self._instance = sphereModel or GameStorage:getModel("HomingSphere")
+		Logger:Log("HomingSphere", "Created", owner.Name)
+		self._instance = GameStorage:getModel("HomingSphere")
 		self._owner = owner
 		self._hitPart = self._instance:FindFirstChild("HitPart")
 		if not self._hitPart then

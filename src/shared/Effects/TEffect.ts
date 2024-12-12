@@ -6,18 +6,18 @@ const scriptTag = "TEffect";
 
 export class TEffect {
 	public Name: string;
-	private _particleGroupingPart: Part | undefined; // Particle Effects are grouped under an attachment in the part
-    private _attachment: Attachment | undefined; // Attachment for the particle effects
+	private _particleGroupingPart: Attachment; // Particle Effects are grouped under an attachment in the part
+	private _attachment: Attachment | undefined; // Attachment for the particle effects
 	private _particleEffects: ParticleEmitter[] = [];
-    private _soundEffect: Sound | undefined;
+	private _soundEffect: Sound | undefined;
 
-	constructor(effectName: string, particleGroupingPart: Part, soundEffect: Sound, duration: number) {
-        // Set the effect name
+	constructor(effectName: string, particleGroupingPart: Attachment, soundEffect: Sound, duration: number) {
+		// Set the effect name
 		this.Name = `Effect_${effectName}`;
 
-        // Set the particle grouping part
-		this._particleGroupingPart = particleGroupingPart.Clone();
-        
+		// Set the particle grouping part
+		this._particleGroupingPart = particleGroupingPart;
+
 		this._soundEffect = soundEffect.Clone();
 		this._particleEffects = this._particleGroupingPart
 			.GetDescendants()
@@ -25,8 +25,6 @@ export class TEffect {
 		this._particleEffects.forEach((particle) => {
 			Logger.Log(scriptTag, particleGroupingPart, particleGroupingPart.CFrame);
 		});
-
-
 	}
 
 	public playEffect(parent: Instance) {
@@ -45,7 +43,7 @@ export class TEffect {
 
 export const EffectList = {
 	// eslint-disable-next-line prettier/prettier
-    BlackHole_01: new TEffect("BlackHole", GameStorage.getParticleGroupPart("03 - BLACK HOLE [A]"), GameStorage.getAudio("Creepy Night"), 5),
+    BlackHole_01: new TEffect("BlackHole", GameStorage.cloneParticleGroupAttachment("03 - BLACK HOLE [A]"), GameStorage.getAudio("Creepy Night"), 5),
 	// eslint-disable-next-line prettier/prettier
-    BlackHole_02: new TEffect("BlackHoleSun", GameStorage.getParticleGroupPart("04 - BLACK HOLE [B]"), GameStorage.getAudio("Null Ending"), 5),
+    BlackHole_02: new TEffect("BlackHoleSun", GameStorage.cloneParticleGroupAttachment("04 - BLACK HOLE [B]"), GameStorage.getAudio("Null Ending"), 5),
 };

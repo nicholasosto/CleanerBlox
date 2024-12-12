@@ -63,6 +63,9 @@ export class KeyboardClient {
 			case Enum.KeyCode.E:
 				this.SkillToggle(TNums.SkillNames.Dash, begin);
 				break;
+			case Enum.KeyCode.R:
+				this.SkillToggle("BigRed", begin);
+				break;
 			default:
 				warn(`Unhandled key: ${key}`);
 				break;

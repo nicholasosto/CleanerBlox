@@ -29,17 +29,15 @@ export function rotateModel(model: Model, duration: number) {
 	const tween = TweenService.Create(primaryPart, tweenInfo, { CFrame: rotatedCFrame });
 
 	return tween;
-
 }
 
 // generate a random search path for the model based on the search distance and number of positions
 export function randomSearch(model: Model, numPositions: number, searchDistance: number, duration: number) {
-
 	for (let i = 0; i < numPositions; i++) {
 		const position = new Vector3(
 			math.random(-searchDistance, searchDistance),
 			0,
-			math.random(-searchDistance, searchDistance)
+			math.random(-searchDistance, searchDistance),
 		);
 
 		const goalCFrame = new CFrame(model.GetPivot().Position).mul(new CFrame(position));

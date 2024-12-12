@@ -74,7 +74,6 @@ export class Spotlight {
 	// State: Triggered
 	protected OnTriggered() {
 		Logger.Log("Spotlight", "[State]", this.instance.GetAttribute("State") as string);
-		
 	}
 
 	// State: Homing

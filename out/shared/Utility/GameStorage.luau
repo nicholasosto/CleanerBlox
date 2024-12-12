@@ -75,15 +75,27 @@ do
 		end
 		return _model
 	end
-	function GameStorage:getParticleGroupPart(particleGroupName)
+	function GameStorage:cloneModel(modelName)
+		local _model = self:getModel(modelName)
+		if _model == nil then
+			error(`Model {modelName} not found in storage.`)
+		end
+		return _model:Clone()
+	end
+	function GameStorage:cloneParticleGroupAttachment(particleGroupName)
 		-- Get the particle group part from the storage
 		local _particleGroupPart = self._particlesStorage:FindFirstChild(particleGroupName, true)
+		local _result = _particleGroupPart
+		if _result ~= nil then
+			_result = _result:FindFirstChildWhichIsA("Attachment")
+		end
+		local _attachment = _result
 		-- Validate the particle group part
 		if not _particleGroupPart then
 			self:printAvailableItems(self._particlesStorage)
 			error(`Particle Group Part {particleGroupName} not found in storage.`)
 		end
-		return _particleGroupPart
+		return _attachment
 	end
 	function GameStorage:printAvailableItems(storage)
 		local _items = storage:GetChildren()

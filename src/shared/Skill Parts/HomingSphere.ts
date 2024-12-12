@@ -1,4 +1,5 @@
 import { GameStorage } from "shared/Utility/GameStorage";
+import { Logger } from "shared/Utility/Logger";
 
 
 // States for HomingSphere
@@ -13,12 +14,13 @@ export enum HSState {
 // HomingSphere: Class for HomingSphere
 export class HomingSphere {
 	private _instance: Model;
-	private _owner: Model | undefined;
-	private _hitPart: BasePart | undefined;
+	private _owner: Model;
+	private _hitPart: BasePart;
 	private _state: HSState = HSState.Created;
 
-	constructor(sphereModel?: Model, owner?: Model) {
-		this._instance = sphereModel || GameStorage.getModel("HomingSphere");
+	constructor(owner: Model) {
+		Logger.Log("HomingSphere", "Created", owner.Name);
+		this._instance = GameStorage.getModel("HomingSphere");
 		this._owner = owner;
 
 		this._hitPart = this._instance.FindFirstChild("HitPart") as BasePart;

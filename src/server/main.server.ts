@@ -6,16 +6,10 @@ import { DefaultMoveset } from "shared/WCS/Movesets/DefaultMoveset";
 import { AnimationManager } from "shared/Utility/AnimationManager";
 import { WCSFolders } from "shared/WCS/Folders";
 import { Logger } from "shared/Utility/Logger";
-import { SkillPartClass } from "shared/Skill Parts/SkillPart";
+import { ServerTests } from "./ServerTests";
 
 const dataService = new DataService();
 
-// Collection Service Tests
-const skillParts = CollectionService.GetTagged("SkillPart");
-
-skillParts.forEach((skillPart) => {
-	const spotlightInstance = new SkillPartClass(skillPart as Model);
-});
 // WCS Server Start
 const WCSServer = CreateServer();
 
@@ -25,6 +19,10 @@ WCSServer.RegisterDirectory(WCSFolders.StatusEffects);
 
 WCSServer.Start();
 // WCS Server End
+
+// Server Tests
+ServerTests.TestHomingSphere();
+// Server Tests End
 
 const characterConfigurator = new CharacterConfigurator();
 

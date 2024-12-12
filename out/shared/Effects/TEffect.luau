@@ -20,7 +20,7 @@ do
 		-- Set the effect name
 		self.Name = `Effect_{effectName}`
 		-- Set the particle grouping part
-		self._particleGroupingPart = particleGroupingPart:Clone()
+		self._particleGroupingPart = particleGroupingPart
 		self._soundEffect = soundEffect:Clone()
 		local _exp = self._particleGroupingPart:GetDescendants()
 		-- ▼ ReadonlyArray.filter ▼
@@ -60,8 +60,8 @@ do
 	end
 end
 local EffectList = {
-	BlackHole_01 = TEffect.new("BlackHole", GameStorage:getParticleGroupPart("03 - BLACK HOLE [A]"), GameStorage:getAudio("Creepy Night"), 5),
-	BlackHole_02 = TEffect.new("BlackHoleSun", GameStorage:getParticleGroupPart("04 - BLACK HOLE [B]"), GameStorage:getAudio("Null Ending"), 5),
+	BlackHole_01 = TEffect.new("BlackHole", GameStorage:cloneParticleGroupAttachment("03 - BLACK HOLE [A]"), GameStorage:getAudio("Creepy Night"), 5),
+	BlackHole_02 = TEffect.new("BlackHoleSun", GameStorage:cloneParticleGroupAttachment("04 - BLACK HOLE [B]"), GameStorage:getAudio("Null Ending"), 5),
 }
 return {
 	TEffect = TEffect,

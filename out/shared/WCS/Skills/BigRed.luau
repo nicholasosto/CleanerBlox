@@ -3,9 +3,10 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
 local HoldableSkill = _wcs.HoldableSkill
 local SkillDecorator = _wcs.SkillDecorator
-local CFrameGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "CFrameGenerator").CFrameGenerator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local cFrameGenerator = CFrameGenerator.new()
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
+local CharacterAttachments = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Interfaces", "ICharacterAttachments").CharacterAttachments
+local ParticleGroupManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "ParticleGroupManager").ParticleGroupManager
 local BigRed
 do
 	local super = HoldableSkill
@@ -22,25 +23,57 @@ do
 	end
 	function BigRed:constructor(...)
 		super.constructor(self, ...)
+		self._defaultHoldTime = 5
+		self._defaultCooldownTime = 3
+	end
+	function BigRed:LoadAssets()
+		-- Load the AbilityPart
+		self.AbilityPart = GameStorage:cloneModel("HomingSphere")
+		-- Gets a cloned Attachment from the GameStorage with particle effect children
+		self.ChargingEffectAttachment = GameStorage:cloneParticleGroupAttachment("RedCasting")
+		-- Gets the character model
+		self._characterModel = self.Character.Instance
+		-- Creates the Floor and Halo attachments and sets the attachment references
+		self._characterAttachments = CharacterAttachments.new(self._characterModel)
+		-- Parent the ChargingEffectAttachment to the Floor attachment
+		self.ChargingEffectAttachment.Parent = self._characterAttachments.Floor
+		Logger:Log(self:GetName(), "-- 03. Assets Loaded \n")
+	end
+	function BigRed:DisableAssets()
+		ParticleGroupManager:disableParticleGroup(self.ChargingEffectAttachment)
+		Logger:Log(self:GetName(), "-- 05. Assets Disabled \n")
 	end
 	function BigRed:OnConstructServer()
-		Logger:Log("BigRed", "Construct")
+		Logger:Log(self:GetName(), "\n--------  Construct Server  --------\n")
+		Logger:Log(self:GetName(), "-- 01. Max Hold Time \n")
+		-- Set Skill Properties
+		self:SetMaxHoldTime(self._defaultHoldTime)
+		-- Connect to the HoldTimer's secondReached event
+		self.HoldTimer.secondReached:Connect(function(seconds)
+			return self:stageActivated(seconds)
+		end)
+		-- Load Skill Assets
+		Logger:Log(self:GetName(), "-- 02. Load Assets \n")
+		self:LoadAssets()
 	end
 	function BigRed:OnStartServer()
-		Logger:Log("BigRed", "Start")
+		Logger:Log(self:GetName(), "\n--------  Start Server  --------\n")
+		self:LoadAssets()
+		self:ApplyCooldown(self._defaultCooldownTime)
 	end
-	function BigRed:stageActivated(stage)
-		Logger:Log("BigRed", "Stage Activated: ", tostring(stage), tostring(self.CooldownTimer:getTimeLeft()))
+	function BigRed:stageActivated(seconds)
+		Logger:Log(self:GetName(), "\n--------  Stage Activated Server  --------\n")
+		Logger:Log("BigRed", "Stage Activated: ", tostring(seconds), tostring(self.CooldownTimer:getTimeLeft()))
 		repeat
-			if stage == 1 then
+			if seconds == 1 then
 				self:Stage3()
 				break
 			end
-			if stage == 2 then
+			if seconds == 2 then
 				self:Stage2()
 				break
 			end
-			if stage == 3 then
+			if seconds == 3 then
 				self:Stage1()
 				break
 			end
@@ -48,16 +81,17 @@ do
 		until true
 	end
 	function BigRed:Stage1()
-		Logger:Log("BigRed", "Stage 1")
+		Logger:Log(self:GetName(), " - Stage 01 called\n")
 	end
 	function BigRed:Stage2()
-		Logger:Log("BigRed", "Stage 2")
+		Logger:Log(self:GetName(), " - Stage 02 called\n")
 	end
 	function BigRed:Stage3()
-		Logger:Log("BigRed", "Stage 3")
+		Logger:Log(self:GetName(), " - Stage 03 called\n")
 	end
 	function BigRed:OnEndServer()
-		Logger:Log("BigRed", "End")
+		Logger:Log(self:GetName(), "\n--------  Stage Activated Server  --------\n")
+		self:DisableAssets()
 	end
 	BigRed = SkillDecorator(BigRed) or BigRed
 end
