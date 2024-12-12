@@ -1,4 +1,4 @@
-import { TweenService } from "@rbxts/services";
+import { TweenService, CollectionService } from "@rbxts/services";
 import { Logger } from "shared/Utility/Logger";
 import { CFrameGenerator } from "./CFrameGenerator";
 
@@ -60,3 +60,17 @@ export class TTweener {
         return tween;
 	}
 }
+
+CollectionService.GetInstanceAddedSignal("TweenablePart").Connect((instance) => {
+	Logger.Log("TTweener", "TweenablePart added", instance);
+	const model: Model = instance as Model;
+
+	const target = model.FindFirstChild("Target") as CFrameValue; 
+	const properties = {
+		CFrame: target.Value,
+	};
+	if (!model.PrimaryPart) {
+		error("PrimaryPart not found in TweenablePart");
+	}
+	TweenService.Create(model.PrimaryPart, new TweenInfo(20), { CFrame: target.Value}).Play();
+});

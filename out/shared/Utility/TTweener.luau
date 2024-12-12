@@ -1,6 +1,9 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local TweenService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").TweenService
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local TweenService = _services.TweenService
+local CollectionService = _services.CollectionService
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local InfoTable = {
 	Standard = {
 		Default = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
@@ -52,6 +55,20 @@ do
 		return tween
 	end
 end
+CollectionService:GetInstanceAddedSignal("TweenablePart"):Connect(function(instance)
+	Logger:Log("TTweener", "TweenablePart added", instance)
+	local model = instance
+	local target = model:FindFirstChild("Target")
+	local properties = {
+		CFrame = target.Value,
+	}
+	if not model.PrimaryPart then
+		error("PrimaryPart not found in TweenablePart")
+	end
+	TweenService:Create(model.PrimaryPart, TweenInfo.new(20), {
+		CFrame = target.Value,
+	}):Play()
+end)
 return {
 	InfoTable = InfoTable,
 	TTweener = TTweener,
