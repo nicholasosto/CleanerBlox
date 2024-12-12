@@ -1,4 +1,13 @@
 -- Compiled with roblox-ts v3.0.0
+local InventoryTypeKeys = {
+	SkillInventory = "SkillInventory",
+	WeaponInventory = "WeaponInventory",
+	ArmorInventory = "ArmorInventory",
+	HelmetInventory = "HelmetInventory",
+	BootsInventory = "BootsInventory",
+	FamiliarInventory = "FamiliarInventory",
+	AccessoryInventory = "AccessoryInventory",
+}
 local DataTemplate = {
 	key = "Datatemplate",
 	version = 1,
@@ -21,9 +30,9 @@ local DataTemplate = {
 		Constitution = 200,
 	},
 	Skills = {
-		Slot_1 = "Attack",
-		Slot_2 = "Block",
-		Slot_3 = "Spotlights",
+		Slot_1 = "Spotlights",
+		Slot_2 = "BigRed",
+		Slot_3 = "Empty",
 		Slot_4 = "Empty",
 		Slot_5 = "Empty",
 	},
@@ -44,5 +53,6 @@ local DataTemplate = {
 	AccessoryInventory = { "None", "Ring", "Amulet", "Bracelet", "Belt" },
 }
 return {
+	InventoryTypeKeys = InventoryTypeKeys,
 	DataTemplate = DataTemplate,
 }

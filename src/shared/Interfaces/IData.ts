@@ -31,7 +31,13 @@ export interface EquipmentData {
 	Accessory: string;
 }
 
+export interface PlayerCache {
+	LastSaveTimestamp: number;
+	DataCache: PlayerData;
+}
+
 export interface PlayerData {
+	[str: string]: unknown;
 	key: string;
 	version: number;
 
@@ -52,6 +58,16 @@ export interface PlayerData {
 	BootsInventory: string[];
 	FamiliarInventory: string[];
 	AccessoryInventory: string[];
+}
+
+export enum InventoryTypeKeys {
+	SkillInventory = "SkillInventory",
+	WeaponInventory = "WeaponInventory",
+	ArmorInventory = "ArmorInventory",
+	HelmetInventory = "HelmetInventory",
+	BootsInventory = "BootsInventory",
+	FamiliarInventory = "FamiliarInventory",
+	AccessoryInventory = "AccessoryInventory",
 }
 
 export const DataTemplate: PlayerData = {
@@ -81,9 +97,9 @@ export const DataTemplate: PlayerData = {
 	},
 
 	Skills: {
-		Slot_1: "Attack",
-		Slot_2: "Block",
-		Slot_3: "Spotlights",
+		Slot_1: "Spotlights",
+		Slot_2: "BigRed",
+		Slot_3: "Empty",
 		Slot_4: "Empty",
 		Slot_5: "Empty",
 	},
