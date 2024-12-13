@@ -6,10 +6,10 @@ import * as IData from "../../shared/Interfaces/IData";
 
 // Data Types
 export type IPlayerData = IData.PlayerData;
-export type ICharacterClassData = IData.CharacterClassData;
-export type IStatsData = IData.StatsData;
-export type ISkillsData = IData.SkillsData;
-export type IEquipmentData = IData.EquipmentData;
+//export type ICharacterClassData = IData.CharacterClassData;
+//export type IStatsData = IData.StatsData;
+//export type ISkillsData = IData.SkillsData;
+//export type IEquipmentData = IData.EquipmentData;
 export type IPlayerDataTemplate = IData.PlayerData;
 export type IPlayerCache = IData.PlayerCache;
 
@@ -93,6 +93,7 @@ export class DataManager {
 		equipmentManager.SetEquipmentSlot("Weapon", "Sword");
 		inventoryManager.AddToInventory(IData.InventoryTypeKeys.SkillInventory, "Stun");
 		this.PlayerCache.push(dataCache);
+
 	}
 
 	// Called from the Server OnPlayerLeaving event
@@ -123,7 +124,13 @@ export class InventoryManager {
 
 	public AddToInventory(inventoryType: IData.InventoryTypeKeys, itemId: string) {
 		const playersInventory = this._dataCache._playerData[inventoryType] as string[];
+
+		if (playersInventory.find((item) => item === itemId) !== undefined) {
+			Logger.Log("InventoryManager", "Item already Exista", itemId);
+			return;
+		}
 		playersInventory.push(itemId);
+
 		this._dataCache._playerData[inventoryType] = playersInventory;
 		this._dataCache.Save();
 	}

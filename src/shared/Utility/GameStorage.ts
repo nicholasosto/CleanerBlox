@@ -123,7 +123,7 @@ export class GameStorage {
 	// Particles Storage
 	public static cloneParticleGroupAttachment(particleGroupName: string): Attachment {
 		// Get the particle group part from the storage
-		const _particleGroupPart = this._particlesStorage.FindFirstChild(particleGroupName, true) as Part;
+		const _particleGroupPart = this._particlesStorage.FindFirstChild(particleGroupName, true)?.Clone() as Part;
 		const _attachment = _particleGroupPart?.FindFirstChildWhichIsA("Attachment") as Attachment;
 
 		// Validate the particle group part

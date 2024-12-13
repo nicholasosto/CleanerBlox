@@ -14,51 +14,24 @@ do
 		return self:constructor(...) or self
 	end
 	function CharacterConfigurator:constructor()
-		self.effectNames = { "AbilityParticle1", "AbilityParticle2" }
 		Players.PlayerAdded:Connect(function(player)
 			player.CharacterAdded:Connect(function(character)
 				print("Character Configurator: Character added")
-				self:configureCharacter(character)
+				--this.configureCharacter(character);
 			end)
 		end)
 	end
 	function CharacterConfigurator:configureCharacter(character)
 		-- ...existing code...
-		local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-		local humanoid = character:WaitForChild("Humanoid")
-		local lowerTorso = character:WaitForChild("LowerTorso")
-		local attachment = Instance.new("Attachment")
-		attachment.Name = "CastingFloor"
-		attachment.Parent = lowerTorso
-		-- get the pivot of the character
-		-- set the y position of the attachment to the floor
-		attachment.Position = Vector3.new(0, -1 * humanoid.HipHeight, 0)
-	end
-	function CharacterConfigurator:enableEffect(character, effectName)
-		local _result = character:FindFirstChild("HumanoidRootPart")
-		if _result ~= nil then
-			_result = _result:FindFirstChild("AbilityAttachment")
-			if _result ~= nil then
-				_result = _result:FindFirstChild(effectName)
-			end
-		end
-		local particleEffect = _result
-		if particleEffect then
-			particleEffect.Enabled = true
-		end
-	end
-	function CharacterConfigurator:disableEffect(character, effectName)
-		local _result = character:FindFirstChild("HumanoidRootPart")
-		if _result ~= nil then
-			_result = _result:FindFirstChild("AbilityAttachment")
-			if _result ~= nil then
-				_result = _result:FindFirstChild(effectName)
-			end
-		end
-		local particleEffect = _result
-		if particleEffect then
-			particleEffect.Enabled = false
-		end
+		-- const humanoidRootPart = character.WaitForChild("HumanoidRootPart") as Part;
+		-- const humanoid: Humanoid = character.WaitForChild("Humanoid") as Humanoid;
+		-- const lowerTorso = character.WaitForChild("LowerTorso") as Part;
+		-- const attachment = new Instance("Attachment");
+		-- attachment.Name = "CastingFloor";
+		-- attachment.Parent = lowerTorso;
+		-- // get the pivot of the character
+		-- // set the y position of the attachment to the floor
+		-- attachment.Position = new Vector3(0, -1 * humanoid.HipHeight, 0);
 	end
 end
 return {

@@ -31,7 +31,7 @@ export class BigRed extends HoldableSkill {
 		this._characterAttachments = new CharacterAttachments(this._characterModel);
 
 		// Parent the ChargingEffectAttachment to the Floor attachment
-		this.ChargingEffectAttachment.Parent = this._characterAttachments.Floor;
+		this.ChargingEffectAttachment.Parent = this._characterAttachments.Floor.FindFirstAncestorWhichIsA("BasePart") as BasePart;
 
 		Logger.Log(this.GetName(), "-- 03. Assets Loaded \n");
 	}
@@ -60,7 +60,9 @@ export class BigRed extends HoldableSkill {
 	// MOVE START
 	public OnStartServer() {
 		Logger.Log(this.GetName(), "\n--------  Start Server  --------\n");
-		this.LoadAssets();
+		this.ChargingEffectAttachment?.GetChildren().filter((child) => child.IsA("ParticleEmitter")).forEach((emitter) => {
+			(emitter as ParticleEmitter).Enabled = true;
+		});
 		this.ApplyCooldown(this._defaultCooldownTime);
 	}
 
@@ -101,6 +103,8 @@ export class BigRed extends HoldableSkill {
 	// END SERVER
 	public OnEndServer() {
 		Logger.Log(this.GetName(), "\n--------  Stage Activated Server  --------\n");
-		this.DisableAssets();
+		this.ChargingEffectAttachment?.GetChildren().filter((child) => child.IsA("ParticleEmitter")).forEach((emitter) => {
+			(emitter as ParticleEmitter).Enabled = false;
+		});
 	}
 }

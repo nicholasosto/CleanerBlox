@@ -8,6 +8,10 @@ local SkillsManager = TS.import(script, game:GetService("ServerScriptService"), 
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local IData = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Interfaces", "IData")
 -- Data Types
+--export type ICharacterClassData = IData.CharacterClassData;
+--export type IStatsData = IData.StatsData;
+--export type ISkillsData = IData.SkillsData;
+--export type IEquipmentData = IData.EquipmentData;
 -- Data Template
 local DataTemplate = IData.DataTemplate
 -- Data Cache Class for use in the DataManager
@@ -151,6 +155,22 @@ do
 	end
 	function InventoryManager:AddToInventory(inventoryType, itemId)
 		local playersInventory = self._dataCache._playerData[inventoryType]
+		-- ▼ ReadonlyArray.find ▼
+		local _callback = function(item)
+			return item == itemId
+		end
+		local _result
+		for _i, _v in playersInventory do
+			if _callback(_v, _i - 1, playersInventory) == true then
+				_result = _v
+				break
+			end
+		end
+		-- ▲ ReadonlyArray.find ▲
+		if _result ~= nil then
+			Logger:Log("InventoryManager", "Item already Exista", itemId)
+			return nil
+		end
 		local _itemId = itemId
 		table.insert(playersInventory, _itemId)
 		self._dataCache._playerData[inventoryType] = playersInventory

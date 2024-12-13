@@ -36,7 +36,7 @@ do
 		-- Creates the Floor and Halo attachments and sets the attachment references
 		self._characterAttachments = CharacterAttachments.new(self._characterModel)
 		-- Parent the ChargingEffectAttachment to the Floor attachment
-		self.ChargingEffectAttachment.Parent = self._characterAttachments.Floor
+		self.ChargingEffectAttachment.Parent = self._characterAttachments.Floor:FindFirstAncestorWhichIsA("BasePart")
 		Logger:Log(self:GetName(), "-- 03. Assets Loaded \n")
 	end
 	function BigRed:DisableAssets()
@@ -58,7 +58,31 @@ do
 	end
 	function BigRed:OnStartServer()
 		Logger:Log(self:GetName(), "\n--------  Start Server  --------\n")
-		self:LoadAssets()
+		local _result = self.ChargingEffectAttachment
+		if _result ~= nil then
+			local _exp = _result:GetChildren()
+			-- ▼ ReadonlyArray.filter ▼
+			local _newValue = {}
+			local _callback = function(child)
+				return child:IsA("ParticleEmitter")
+			end
+			local _length = 0
+			for _k, _v in _exp do
+				if _callback(_v, _k - 1, _exp) == true then
+					_length += 1
+					_newValue[_length] = _v
+				end
+			end
+			-- ▲ ReadonlyArray.filter ▲
+			-- ▼ ReadonlyArray.forEach ▼
+			local _callback_1 = function(emitter)
+				emitter.Enabled = true
+			end
+			for _k, _v in _newValue do
+				_callback_1(_v, _k - 1, _newValue)
+			end
+			-- ▲ ReadonlyArray.forEach ▲
+		end
 		self:ApplyCooldown(self._defaultCooldownTime)
 	end
 	function BigRed:stageActivated(seconds)
@@ -91,7 +115,31 @@ do
 	end
 	function BigRed:OnEndServer()
 		Logger:Log(self:GetName(), "\n--------  Stage Activated Server  --------\n")
-		self:DisableAssets()
+		local _result = self.ChargingEffectAttachment
+		if _result ~= nil then
+			local _exp = _result:GetChildren()
+			-- ▼ ReadonlyArray.filter ▼
+			local _newValue = {}
+			local _callback = function(child)
+				return child:IsA("ParticleEmitter")
+			end
+			local _length = 0
+			for _k, _v in _exp do
+				if _callback(_v, _k - 1, _exp) == true then
+					_length += 1
+					_newValue[_length] = _v
+				end
+			end
+			-- ▲ ReadonlyArray.filter ▲
+			-- ▼ ReadonlyArray.forEach ▼
+			local _callback_1 = function(emitter)
+				emitter.Enabled = false
+			end
+			for _k, _v in _newValue do
+				_callback_1(_v, _k - 1, _newValue)
+			end
+			-- ▲ ReadonlyArray.forEach ▲
+		end
 	end
 	BigRed = SkillDecorator(BigRed) or BigRed
 end

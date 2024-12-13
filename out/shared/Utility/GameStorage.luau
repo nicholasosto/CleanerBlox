@@ -84,12 +84,16 @@ do
 	end
 	function GameStorage:cloneParticleGroupAttachment(particleGroupName)
 		-- Get the particle group part from the storage
-		local _particleGroupPart = self._particlesStorage:FindFirstChild(particleGroupName, true)
-		local _result = _particleGroupPart
+		local _result = self._particlesStorage:FindFirstChild(particleGroupName, true)
 		if _result ~= nil then
-			_result = _result:FindFirstChildWhichIsA("Attachment")
+			_result = _result:Clone()
 		end
-		local _attachment = _result
+		local _particleGroupPart = _result
+		local _result_1 = _particleGroupPart
+		if _result_1 ~= nil then
+			_result_1 = _result_1:FindFirstChildWhichIsA("Attachment")
+		end
+		local _attachment = _result_1
 		-- Validate the particle group part
 		if not _particleGroupPart then
 			self:printAvailableItems(self._particlesStorage)
