@@ -1,15 +1,12 @@
-import { DataStoreService, HttpService } from "@rbxts/services";
-import { EquipmentManager } from "./EquipmentManager";
-import { SkillsManager } from "./SkillsManager";
+import { Players, DataStoreService, HttpService } from "@rbxts/services";
+import { EquipmentManager } from "./Equipment/EquipmentManager";
+import { SkillsManager } from "./Skills/SkillsManager";
+import { InventoryManager } from "./Inventory/InventoryManager";
 import { Logger } from "../../shared/Utility/Logger";
 import * as IData from "../../shared/Interfaces/IData";
 
 // Data Types
 export type IPlayerData = IData.PlayerData;
-//export type ICharacterClassData = IData.CharacterClassData;
-//export type IStatsData = IData.StatsData;
-//export type ISkillsData = IData.SkillsData;
-//export type IEquipmentData = IData.EquipmentData;
 export type IPlayerDataTemplate = IData.PlayerData;
 export type IPlayerCache = IData.PlayerCache;
 
@@ -36,7 +33,7 @@ export class DataCache {
 			this._playerData = DataTemplate;
 			this.Save();
 		} else {
-			Logger.Log("DataManager(DataCache)", "DataCache loaded from DataStore:", this._playerData.Level);
+			Logger.Log("DM","\n Data Loaded");
 		}
 	}
 
@@ -48,8 +45,6 @@ export class DataCache {
 		// Update the last save timestamp
 		this._lastSaveTimestamp = os.time();
 
-		// Return the success message
-		Logger.Log("PlayerData", "DataSaved", HttpService.JSONEncode(this._playerData));
 		return success;
 	}
 
@@ -57,6 +52,10 @@ export class DataCache {
 	public SetDataCache(dataCache: IPlayerData) {
 		this._playerData = dataCache;
 		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
+		if (timeSinceLastSave <= 2) {
+			// Do not save if the last save was less than 2 seconds ago
+			return;
+		}
 		if (timeSinceLastSave >= 60) {
 			this.Save();
 		}
@@ -70,13 +69,26 @@ export class DataCache {
 }
 
 export class DataManager {
-	private constructor() {}
-
+	private static _instance: DataManager;
 	private static DataStoreService = DataStoreService;
 	private static DatastoreId = "SOULSTEEL_12_2024";
 	private static GameDataStore = DataManager.DataStoreService.GetDataStore(DataManager.DatastoreId);
 	private static PlayerCache: Array<DataCache> = new Array<DataCache>();
 	private static AutoSaveInterval = 15;
+	private static playerAddedConnection: RBXScriptConnection;
+
+	private constructor() {
+		DataManager.playerAddedConnection?.Disconnect();
+		DataManager.playerAddedConnection = Players.PlayerAdded.Connect((player) => {
+			DataManager.RegisterPlayer(player);
+		});
+	}
+
+	public static Start(): void {
+		if (this._instance === undefined) {
+			this._instance = new DataManager();
+		}
+	}
 
 	// Called from the Server OnPlayerAdded event
 	public static RegisterPlayer(player: Player): void {
@@ -87,13 +99,11 @@ export class DataManager {
 		const skillSlotManager = new SkillsManager(dataCache);
 		const equipmentManager = new EquipmentManager(dataCache);
 		const inventoryManager = new InventoryManager(dataCache);
-
-		// Manager TESTS
-		skillSlotManager.SetSkillSlot(5, "StunXXX");
-		equipmentManager.SetEquipmentSlot("Weapon", "Sword");
-		inventoryManager.AddToInventory(IData.InventoryTypeKeys.SkillInventory, "Stun");
 		this.PlayerCache.push(dataCache);
+	}
 
+	public static GetDataCache(userId: string): DataCache {
+		return DataManager.PlayerCache.find((cache) => cache._userId === userId) as DataCache;
 	}
 
 	// Called from the Server OnPlayerLeaving event
@@ -102,49 +112,6 @@ export class DataManager {
 		const userId = tostring(player.UserId);
 		const dataCache = DataManager.PlayerCache.find((cache) => cache._userId === userId) as DataCache;
 		dataCache.Save();
-		print(dataCache);
 	}
 
-	// On Respawn
-	public static OnCharacterSpawn(player: Player): void {
-		// 01 - Get the data cache for the player
-		const userId = tostring(player.UserId);
-		const dataCache = DataManager.PlayerCache.find((cache) => cache._userId === userId) as DataCache;
-		// 02 - Update the player data
-		dataCache.Save();
-	}
-}
-
-// Inventory Manager
-export class InventoryManager {
-	private _dataCache: DataCache;
-	constructor(dataCache: DataCache) {
-		this._dataCache = dataCache;
-	}
-
-	public AddToInventory(inventoryType: IData.InventoryTypeKeys, itemId: string) {
-		const playersInventory = this._dataCache._playerData[inventoryType] as string[];
-
-		if (playersInventory.find((item) => item === itemId) !== undefined) {
-			Logger.Log("InventoryManager", "Item already Exista", itemId);
-			return;
-		}
-		playersInventory.push(itemId);
-
-		this._dataCache._playerData[inventoryType] = playersInventory;
-		this._dataCache.Save();
-	}
-
-	public RemoveFromInventory(inventoryType: IData.InventoryTypeKeys, itemId: string) {
-		const itemIndex = this._dataCache._playerData[inventoryType].indexOf(itemId);
-		if (itemIndex > -1) {
-			this._dataCache._playerData[inventoryType][itemIndex] = "";
-			Logger.Log("InventoryManager", "Item Removed", itemId);
-		}
-		this._dataCache.Save();
-	}
-
-	public GetInventory(inventoryType: IData.InventoryTypeKeys): Array<string> {
-		return this._dataCache._playerData[inventoryType];
-	}
 }

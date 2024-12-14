@@ -1,4 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local HttpService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").HttpService
 -- Note: Utility class for logging
 -- LogLevel: Enum for logging levels
 local LogLevel = {
@@ -84,6 +86,18 @@ do
 	end
 	function Logger:EnableLogging(enable)
 		self._enabled = enable
+	end
+	function Logger:LogJSONToScreenUI(player, scriptName, json)
+		-- Log the JSON to the console
+		warn(json)
+		local message = HttpService:JSONEncode(json)
+		local playerGui = player:WaitForChild("PlayerGui")
+		local Developer = playerGui:WaitForChild("Developer")
+		local ScrollingTextFrame = Developer:FindFirstChild("UIConsoleScroller", true)
+		local ScriptNameLabel = ScrollingTextFrame:WaitForChild("ScriptName")
+		ScriptNameLabel.Text = scriptName
+		local TextItem = ScrollingTextFrame:WaitForChild("TextItem")
+		TextItem.Text = message
 	end
 	function Logger:GetInstance()
 		return self._logger

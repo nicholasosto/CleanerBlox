@@ -1,3 +1,5 @@
+import { HttpService } from "@rbxts/services";
+
 // Note: Utility class for logging
 type Printable = string | object | CFrame | Vector3 | AttributeValue | Instance;
 
@@ -84,6 +86,22 @@ export class Logger {
 		this._enabled = enable;
 	}
 
+	// Log Encoded JSON to ScreenUI ScrollFrame
+	public static LogJSONToScreenUI(player: Player, scriptName: string, json: string) {
+		// Log the JSON to the console
+
+		warn(json);
+		const message = HttpService.JSONEncode(json);
+		const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
+		const Developer = playerGui.WaitForChild("Developer") as ScreenGui;
+		const ScrollingTextFrame = Developer.FindFirstChild("UIConsoleScroller",true) as Frame;
+
+		const ScriptNameLabel = ScrollingTextFrame.WaitForChild("ScriptName") as TextLabel;
+		ScriptNameLabel.Text = scriptName;
+
+		const TextItem = ScrollingTextFrame.WaitForChild("TextItem") as TextLabel;
+		TextItem.Text = message;
+	}
 	// GetInstance: Get the instance of the logger
 	public static GetInstance(): Logger {
 		return this._logger;
