@@ -31,6 +31,7 @@ do
 		end
 		-- Log message
 		local logMessage = `\n{self._logLevel}: \n[{logTag}]\n `
+		warn(logTag)
 		-- Iterate through messages and log them
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback = function(message)

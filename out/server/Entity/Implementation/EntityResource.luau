@@ -79,6 +79,20 @@ do
 		entity:SetAttribute(self.Name .. "Max", self.MaxValue)
 		entity:SetAttribute(self.Name .. "Current", self.CurrentValue)
 	end
+	function EntityResource:_disconnectConnections()
+		if self._regenConnection and self._regenConnection.Connected then
+			self._regenConnection:Disconnect()
+		end
+		if self._minChangeConnection and self._minChangeConnection.Connected then
+			self._minChangeConnection:Disconnect()
+		end
+		if self._maxChangeConnection and self._maxChangeConnection.Connected then
+			self._maxChangeConnection:Disconnect()
+		end
+	end
+	function EntityResource:Destroy()
+		self:_disconnectConnections()
+	end
 end
 return {
 	EntityResource = EntityResource,

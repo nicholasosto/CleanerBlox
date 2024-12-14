@@ -26,56 +26,52 @@ do
 			Constitution = 10,
 			Speed = 10,
 		}
+		self.MaxHealth = 15
+		self.MaxMana = 15
+		self.MaxStamina = 15
 		-- Set the CharacterModel
 		self.CharacterModel = rig
 		-- WCS Character
 		self.WCS_Character = Character.new(rig)
 		self.WCS_Character:ApplyMoveset("DefaultMoveset")
-		-- Create the Entity Resources
-		self.Health = EntityResource.new(rig, "Health", 200, 5, 11)
-		self.Mana = EntityResource.new(rig, "Mana", 200, 5, 11)
-		self.Stamina = EntityResource.new(rig, "Stamina", 200, 5, 11)
 		-- Set the Attachments
 		self.EntityAttachments = EntityAttachments.new(rig)
-		self:setAttributes()
+		self:updateAttributes()
+		-- Set the Resources
+		self.Stamina = EntityResource.new(self.CharacterModel, "Stamina", self.MaxStamina, 1, 10)
+		self.Mana = EntityResource.new(self.CharacterModel, "Mana", self.MaxMana, 1, 10)
+		self.Health = EntityResource.new(self.CharacterModel, "Health", self.MaxHealth, 1, 10)
 		local humanoid = rig:WaitForChild("Humanoid")
 		humanoid.Died:Connect(function()
-			self.WCS_Character:Destroy()
+			self:Destroy()
 		end)
 		return self
 	end
-	function BaseEntity:setAttributes()
+	function BaseEntity:updateAttributes()
+		-- Set the Max Values
+		self.MaxStamina = Calculator.calculateMaxStamina(self.StatsData.Speed, 11)
+		self.MaxMana = Calculator.calculateMaxMana(self.StatsData.Intelligence, 11)
+		self.MaxHealth = Calculator.calculateMaxHealth(self.StatsData.Constitution, 11)
+		-- Set the Stats Attributes
+		self.CharacterModel:SetAttribute("Strength", self.StatsData.Strength)
+		self.CharacterModel:SetAttribute("Dexterity", self.StatsData.Dexterity)
+		self.CharacterModel:SetAttribute("Intelligence", self.StatsData.Intelligence)
+		self.CharacterModel:SetAttribute("Constitution", self.StatsData.Constitution)
+		self.CharacterModel:SetAttribute("Speed", self.StatsData.Speed)
+	end
+	function BaseEntity:setTarget(target)
+		self.Target = target
+	end
+	function BaseEntity:Destroy()
 		local _result = self
 		if _result ~= nil then
 			_result = _result.CharacterModel
 		end
-		Logger:Log("BaseEntity: Setting Attributes: ", _result)
-		local rig = self.CharacterModel
-		-- Health Calculation
-		local maxHealth = Calculator.calculateMaxHealth(self.StatsData.Constitution, 11)
-		self.Health = EntityResource.new(rig, "Health", maxHealth, 5, 11)
-		-- Health Attributes
-		-- this.CharacterModel.SetAttribute("MaxHealth", this.Health.MaxValue);
-		-- this.CharacterModel.SetAttribute("CurrentHealth", this.Health.MaxValue);
-		-- Mana Calculation
-		local maxMana = Calculator.calculateMaxMana(self.StatsData.Intelligence, 11)
-		self.Mana = EntityResource.new(rig, "Mana", maxMana, 5, 11)
-		-- Mana Attributes
-		-- this.CharacterModel.SetAttribute("MaxMana", this.Mana.MaxValue);
-		-- this.CharacterModel.SetAttribute("CurrentMana", this.Mana.MaxValue);
-		-- Stamina Calculation
-		local maxStamina = Calculator.calculateMaxStamina(self.StatsData.Speed, 11)
-		self.Stamina = EntityResource.new(rig, "Stamina", maxStamina, 5, 11)
-		-- Stamina Attributes
-		-- this.CharacterModel.SetAttribute("MaxStamina", this.Stamina.MaxValue);
-		-- this.CharacterModel.SetAttribute("CurrentStamina", this.Stamina.MaxValue);
-		-- Stats Attributes
-		self.CharacterModel:SetAttribute("Strength", self.StatsData.Strength)
-		self.CharacterModel:SetAttribute("Dexterity", self.StatsData.Dexterity)
-		self.CharacterModel:SetAttribute("Intelligence", self.StatsData.Intelligence)
-	end
-	function BaseEntity:setTarget(target)
-		self.Target = target
+		Logger:Log("BaseEntity: Destroying: ", _result)
+		self.Health:Destroy()
+		self.Mana:Destroy()
+		self.Stamina:Destroy()
+		self.WCS_Character:Destroy()
 	end
 end
 return {

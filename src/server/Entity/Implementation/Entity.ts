@@ -32,6 +32,12 @@ export class BaseEntity {
 	public Mana: EntityResource;
 	public Stamina: EntityResource;
 
+	// Max Values TODO: Possibly move to a different class
+	public MaxHealth: number = 15;
+	public MaxMana: number = 15;
+	public MaxStamina: number = 15;
+
+
 	constructor(rig: Model) {
 		// Set the CharacterModel
 		this.CharacterModel = rig;
@@ -40,60 +46,48 @@ export class BaseEntity {
 		this.WCS_Character = new Character(rig);
 		this.WCS_Character.ApplyMoveset("DefaultMoveset");
 
-		// Create the Entity Resources
-		this.Health = new EntityResource(rig, "Health", 200, 5, 11);
-		this.Mana = new EntityResource(rig, "Mana", 200, 5, 11);
-		this.Stamina = new EntityResource(rig, "Stamina", 200, 5, 11);
-
 		// Set the Attachments
 		this.EntityAttachments = new EntityAttachments(rig);
 
-		this.setAttributes();
+		this.updateAttributes();
+
+		// Set the Resources
+		this.Stamina = new EntityResource(this.CharacterModel, "Stamina", this.MaxStamina, 1, 10);
+		this.Mana = new EntityResource(this.CharacterModel, "Mana", this.MaxMana, 1, 10);
+		this.Health = new EntityResource(this.CharacterModel, "Health", this.MaxHealth, 1, 10);
 
 		const humanoid = rig.WaitForChild("Humanoid") as Humanoid;
 
 		humanoid.Died.Connect(() => {
-			this.WCS_Character.Destroy();
+			this.Destroy();
 		});
 
 		return this;
 	}
 
-	private setAttributes() {
-		Logger.Log("BaseEntity: Setting Attributes: ", this?.CharacterModel);
-        const rig = this.CharacterModel;
+	private updateAttributes() {
+		// Set the Max Values
+		this.MaxStamina = Calculator.calculateMaxStamina(this.StatsData.Speed, 11);
+		this.MaxMana = Calculator.calculateMaxMana(this.StatsData.Intelligence, 11);
+		this.MaxHealth = Calculator.calculateMaxHealth(this.StatsData.Constitution, 11);
 
-		// Health Calculation
-		const maxHealth = Calculator.calculateMaxHealth(this.StatsData.Constitution, 11);
-		this.Health = new EntityResource(rig, "Health", maxHealth, 5, 11);
-
-		// Health Attributes
-		// this.CharacterModel.SetAttribute("MaxHealth", this.Health.MaxValue);
-		// this.CharacterModel.SetAttribute("CurrentHealth", this.Health.MaxValue);
-
-		// Mana Calculation
-		const maxMana = Calculator.calculateMaxMana(this.StatsData.Intelligence, 11);
-		this.Mana = new EntityResource(rig,"Mana", maxMana, 5, 11);
-
-		// Mana Attributes
-		// this.CharacterModel.SetAttribute("MaxMana", this.Mana.MaxValue);
-		// this.CharacterModel.SetAttribute("CurrentMana", this.Mana.MaxValue);
-
-		// Stamina Calculation
-		const maxStamina = Calculator.calculateMaxStamina(this.StatsData.Speed, 11);
-		this.Stamina = new EntityResource(rig,"Stamina", maxStamina, 5, 11);
-
-		// Stamina Attributes
-		// this.CharacterModel.SetAttribute("MaxStamina", this.Stamina.MaxValue);
-		// this.CharacterModel.SetAttribute("CurrentStamina", this.Stamina.MaxValue);
-
-		// Stats Attributes
+		// Set the Stats Attributes
 		this.CharacterModel.SetAttribute("Strength", this.StatsData.Strength);
 		this.CharacterModel.SetAttribute("Dexterity", this.StatsData.Dexterity);
 		this.CharacterModel.SetAttribute("Intelligence", this.StatsData.Intelligence);
+		this.CharacterModel.SetAttribute("Constitution", this.StatsData.Constitution);
+		this.CharacterModel.SetAttribute("Speed", this.StatsData.Speed);
 	}
 
 	public setTarget(target: Model) {
 		this.Target = target;
+	}
+
+	public Destroy() {
+		Logger.Log("BaseEntity: Destroying: ", this?.CharacterModel);
+		this.Health.Destroy();
+		this.Mana.Destroy();
+		this.Stamina.Destroy();
+		this.WCS_Character.Destroy();
 	}
 }

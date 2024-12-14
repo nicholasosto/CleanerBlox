@@ -1,13 +1,24 @@
+export enum AttachmentPoints {
+	Head = "Head",
+	LeftHand = "LeftHand",
+	RightHand = "RightHand",
+	LeftFoot = "LeftFoot",
+	RightFoot = "RightFoot",
+	Floor = "Floor",
+	Halo = "Halo",
+	Body = "Body",
+}
+
 export interface IAttachments {
-	Head: Attachment;
+	[AttachmentPoints.Head]: Attachment;
 
-	LeftHand: Attachment;
-	RightHand: Attachment;
+	[AttachmentPoints.LeftHand]: Attachment;
+	[AttachmentPoints.RightHand]: Attachment;
 
-	LeftFoot: Attachment;
-	RightFoot: Attachment;
-    
-	Floor: Attachment;
-	Halo: Attachment;
-	Body: Attachment;
+	[AttachmentPoints.LeftFoot]: Attachment;
+	[AttachmentPoints.RightFoot]: Attachment;
+
+	[AttachmentPoints.Floor]: Attachment;
+	[AttachmentPoints.Halo]: Attachment;
+	[AttachmentPoints.Body]: Attachment;
 }

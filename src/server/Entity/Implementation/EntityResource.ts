@@ -97,4 +97,20 @@ export class EntityResource implements IResource {
 		entity.SetAttribute(this.Name + "Max", this.MaxValue);
 		entity.SetAttribute(this.Name + "Current", this.CurrentValue);
 	}
+
+	private _disconnectConnections() {
+		if (this._regenConnection && this._regenConnection.Connected) {
+			this._regenConnection.Disconnect();
+		}
+		if (this._minChangeConnection && this._minChangeConnection.Connected) {
+			this._minChangeConnection.Disconnect();
+		}
+		if (this._maxChangeConnection && this._maxChangeConnection.Connected) {
+			this._maxChangeConnection.Disconnect();
+		}
+	}
+
+	public Destroy() {
+		this._disconnectConnections();
+	}
 }
