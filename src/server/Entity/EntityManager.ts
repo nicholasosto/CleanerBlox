@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Players } from "@rbxts/services";
-import { StatsData } from "shared/Interfaces/IData";
+import { ICoreStats } from "shared/Interfaces/IData";
 import { DataManager, DataCache } from "server/Data/DataManager";
-import { EntityResource } from "server/Entity/Subclasses/EntityResource";
-import * as Calculator from "./AttributeCalculations";
+import { EntityResource } from "server/Entity/Implementation/EntityResource";
+import * as Calculator from "./Implementation/EntityCalculator";
 import { Logger } from "shared/Utility/Logger";
 import { HttpService } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
@@ -88,7 +88,8 @@ export class BaseEntity {
 	EntityAttachments: IEntityAttachments;
 
 	// Data with default values
-	StatsData: StatsData = {
+	StatsData: ICoreStats = {
+		Level: 1,
 		Strength: 10,
 		Dexterity: 10,
 		Intelligence: 10,
@@ -111,6 +112,7 @@ export class BaseEntity {
 		this.WCS_Character = new Character(rig);
 
 		this.WCS_Character.ApplyMoveset("DefaultMoveset");
+
 
 		// Set the Attachments
 		this.EntityAttachments = new EntityAttachments(rig);
@@ -179,10 +181,6 @@ export class EntityManager {
 				const entity = new BaseEntity(character);
 
 				EntityManager._entities.set(character.Name, entity);
-
-				const testAttachmentGroup = GameStorage.cloneParticleGroupAttachment("C - BLOOD SPLATTER");
-				testAttachmentGroup.Parent = entity.EntityAttachments.Head;
-				
 			});
 		});
 	}

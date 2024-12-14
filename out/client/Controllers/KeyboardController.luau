@@ -74,9 +74,11 @@ do
 		Logger:Log("KeyboardController", `Key Pressed: {key} - {begin}`)
 		repeat
 			if key == (Enum.KeyCode.Q) then
+				self:SkillToggle("DevilBeam", begin)
 				break
 			end
 			if key == (Enum.KeyCode.E) then
+				self:SkillToggle("Spotlights", begin)
 				break
 			end
 			if key == (Enum.KeyCode.R) then

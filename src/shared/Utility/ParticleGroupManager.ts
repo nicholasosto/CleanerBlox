@@ -1,62 +1,48 @@
+import { GameStorage } from "./GameStorage";
+import { Logger } from "./Logger";
+
+
+
 export class ParticleGroupManager {
 	private constructor() {}
 
-	public static disableParticleGroup(particleGroup?: Attachment) {
-		if (particleGroup === undefined) {
-			return;
-		}
-		const particleEffects = particleGroup
-			.GetDescendants()
-			.filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
 
+	// Helper function to get all particle effects in a particle group
+	private static getParticleDecendants(particleParent: Instance): ParticleEmitter[] {
+		const particleEffects = particleParent.GetChildren().filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
+		return particleEffects;
+	}
+
+	// Print all particle effects in a particle group
+	public static PrintParticleGroup(particleGroup: Instance) {
+		const particleEffects = ParticleGroupManager.getParticleDecendants(particleGroup);
 		particleEffects.forEach((particle) => {
-			particle.Enabled = false;
+			Logger.Log("Particle", particle.Name);
 		});
 	}
 
-	public static enableParticleGroup(particleGroup?: Attachment) {
+	// Get a particle group by name
+	public static GetParticleGroup(name: string): Instance {
+		const particleGroup = GameStorage.getModel(name);
 		if (particleGroup === undefined) {
-			return;
+			Logger.Log("ParticleGroupManager", "Particle Group not found", name);
 		}
-		const particleEffects = particleGroup
-			.GetDescendants()
-			.filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
+		return particleGroup;
+	}
 
+	// Enable all particle effects in a particle group
+	public static EnableParticleGroup(particleGroup: Instance) {
+		const particleEffects = ParticleGroupManager.getParticleDecendants(particleGroup);
 		particleEffects.forEach((particle) => {
 			particle.Enabled = true;
 		});
 	}
 
-	public static adjustParticleGroupTransparency(particleGroup?: Attachment, transparency?: number) {
-		if (transparency === undefined || particleGroup === undefined) {
-			return;
-		}
-
-		const particleEffects = particleGroup
-			.GetDescendants()
-			.filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
-
+	// Adjust the size of all particle effects in a particle group
+	public static AdjustParticleGroupSize(particleGroup: Instance, scale: number) {
+		const particleEffects = ParticleGroupManager.getParticleDecendants(particleGroup);
 		particleEffects.forEach((particle) => {
-			const currentTransparency = particle.Transparency;
-
-			const adjustedTransparency = currentTransparency.Keypoints.map((keypoint) => {
-				return new NumberSequenceKeypoint(keypoint.Time, keypoint.Value * transparency);
-			});
-
-			particle.Transparency = new NumberSequence(adjustedTransparency);
-		});
-	}
-
-	public static adjustParticleGroupSize(particleGroup?: Attachment, size?: number) {
-		if (particleGroup === undefined || size === undefined) {
-			return;
-		}
-		const particleEffects = particleGroup
-			.GetDescendants()
-			.filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
-
-		particleEffects.forEach((particle) => {
-			particle.Size = new NumberSequence(size);
+			particle.Size = new NumberSequence([new NumberSequenceKeypoint(0, 0), new NumberSequenceKeypoint(1, scale)]);
 		});
 	}
 }

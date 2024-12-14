@@ -1,4 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
+import * as WCS from "@rbxts/wcs";
 
 export class GameStorage {
 	// Main Package
@@ -146,5 +147,20 @@ export class GameStorage {
 			}
 			print(item.Name);
 		}
+	}
+
+	public static createSkillButton(wcsSkill: WCS.AnySkill): ImageButton {
+		// Create the skill button
+		 const skillButton = this.getGUI("SkillButton") as ImageButton;
+		// skillButton.Name = wcsSkill.GetName();
+		// skillButton.Image = wcsSkill.StateChanged.Connect((state) => {
+		// 	state.StarterParams.
+		// skillButton.Size = new UDim2(0, 50, 0, 50);
+		// skillButton.Position = new UDim2(0, 0, 0, 0);
+		// skillButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+		// skillButton.BackgroundTransparency = 0.5;
+
+		// Return the skill button
+		return skillButton;
 	}
 }

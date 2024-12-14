@@ -33,7 +33,7 @@ export class DataCache {
 			this._playerData = DataTemplate;
 			this.Save();
 		} else {
-			Logger.Log("DM","\n Data Loaded");
+			Logger.Log("DM", "\n Data Loaded");
 		}
 	}
 
@@ -113,5 +113,4 @@ export class DataManager {
 		const dataCache = DataManager.PlayerCache.find((cache) => cache._userId === userId) as DataCache;
 		dataCache.Save();
 	}
-
 }

@@ -1,6 +1,6 @@
-import { IEntityAttachments } from "../Interfaces";
+import { IAttachments } from "../Interfaces/IAttachments";
 
-export class EntityAttachments implements IEntityAttachments {
+export class EntityAttachments implements IAttachments {
 	Head: Attachment;
 	LeftHand: Attachment;
 	RightHand: Attachment;

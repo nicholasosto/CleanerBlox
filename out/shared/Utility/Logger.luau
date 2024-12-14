@@ -30,7 +30,7 @@ do
 			return nil
 		end
 		-- Log message
-		local logMessage = `{self._logLevel}[{logTag}] `
+		local logMessage = `\n{self._logLevel}: \n[{logTag}]\n `
 		-- Iterate through messages and log them
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback = function(message)

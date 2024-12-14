@@ -6,10 +6,9 @@ local SkillDecorator = _wcs.SkillDecorator
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local Workspace = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Workspace
 local Spotlight = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skill Parts", "Spotlight").Spotlight
-local CFrameGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "CFrameGenerator").CFrameGenerator
-local AnimationManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "AnimationManager").AnimationManager
+local PositionGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "PositionGenerator").PositionGenerator
+local ParticleGroupManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "ParticleGroupManager").ParticleGroupManager
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local cFrameGenerator = CFrameGenerator.new()
 local Spotlights
 do
 	local super = HoldableSkill
@@ -32,7 +31,9 @@ do
 		self.Spotlights = {}
 	end
 	function Spotlights:createSpotlight(cFrame)
+		Logger:Log("Spotlights", "Creating Spotlight")
 		local spotlightModel = GameStorage:getModel("Spotlight"):Clone()
+		local testParticles = ParticleGroupManager:GetParticleGroup("TestParticles")
 		spotlightModel.Parent = Workspace
 		spotlightModel:PivotTo(cFrame)
 		local spotlight = Spotlight.new(spotlightModel)
@@ -44,7 +45,6 @@ do
 		self.HoldTimer.secondReached:Connect(function(seconds)
 			return self:stageActivated(seconds)
 		end)
-		AnimationManager:RegisterAnimationsFor(self.Character)
 	end
 	function Spotlights:OnStartServer()
 		self:ApplyCooldown(10)
@@ -68,10 +68,9 @@ do
 		until true
 	end
 	function Spotlights:Stage1()
-		local userCFrame = (self.Character.Instance):GetPivot()
-		local spotlightCFrame = cFrameGenerator:createTargetFrame(userCFrame, 10)
-		self:createSpotlight(spotlightCFrame)
-		Logger:Log("Spotlights", "Stage 1", spotlightCFrame)
+		local spotlightPosition = PositionGenerator:GenerateDefaultTargetPosition(self.Character.Instance, 10)
+		self:createSpotlight(CFrame.new(spotlightPosition))
+		Logger:Log("Spotlights", "Stage 1", spotlightPosition)
 	end
 	function Spotlights:Stage2()
 		Logger:Log("Spotlights", "Stage 2")

@@ -1,4 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local ParticleGroupManager
 do
 	ParticleGroupManager = setmetatable({}, {
@@ -13,11 +16,8 @@ do
 	end
 	function ParticleGroupManager:constructor()
 	end
-	function ParticleGroupManager:disableParticleGroup(particleGroup)
-		if particleGroup == nil then
-			return nil
-		end
-		local _exp = particleGroup:GetDescendants()
+	function ParticleGroupManager:getParticleDecendants(particleParent)
+		local _exp = particleParent:GetChildren()
 		-- ▼ ReadonlyArray.filter ▼
 		local _newValue = {}
 		local _callback = function(child)
@@ -32,108 +32,45 @@ do
 		end
 		-- ▲ ReadonlyArray.filter ▲
 		local particleEffects = _newValue
+		return particleEffects
+	end
+	function ParticleGroupManager:PrintParticleGroup(particleGroup)
+		local particleEffects = ParticleGroupManager:getParticleDecendants(particleGroup)
 		-- ▼ ReadonlyArray.forEach ▼
-		local _callback_1 = function(particle)
-			particle.Enabled = false
+		local _callback = function(particle)
+			Logger:Log("Particle", particle.Name)
 		end
 		for _k, _v in particleEffects do
-			_callback_1(_v, _k - 1, particleEffects)
+			_callback(_v, _k - 1, particleEffects)
 		end
 		-- ▲ ReadonlyArray.forEach ▲
 	end
-	function ParticleGroupManager:enableParticleGroup(particleGroup)
+	function ParticleGroupManager:GetParticleGroup(name)
+		local particleGroup = GameStorage:getModel(name)
 		if particleGroup == nil then
-			return nil
+			Logger:Log("ParticleGroupManager", "Particle Group not found", name)
 		end
-		local _exp = particleGroup:GetDescendants()
-		-- ▼ ReadonlyArray.filter ▼
-		local _newValue = {}
-		local _callback = function(child)
-			return child:IsA("ParticleEmitter")
-		end
-		local _length = 0
-		for _k, _v in _exp do
-			if _callback(_v, _k - 1, _exp) == true then
-				_length += 1
-				_newValue[_length] = _v
-			end
-		end
-		-- ▲ ReadonlyArray.filter ▲
-		local particleEffects = _newValue
+		return particleGroup
+	end
+	function ParticleGroupManager:EnableParticleGroup(particleGroup)
+		local particleEffects = ParticleGroupManager:getParticleDecendants(particleGroup)
 		-- ▼ ReadonlyArray.forEach ▼
-		local _callback_1 = function(particle)
+		local _callback = function(particle)
 			particle.Enabled = true
 		end
 		for _k, _v in particleEffects do
-			_callback_1(_v, _k - 1, particleEffects)
+			_callback(_v, _k - 1, particleEffects)
 		end
 		-- ▲ ReadonlyArray.forEach ▲
 	end
-	function ParticleGroupManager:adjustParticleGroupTransparency(particleGroup, transparency)
-		if transparency == nil or particleGroup == nil then
-			return nil
-		end
-		local _exp = particleGroup:GetDescendants()
-		-- ▼ ReadonlyArray.filter ▼
-		local _newValue = {}
-		local _callback = function(child)
-			return child:IsA("ParticleEmitter")
-		end
-		local _length = 0
-		for _k, _v in _exp do
-			if _callback(_v, _k - 1, _exp) == true then
-				_length += 1
-				_newValue[_length] = _v
-			end
-		end
-		-- ▲ ReadonlyArray.filter ▲
-		local particleEffects = _newValue
+	function ParticleGroupManager:AdjustParticleGroupSize(particleGroup, scale)
+		local particleEffects = ParticleGroupManager:getParticleDecendants(particleGroup)
 		-- ▼ ReadonlyArray.forEach ▼
-		local _callback_1 = function(particle)
-			local currentTransparency = particle.Transparency
-			local _exp_1 = currentTransparency.Keypoints
-			-- ▼ ReadonlyArray.map ▼
-			local _newValue_1 = table.create(#_exp_1)
-			local _callback_2 = function(keypoint)
-				return NumberSequenceKeypoint.new(keypoint.Time, keypoint.Value * transparency)
-			end
-			for _k, _v in _exp_1 do
-				_newValue_1[_k] = _callback_2(_v, _k - 1, _exp_1)
-			end
-			-- ▲ ReadonlyArray.map ▲
-			local adjustedTransparency = _newValue_1
-			particle.Transparency = NumberSequence.new(adjustedTransparency)
+		local _callback = function(particle)
+			particle.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, scale) })
 		end
 		for _k, _v in particleEffects do
-			_callback_1(_v, _k - 1, particleEffects)
-		end
-		-- ▲ ReadonlyArray.forEach ▲
-	end
-	function ParticleGroupManager:adjustParticleGroupSize(particleGroup, size)
-		if particleGroup == nil or size == nil then
-			return nil
-		end
-		local _exp = particleGroup:GetDescendants()
-		-- ▼ ReadonlyArray.filter ▼
-		local _newValue = {}
-		local _callback = function(child)
-			return child:IsA("ParticleEmitter")
-		end
-		local _length = 0
-		for _k, _v in _exp do
-			if _callback(_v, _k - 1, _exp) == true then
-				_length += 1
-				_newValue[_length] = _v
-			end
-		end
-		-- ▲ ReadonlyArray.filter ▲
-		local particleEffects = _newValue
-		-- ▼ ReadonlyArray.forEach ▼
-		local _callback_1 = function(particle)
-			particle.Size = NumberSequence.new(size)
-		end
-		for _k, _v in particleEffects do
-			_callback_1(_v, _k - 1, particleEffects)
+			_callback(_v, _k - 1, particleEffects)
 		end
 		-- ▲ ReadonlyArray.forEach ▲
 	end

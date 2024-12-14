@@ -6,7 +6,8 @@ export interface CharacterClassData {
 	ClassExperienceToNextLevel: number;
 }
 
-export interface StatsData {
+export interface ICoreStats {
+	Level: number;
 	Strength: number;
 	Speed: number;
 	Dexterity: number;
@@ -41,13 +42,12 @@ export interface PlayerData {
 	key: string;
 	version: number;
 
-	Level: number;
 	Experience: number;
 	ExperienceToNextLevel: number;
 
 	CharacterName: string;
 	CharacterClass: CharacterClassData;
-	Stats: StatsData;
+	Stats: ICoreStats;
 	Skills: SkillsData;
 	Equipment: EquipmentData;
 
@@ -89,6 +89,7 @@ export const DataTemplate: PlayerData = {
 	},
 
 	Stats: {
+		Level: 1,
 		Strength: 10,
 		Speed: 10,
 		Dexterity: 10,

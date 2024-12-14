@@ -1,6 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
+local WCS = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
 local GameStorage
 do
 	GameStorage = setmetatable({}, {
@@ -117,6 +118,19 @@ do
 			end
 			print(item.Name)
 		end
+	end
+	function GameStorage:createSkillButton(wcsSkill)
+		-- Create the skill button
+		local skillButton = self:getGUI("SkillButton")
+		-- skillButton.Name = wcsSkill.GetName();
+		-- skillButton.Image = wcsSkill.StateChanged.Connect((state) => {
+		-- 	state.StarterParams.
+		-- skillButton.Size = new UDim2(0, 50, 0, 50);
+		-- skillButton.Position = new UDim2(0, 0, 0, 0);
+		-- skillButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+		-- skillButton.BackgroundTransparency = 0.5;
+		-- Return the skill button
+		return skillButton
 	end
 	GameStorage._storageModel = ReplicatedStorage:WaitForChild("SoulSteelStorage")
 	GameStorage._accessoriesStorage = GameStorage._storageModel:WaitForChild("ACCESSORIES")

@@ -1,6 +1,6 @@
 import { TweenService, CollectionService } from "@rbxts/services";
 import { Logger } from "shared/Utility/Logger";
-import { CFrameGenerator } from "./CFrameGenerator";
+import { PositionGenerator } from "./PositionGenerator";
 
 export const InfoTable = {
 	Standard: {

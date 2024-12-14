@@ -2,11 +2,10 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- eslint-disable prettier/prettier 
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local EntityResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Subclasses", "EntityResource").EntityResource
-local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "AttributeCalculations")
+local EntityResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityResource").EntityResource
+local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityCalculator")
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
-local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local EntityAttachments
 do
 	EntityAttachments = setmetatable({}, {
@@ -91,6 +90,7 @@ do
 	end
 	function BaseEntity:constructor(rig)
 		self.StatsData = {
+			Level = 1,
 			Strength = 10,
 			Dexterity = 10,
 			Intelligence = 10,
@@ -168,8 +168,6 @@ do
 				local __entities = EntityManager._entities
 				local _name = character.Name
 				__entities[_name] = entity
-				local testAttachmentGroup = GameStorage:cloneParticleGroupAttachment("C - BLOOD SPLATTER")
-				testAttachmentGroup.Parent = entity.EntityAttachments.Head
 			end)
 		end)
 	end

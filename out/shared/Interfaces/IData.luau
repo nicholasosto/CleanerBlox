@@ -23,6 +23,7 @@ local DataTemplate = {
 		ClassExperienceToNextLevel = 100,
 	},
 	Stats = {
+		Level = 1,
 		Strength = 10,
 		Speed = 10,
 		Dexterity = 10,

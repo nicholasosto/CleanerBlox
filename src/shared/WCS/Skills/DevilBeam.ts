@@ -1,24 +1,28 @@
 import { HoldableSkill, SkillDecorator } from "@rbxts/wcs";
-import { PositionGenerator } from "shared/Utility/PositionGenerator";
 import { Logger } from "shared/Utility/Logger";
 import { GameStorage } from "shared/Utility/GameStorage";
 import { ParticleGroupManager } from "shared/Utility/ParticleGroupManager";
 
 @SkillDecorator
-export class BigRed extends HoldableSkill {
+export class DevilBeam extends HoldableSkill {
 	// Properties
 	private AbilityPart: Model | undefined;
-	private ChargingEffectAttachment: Attachment = GameStorage.cloneParticleGroupAttachment("RedCasting");
+
+	// Starting Effects
+	//private ChargingEffectAttachment: Attachment = GameStorage.cloneParticleGroupAttachment("DevilBeamActivation");
+	//private StartingAnimation: Animation = GameStorage.getAnimation("DevilBeamActivation");
 
 	// Skill Settings
+	public DisplayName = "Devil Beam";
 	private _defaultHoldTime: number = 5;
 	private _defaultCooldownTime: number = 3;
+	private _defaultManaCost: number = 10; //TODO: Implement Mana Cost
+	private _defaultStaminaCost: number = 10; // TODO: Implement Stamina Cost
 
 	// 00. CONSTRUCT SERVER
 	public OnConstructServer() {
-		// Set Max Hold Time
-
-		Logger.Log(this.GetName(), " - Constructed\n");
+		// Load Animations and Particles
+		Logger.Log("DevilBeam", " - Constructed\n");
 	}
 
 	// MOVE START
@@ -32,11 +36,6 @@ export class BigRed extends HoldableSkill {
 	// Stages
 	private stageActivated(seconds: number) {
 		Logger.Log(this.GetName(), "\n--------  Stage Activated Server  --------\n");
-		const particleParent = this.Character.Instance?.FindFirstChild("Head") as BasePart;
-
-		this.ChargingEffectAttachment.Parent = particleParent;
-		Logger.Log("BigRed", "Stage Activated: ", tostring(seconds), tostring(this.CooldownTimer.getTimeLeft()));
-
 		switch (seconds) {
 			case 1:
 				this.Stage3();
@@ -56,42 +55,21 @@ export class BigRed extends HoldableSkill {
 	private Stage1() {
 		Logger.Log(this.GetName(), " - Stage 01 called\n");
 
-		this.ChargingEffectAttachment.GetChildren()
-			.filter((child) => child.IsA("ParticleEmitter"))
-			.forEach((emitter) => {
-				(emitter as ParticleEmitter).Enabled = true;
-			});
 	}
 
 	// STAGE 2
 	private Stage2() {
 		Logger.Log(this.GetName(), " - Stage 02 called\n");
-		this.ChargingEffectAttachment.GetChildren()
-			.filter((child) => child.IsA("ParticleEmitter"))
-			.forEach((emitter) => {
-				(emitter as ParticleEmitter).TimeScale = (emitter as ParticleEmitter).TimeScale * 2;
-			});
 	}
 
 	// STAGE 3
 	private Stage3() {
 		Logger.Log(this.GetName(), " - Stage 03 called\n");
 
-		Logger.Log(this.GetName(), " - Stage 02 called\n");
-		this.ChargingEffectAttachment.GetChildren()
-			.filter((child) => child.IsA("ParticleEmitter"))
-			.forEach((emitter) => {
-				(emitter as ParticleEmitter).TimeScale = (emitter as ParticleEmitter).TimeScale * 2;
-			});
 	}
 
 	// END SERVER
 	public OnEndServer() {
 		Logger.Log(this.GetName(), "\n--------  Stage Activated Server  --------\n");
-		this.ChargingEffectAttachment?.GetChildren()
-			.filter((child) => child.IsA("ParticleEmitter"))
-			.forEach((emitter) => {
-				(emitter as ParticleEmitter).Enabled = false;
-			});
 	}
 }

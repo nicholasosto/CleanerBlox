@@ -23,7 +23,7 @@ export class Logger {
 		if (!this._enabled) return;
 
 		// Log message
-		let logMessage = `${this._logLevel}[${logTag}] `;
+		let logMessage = `\n${this._logLevel}: \n[${logTag}]\n `;
 
 		// Iterate through messages and log them
 		messages.forEach((message) => {

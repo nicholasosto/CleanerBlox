@@ -82,8 +82,10 @@ export class KeyboardController {
 		Logger.Log("KeyboardController", `Key Pressed: ${key} - ${begin}`);
 		switch (key) {
 			case Enum.KeyCode.Q:
+				this.SkillToggle("DevilBeam", begin);
 				break;
 			case Enum.KeyCode.E:
+				this.SkillToggle("Spotlights", begin);
 				break;
 			case Enum.KeyCode.R:
 				this.SkillToggle("BigRed", begin);
