@@ -112,6 +112,8 @@ export class GameStorage {
 		return _model;
 	}
 
+	// Clone Ability Model
+
 	// Clone Model
 	public static cloneModel(modelName: string): Model {
 		const _model = this.getModel(modelName) as Model;
@@ -151,7 +153,7 @@ export class GameStorage {
 
 	public static createSkillButton(wcsSkill: WCS.AnySkill): ImageButton {
 		// Create the skill button
-		 const skillButton = this.getGUI("SkillButton") as ImageButton;
+		const skillButton = this.getGUI("SkillButton") as ImageButton;
 		// skillButton.Name = wcsSkill.GetName();
 		// skillButton.Image = wcsSkill.StateChanged.Connect((state) => {
 		// 	state.StarterParams.

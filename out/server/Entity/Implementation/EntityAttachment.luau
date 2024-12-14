@@ -35,7 +35,7 @@ do
 			self.Halo.Name = "HaloAttachment"
 			self.Halo.Parent = characterHead
 			self.Halo.Position = Vector3.new(0, 1, 0)
-			testClone.Parent = characterHead
+			testClone.Parent = self.Halo
 			Logger:Log("Halo", " - Constructed\n")
 		end
 		-- Body Attachment

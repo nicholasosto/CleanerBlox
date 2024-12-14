@@ -62,11 +62,9 @@ export class KeyboardController {
 
 	// Helper: Skill Toggle
 	private static SkillToggle(skillName: string, begin: boolean): void {
-		Logger.Log("KeyboardController", `Skill Toggle: ${skillName} - ${begin}`);
 		const character = Character.GetLocalCharacter() as Character;
 
 		const skill = character.GetSkillFromString(skillName) as Skill;
-		Logger.Log("KeyboardController", `Skill: ${skill}`);
 
 		if (skill) {
 			if (begin) {
@@ -91,7 +89,7 @@ export class KeyboardController {
 				this.SkillToggle("BigRed", begin);
 				break;
 			default:
-				warn(`Unhandled key: ${key}`);
+				//warn(`Unhandled key: ${key}`);
 				break;
 		}
 	}

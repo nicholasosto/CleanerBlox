@@ -4,6 +4,8 @@ local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_incl
 local HoldableSkill = _wcs.HoldableSkill
 local SkillDecorator = _wcs.SkillDecorator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+local AbilityModel = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "IAbilityModel").AbilityModel
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local DevilBeam
 do
 	local super = HoldableSkill
@@ -20,6 +22,7 @@ do
 	end
 	function DevilBeam:constructor(...)
 		super.constructor(self, ...)
+		self.AbilityModel = AbilityModel.new(self.Character, GameStorage:getModel("DevilBeam"))
 		self.DisplayName = "Devil Beam"
 		self._defaultHoldTime = 5
 		self._defaultCooldownTime = 3
@@ -42,15 +45,17 @@ do
 		Logger:Log(self:GetName(), "\n--------  Stage Activated Server  --------\n")
 		repeat
 			if seconds == 1 then
-				self:Stage3()
+				self.AbilityModel:Activate(3)
 				break
 			end
 			if seconds == 2 then
 				self:Stage2()
+				self.AbilityModel:Activate(2)
 				break
 			end
 			if seconds == 3 then
 				self:Stage1()
+				self.AbilityModel:Activate(1)
 				break
 			end
 			break

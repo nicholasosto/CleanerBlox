@@ -58,10 +58,8 @@ do
 		KeyboardController:onKeyPress(input.KeyCode, false)
 	end
 	function KeyboardController:SkillToggle(skillName, begin)
-		Logger:Log("KeyboardController", `Skill Toggle: {skillName} - {begin}`)
 		local character = Character.GetLocalCharacter()
 		local skill = character:GetSkillFromString(skillName)
-		Logger:Log("KeyboardController", `Skill: {skill}`)
 		if skill then
 			if begin then
 				skill:Start()
@@ -85,7 +83,7 @@ do
 				self:SkillToggle("BigRed", begin)
 				break
 			end
-			warn(`Unhandled key: {key}`)
+			--warn(`Unhandled key: ${key}`);
 			break
 		until true
 	end

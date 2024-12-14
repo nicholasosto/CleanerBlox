@@ -18,6 +18,7 @@ export class DataCache {
 	public _userId: string;
 	public _playerData: IPlayerData;
 	private _lastSaveTimestamp: number = 0;
+	private _minSaveInterval: number = 2;
 	private _dataStore: DataStore;
 
 	constructor(userId: string, dataStore: DataStore) {
@@ -40,6 +41,13 @@ export class DataCache {
 	// Save
 	public Save(): string {
 		// Save the player data to the DataStore
+
+		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
+		if (timeSinceLastSave <= this._minSaveInterval) {
+			// Do not save if the last save was less than 2 seconds ago
+			Logger.Log("SaveSkipped", timeSinceLastSave);
+			return "Save Skipped";
+		}
 		const success = this._dataStore.SetAsync(this._userId, this._playerData);
 
 		// Update the last save timestamp

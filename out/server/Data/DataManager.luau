@@ -26,6 +26,7 @@ do
 	end
 	function DataCache:constructor(userId, dataStore)
 		self._lastSaveTimestamp = 0
+		self._minSaveInterval = 2
 		-- Set the properties
 		self._userId = userId
 		self._dataStore = dataStore
@@ -41,6 +42,12 @@ do
 	end
 	function DataCache:Save()
 		-- Save the player data to the DataStore
+		local timeSinceLastSave = os.time() - self._lastSaveTimestamp
+		if timeSinceLastSave <= self._minSaveInterval then
+			-- Do not save if the last save was less than 2 seconds ago
+			Logger:Log("SaveSkipped", timeSinceLastSave)
+			return "Save Skipped"
+		end
 		local success = self._dataStore:SetAsync(self._userId, self._playerData)
 		-- Update the last save timestamp
 		self._lastSaveTimestamp = os.time()

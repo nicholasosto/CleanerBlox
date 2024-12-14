@@ -40,7 +40,7 @@ export class EntityAttachments implements IAttachments {
 			this.Halo.Name = "HaloAttachment";
 			this.Halo.Parent = characterHead;
 			this.Halo.Position = new Vector3(0, 1, 0);
-			testClone.Parent = characterHead;
+			testClone.Parent = this.Halo;
 			Logger.Log("Halo", " - Constructed\n");
 		}
 
