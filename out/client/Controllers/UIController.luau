@@ -1,100 +1,123 @@
 -- Compiled with roblox-ts v3.0.0
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local ProgressBar = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "UI", "ProgressBar").ProgressBar
-local _UIEnums = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "UI", "UIEnums")
-local ColorGradients = _UIEnums.ColorGradients
-local AttributeLabels = _UIEnums.AttributeLabels
-local AbilityButtons = _UIEnums.AbilityButtons
-local localPlayer = Players.LocalPlayer
-local UIController
-do
-	UIController = setmetatable({}, {
-		__tostring = function()
-			return "UIController"
-		end,
-	})
-	UIController.__index = UIController
-	function UIController.new(...)
-		local self = setmetatable({}, UIController)
-		return self:constructor(...) or self
-	end
-	function UIController:constructor()
-		-- Private Constructor
-		-- Private Constructor
-	end
-	function UIController:Start()
-		UIController:AddAttributeBars()
-		UIController:AddAttributeLabels()
-	end
-	function UIController:AddAttributeBars()
-		local _character = self._player.Character
-		if self._player.Character then
-			_character = self._player.Character
-		else
-			_character = (self._player.CharacterAdded:Wait())
-		end
-		if _character == nil then
-			return nil
-		end
-		-- Health Bar
-		local healthBar = ProgressBar.new(_character, "CurrentHealth", "MaxHealth", self._progressBarParent, "Health", ColorGradients.Rust)
-		-- Mana Bar
-		local manaBar = ProgressBar.new(_character, "CurrentMana", "MaxMana", self._progressBarParent, "Mana", ColorGradients.Mana)
-		-- Stamina Bar
-		local staminaBar = ProgressBar.new(_character, "CurrentStamina", "MaxStamina", self._progressBarParent, "Stamina", ColorGradients.Stamina)
-		-- Experience Bar
-		local experienceBar = ProgressBar.new(self._player, "Experience", "ExperienceToNextLevel", self._progressBarParent, "Experience", ColorGradients.Experience)
-	end
-	function UIController:AddAttributeLabels()
-		local character = self._player.Character
-		AttributeLabels.Strength:create(self._attributeLabelParent, character)
-		AttributeLabels.Speed:create(self._attributeLabelParent, character)
-		AttributeLabels.Dexterity:create(self._attributeLabelParent, character)
-		AttributeLabels.Intelligence:create(self._attributeLabelParent, character)
-		AttributeLabels.Constitution:create(self._attributeLabelParent, character)
-		AttributeLabels.Level:create(self._attributeLabelParent, character)
-		AttributeLabels.Experience:create(self._attributeLabelParent, character)
-		AttributeLabels.ExperienceToNextLevel:create(self._attributeLabelParent, character)
-		AttributeLabels.MaxHealth:create(self._attributeLabelParent, character)
-		AttributeLabels.MaxMana:create(self._attributeLabelParent, character)
-		AttributeLabels.MaxStamina:create(self._attributeLabelParent, character)
-	end
-	function UIController:LoadActionBar()
-		local ActionBarCells = {}
-		local Cell_01 = self._actionBarGui:FindFirstChild("Cell-01", true)
-		local Cell_02 = self._actionBarGui:FindFirstChild("Cell-02", true)
-		local Cell_03 = self._actionBarGui:FindFirstChild("Cell-03", true)
-		local Cell_04 = self._actionBarGui:FindFirstChild("Cell-04", true)
-		local Cell_05 = self._actionBarGui:FindFirstChild("Cell-05", true)
-		table.insert(ActionBarCells, Cell_01)
-		table.insert(ActionBarCells, Cell_02)
-		table.insert(ActionBarCells, Cell_03)
-		table.insert(ActionBarCells, Cell_04)
-		table.insert(ActionBarCells, Cell_05)
-		-- ▼ ReadonlyArray.forEach ▼
-		local _callback = function(cell)
-			local newCell = Instance.new("Frame")
-			newCell.Size = UDim2.new(2.2, 0, 2, 0)
-			newCell.Position = UDim2.new(0, 0, 0, 0)
-			newCell.BackgroundColor3 = Color3.new(0, 0, 0)
-			newCell.Name = "Dummy"
-			newCell.Parent = cell
-		end
-		for _k, _v in ActionBarCells do
-			_callback(_v, _k - 1, ActionBarCells)
-		end
-		-- ▲ ReadonlyArray.forEach ▲
-		AbilityButtons.Spotlights:create(Cell_03)
-	end
-	UIController._player = localPlayer
-	UIController._playerGui = UIController._player:WaitForChild("PlayerGui")
-	UIController._progressBarGui = UIController._playerGui:WaitForChild("Bars")
-	UIController._progressBarParent = UIController._progressBarGui:WaitForChild("ParentFrame")
-	UIController._attributeLabelGui = UIController._playerGui:WaitForChild("Attributes")
-	UIController._attributeLabelParent = UIController._attributeLabelGui:WaitForChild("MasterFrame"):WaitForChild("ParentFrame")
-	UIController._actionBarGui = UIController._playerGui:WaitForChild("Action Bar")
-end
-return {
-	UIController = UIController,
-}
+-- import { ReplicatedStorage, Players } from "@rbxts/services";
+-- import { ProgressBar } from "../../shared/UI/ProgressBar";
+-- import { GameStorage } from "../../shared/Utility/GameStorage";
+-- import { Character } from "@rbxts/wcs";
+-- import { Logger } from "shared/Utility/Logger";
+-- const localPlayer = Players.LocalPlayer as Player;
+-- export class UIController {
+-- 	private static _player: Player = localPlayer;
+-- 	private static _playerGui: PlayerGui = this._player.WaitForChild("PlayerGui") as PlayerGui;
+-- 	// Progress Bars GUI
+-- 	private static _progressBarGui: ScreenGui = this._playerGui.WaitForChild("Bars") as ScreenGui;
+-- 	private static _progressBarParent: Frame = this._progressBarGui.WaitForChild("ParentFrame") as Frame;
+-- 	// Attribute Labels GUI
+-- 	private static _attributeLabelGui: ScreenGui = this._playerGui.WaitForChild("Attributes") as ScreenGui;
+-- 	private static _attributeLabelParent: Frame = this._attributeLabelGui
+-- 		.WaitForChild("MasterFrame")
+-- 		.WaitForChild("ParentFrame") as Frame;
+-- 	// ActionBar GUI
+-- 	private static _actionBarGui: ScreenGui = this._playerGui.WaitForChild("Action Bar") as ScreenGui;
+-- 	private static _instance: UIController;
+-- 	private constructor() {
+-- 		// Private Constructor
+-- 	}
+-- 	// Start
+-- 	public static Start(): void {
+-- 		UIController.AddAttributeBars();
+-- 		UIController.AddAttributeLabels();
+-- 	}
+-- 	// Add Attribute Bars and Progression Bars
+-- 	public static AddAttributeBars(): void {
+-- 		let _character: Model | undefined = this._player.Character;
+-- 		if (this._player.Character) {
+-- 			_character = this._player.Character;
+-- 		} else {
+-- 			_character = this._player.CharacterAdded.Wait()[0];
+-- 		}
+-- 		if (_character === undefined) return;
+-- 		let heathAttribute = _character.GetAttribute("MaxHealth");
+-- 		while (heathAttribute === undefined) {
+-- 			heathAttribute = _character.GetAttribute("MaxHealth");
+-- 			Logger.Log("UIController", "Waiting for MaxHealth Attribute");
+-- 			task.wait(1);
+-- 		}
+-- 		// Health Bar
+-- 		const healthBar = new ProgressBar(
+-- 			_character,
+-- 			"HealthCurrent",
+-- 			"HeathMax",
+-- 			this._progressBarParent,
+-- 			"Health",
+-- 			ColorGradients.Rust,
+-- 		);
+-- 		// Mana Bar
+-- 		const manaBar = new ProgressBar(
+-- 			_character,
+-- 			"ManaCurrent",
+-- 			"ManaMax",
+-- 			this._progressBarParent,
+-- 			"Mana",
+-- 			ColorGradients.Mana,
+-- 		);
+-- 		// Stamina Bar
+-- 		const staminaBar = new ProgressBar(
+-- 			_character,
+-- 			"StaminaCurrent",
+-- 			"StaminaMax",
+-- 			this._progressBarParent,
+-- 			"Stamina",
+-- 			ColorGradients.Stamina,
+-- 		);
+-- 		// Experience Bar
+-- 		const experienceBar = new ProgressBar(
+-- 			this._player,
+-- 			"Experience",
+-- 			"ExperienceToNextLevel",
+-- 			this._progressBarParent,
+-- 			"Experience",
+-- 			ColorGradients.Experience,
+-- 		);
+-- 	}
+-- 	// Add Attribute Labels
+-- 	public static AddAttributeLabels(): void {
+-- 		const character = this._player.Character as Model;
+-- 		const characterAttributes = character.GetAttributes();
+-- 		characterAttributes.forEach((attribute) => {
+-- 		AttributeLabels.Strength.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.Speed.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.Dexterity.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.Intelligence.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.Constitution.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.Level.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.Experience.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.ExperienceToNextLevel.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.MaxHealth.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.MaxMana.create(this._attributeLabelParent, character);
+-- 		AttributeLabels.MaxStamina.create(this._attributeLabelParent, character);
+-- 	}
+-- 	// Load Action Bar
+-- 	public static LoadActionBar(): void {
+-- 		const ActionBarCells: Array<Frame> = new Array<Frame>();
+-- 		const Cell_01: Frame = this._actionBarGui.FindFirstChild("Cell-01", true) as Frame;
+-- 		const Cell_02: Frame = this._actionBarGui.FindFirstChild("Cell-02", true) as Frame;
+-- 		const Cell_03: Frame = this._actionBarGui.FindFirstChild("Cell-03", true) as Frame;
+-- 		const Cell_04: Frame = this._actionBarGui.FindFirstChild("Cell-04", true) as Frame;
+-- 		const Cell_05: Frame = this._actionBarGui.FindFirstChild("Cell-05", true) as Frame;
+-- 		ActionBarCells.push(Cell_01);
+-- 		ActionBarCells.push(Cell_02);
+-- 		ActionBarCells.push(Cell_03);
+-- 		ActionBarCells.push(Cell_04);
+-- 		ActionBarCells.push(Cell_05);
+-- 		ActionBarCells.forEach((cell) => {
+-- 			const newCell = new Instance("Frame") as Frame;
+-- 			newCell.Size = new UDim2(2.2, 0, 2, 0);
+-- 			newCell.Position = new UDim2(0, 0, 0, 0);
+-- 			newCell.BackgroundColor3 = new Color3(0, 0, 0);
+-- 			newCell.Name = "Dummy";
+-- 			newCell.Parent = cell;
+-- 		});
+-- 		AbilityButtons.Spotlights.create(Cell_03);
+-- 	}
+-- }
+return nil

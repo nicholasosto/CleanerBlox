@@ -5,6 +5,7 @@ local EntityResource = TS.import(script, game:GetService("ServerScriptService"),
 local EntityAttachments = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityAttachment").EntityAttachments
 local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityCalculator")
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
 local BaseEntity
 do
 	BaseEntity = setmetatable({}, {
@@ -29,6 +30,8 @@ do
 		self.MaxHealth = 15
 		self.MaxMana = 15
 		self.MaxStamina = 15
+		self._eventEntityCreated = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("ENTITY_Created")
+		self._eventEntityDestroyed = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("ENTITY_Destroyed")
 		-- Set the CharacterModel
 		self.CharacterModel = rig
 		-- WCS Character
@@ -42,7 +45,15 @@ do
 		self.Mana = EntityResource.new(self.CharacterModel, "Mana", self.MaxMana, 1, 10)
 		self.Health = EntityResource.new(self.CharacterModel, "Health", self.MaxHealth, 1, 10)
 		local humanoid = rig:WaitForChild("Humanoid")
+		local player = self.WCS_Character.Player
+		if player then
+			self._eventEntityCreated:FireClient(player)
+		end
 		humanoid.Died:Connect(function()
+			local player = self.WCS_Character.Player
+			if player then
+				self._eventEntityDestroyed:FireClient(player)
+			end
 			self:Destroy()
 		end)
 		return self

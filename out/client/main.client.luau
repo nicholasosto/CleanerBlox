@@ -7,7 +7,8 @@ local CreateClient = TS.import(script, game:GetService("ReplicatedStorage"), "rb
 local KeyboardController = TS.import(script, script.Parent, "Controllers", "KeyboardController").KeyboardController
 local SkillController = TS.import(script, script.Parent, "Controllers", "SkillController").SkillController
 local FlightController = TS.import(script, script.Parent, "Controllers", "FlightController").FlightController
-local UIController = TS.import(script, script.Parent, "Controllers", "UIController").UIController
+local ActionBar = TS.import(script, script.Parent, "ActionBar", "ActionBar").ActionBar
+--import { UIController } from "./Controllers/UIController";
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
@@ -15,7 +16,8 @@ local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Ut
 KeyboardController:Start()
 SkillController:Start()
 FlightController:Start()
-UIController:Start()
+ActionBar:Start()
+--UIController.Start();
 -- WCS Client Start
 local wcsClient = CreateClient()
 wcsClient:RegisterDirectory(WCSFolders.Skills)

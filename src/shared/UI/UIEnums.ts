@@ -1,5 +1,4 @@
 import { AttributeLabel } from "./AttributeLabel";
-import { AbilityButton } from "./AbilityButton";
 
 export const ColorGradients = {
     Rust: new ColorSequence(new Color3(0.6, 0.2, 0.2), new Color3(0.8, 0.4, 0.4)),
@@ -26,10 +25,6 @@ export const AttributeLabels = {
 
 };
 
-export const AbilityButtons = {
-    Spotlights: new AbilityButton("Sky Crusher", "Spotlights","rbxassetid://82703415014111"),
-    BigRed: new AbilityButton("Big Red", "BigRed","rbxassetid://108246514585300"),
-};
 
 export const ToggleButtons = {
     Todo: "Implement Toggle Buttons",

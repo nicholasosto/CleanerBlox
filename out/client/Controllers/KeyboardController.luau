@@ -3,7 +3,6 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- Begin: KeyboardController.ts
 local UserInputService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").UserInputService
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local KeyboardController
 do
 	KeyboardController = setmetatable({}, {
@@ -22,7 +21,7 @@ do
 		KeyboardController:OnCharacterAdded(character)
 		-- CHARACTER ADDED
 		KeyboardController.characterAddedConnection = Player.CharacterAdded:Connect(function(character)
-			Logger:Log("KeyboardController", "Character Added")
+			--Logger.Log("KeyboardController", "Character Added");
 			KeyboardController:OnCharacterAdded(character)
 		end)
 	end
@@ -69,7 +68,7 @@ do
 		end
 	end
 	function KeyboardController:onKeyPress(key, begin)
-		Logger:Log("KeyboardController", `Key Pressed: {key} - {begin}`)
+		--Logger.Log("KeyboardController", `Key Pressed: ${key} - ${begin}`);
 		repeat
 			if key == (Enum.KeyCode.Q) then
 				self:SkillToggle("DevilBeam", begin)

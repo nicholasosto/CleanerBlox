@@ -16,10 +16,17 @@ do
 	function AbilityModel:constructor(wcsCharacter, templateModel)
 		self.AnimationTracks = {}
 		self.AudioTracks = {}
-		Logger:Log("AbilityModel", " - Ability Model Constructed\n")
+		--Logger.Log("AbilityModel", " - Ability Model Constructed\n");
 		self.Model = templateModel:Clone()
 		self.HitPart = self.Model:FindFirstChild("HitPart")
 		self.WCSCharacterReference = wcsCharacter
+		self._CharacterAttachment = Instance.new("Attachment")
+		self._CharacterAttachment.Parent = self.WCSCharacterReference.Instance:FindFirstChild("RightHand")
+		self.Model.Parent = self.WCSCharacterReference.Instance
+		self.HitPart.Anchored = true
+		-- Attach to AlignOrientation and UniversalConstraint
+		self._AlignOrientation = self.Model:FindFirstChild("AlignOrientation", true)
+		self._UniversalConstraint = self.Model:FindFirstChild("UniversalConstraint", true)
 		self.HitConnection = self.HitPart.Touched:Connect(function(hit)
 			if hit.Parent == self.WCSCharacterReference.Instance then
 				Logger:Log("AbilityModel", " - Hit Self\n")
@@ -29,9 +36,19 @@ do
 		end)
 		return self
 	end
+	function AbilityModel:_attachModelToCharacter()
+		self._AlignOrientation.Attachment1 = self._CharacterAttachment
+		self._UniversalConstraint.Attachment1 = self._CharacterAttachment
+	end
+	function AbilityModel:_detachModelFromCharacter()
+		self._AlignOrientation.Attachment1 = nil
+		self._UniversalConstraint.Attachment1 = nil
+	end
 	function AbilityModel:Activate(phase)
 		repeat
 			if phase == 1 then
+				self.Model.Parent = self.WCSCharacterReference.Instance
+				self:_attachModelToCharacter()
 				Logger:Log("AbilityModel", "\t Phase 1 \n")
 				break
 			end
@@ -52,6 +69,7 @@ do
 	function AbilityModel:OnEnded()
 		-- Do something when the ability ends
 		Logger:Log("AbilityModel", " - Ability Ended\n")
+		self:_detachModelFromCharacter()
 	end
 	function AbilityModel:OnHit()
 		Logger:Log("AbilityModel", " - Ability Hit\n")

@@ -76,6 +76,16 @@ do
 		end
 		return _model
 	end
+	function GameStorage:cloneTool(toolName)
+		-- Get the tool from the storage
+		local _tool = self._toolsStorage:FindFirstChild(toolName, true)
+		-- Validate the tool
+		if not _tool then
+			self:printAvailableItems(self._modelsStorage)
+			error(`Tool {toolName} not found in storage.`)
+		end
+		return _tool:Clone()
+	end
 	function GameStorage:cloneModel(modelName)
 		local _model = self:getModel(modelName)
 		if _model == nil then
@@ -139,6 +149,7 @@ do
 	GameStorage._configurationStorage = GameStorage._storageModel:WaitForChild("CONFIGURATIONS")
 	GameStorage._guiStorage = GameStorage._storageModel:WaitForChild("GUI")
 	GameStorage._modelsStorage = GameStorage._storageModel:WaitForChild("MODELS")
+	GameStorage._toolsStorage = GameStorage._storageModel:WaitForChild("TOOLS")
 	GameStorage._particlesStorage = GameStorage._storageModel:WaitForChild("PARTICLES")
 end
 return {

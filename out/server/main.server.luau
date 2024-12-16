@@ -22,7 +22,7 @@ end
 -- Handle Player Added
 local function handlePlayerAdded(player)
 	-- Call DataManager OnPlayerJoined to load player data to the DataCache
-	DataManager:RegisterPlayer(player)
+	--DataManager.RegisterPlayer(player);
 	-- Handle Character Added
 	player.CharacterAdded:Connect(handleCharacterAdded)
 end

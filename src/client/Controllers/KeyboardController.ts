@@ -3,8 +3,6 @@ import { UserInputService } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
 
-
-
 export class KeyboardController {
 	private static instance: KeyboardController;
 	private static inputBeganConnection: RBXScriptConnection;
@@ -23,7 +21,7 @@ export class KeyboardController {
 		KeyboardController.OnCharacterAdded(character as Model);
 		// CHARACTER ADDED
 		KeyboardController.characterAddedConnection = Player.CharacterAdded.Connect((character: Model) => {
-			Logger.Log("KeyboardController", "Character Added");
+			//Logger.Log("KeyboardController", "Character Added");
 			KeyboardController.OnCharacterAdded(character);
 		});
 	}
@@ -51,12 +49,10 @@ export class KeyboardController {
 	}
 
 	private static InputBegan(input: InputObject, isProcessed: boolean) {
-
 		KeyboardController.onKeyPress(input.KeyCode, true);
 	}
 
 	private static InputEnded(input: InputObject, isProcessed: boolean) {
-
 		KeyboardController.onKeyPress(input.KeyCode, false);
 	}
 
@@ -77,7 +73,7 @@ export class KeyboardController {
 
 	// Main Function: onKeyPress
 	private static onKeyPress(key: Enum.KeyCode, begin: boolean): void {
-		Logger.Log("KeyboardController", `Key Pressed: ${key} - ${begin}`);
+		//Logger.Log("KeyboardController", `Key Pressed: ${key} - ${begin}`);
 		switch (key) {
 			case Enum.KeyCode.Q:
 				this.SkillToggle("DevilBeam", begin);

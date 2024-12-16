@@ -23,7 +23,7 @@ export class TEffect {
 			.GetDescendants()
 			.filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
 		this._particleEffects.forEach((particle) => {
-			Logger.Log(scriptTag, particleGroupingPart, particleGroupingPart.CFrame);
+			//Logger.Log(scriptTag, particleGroupingPart, particleGroupingPart.CFrame);
 		});
 	}
 

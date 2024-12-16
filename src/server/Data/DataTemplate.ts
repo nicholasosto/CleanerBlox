@@ -30,8 +30,8 @@ export const DataTemplate = {
 
 	// Character Skills
 	Skills: {
-		Slot_1: "Attack",
-		Slot_2: "Block",
+		Slot_1: "DevilBeam",
+		Slot_2: "BigRed",
 		Slot_3: "Spotlights",
 		Slot_4: "Empty",
 		Slot_5: "Empty",

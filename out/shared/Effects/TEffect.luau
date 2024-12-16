@@ -1,7 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local scriptTag = "TEffect"
 local TEffect
 do
@@ -40,7 +39,7 @@ do
 		local _exp_1 = self._particleEffects
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback_1 = function(particle)
-			Logger:Log(scriptTag, particleGroupingPart, particleGroupingPart.CFrame)
+			--Logger.Log(scriptTag, particleGroupingPart, particleGroupingPart.CFrame);
 		end
 		for _k, _v in _exp_1 do
 			_callback_1(_v, _k - 1, _exp_1)

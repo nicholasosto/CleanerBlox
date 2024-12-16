@@ -1,9 +1,6 @@
 import { Logger } from "shared/Utility/Logger";
 import { IAttachments } from "../Interfaces/IAttachments";
 
-
-
-
 export class EntityAttachments implements IAttachments {
 	Head: Attachment;
 	LeftHand: Attachment;
@@ -13,7 +10,6 @@ export class EntityAttachments implements IAttachments {
 	Floor: Attachment;
 	Halo: Attachment;
 	Body: Attachment;
-
 
 	constructor(character: Model) {
 		const characterHead = character.WaitForChild("Head");
@@ -41,7 +37,7 @@ export class EntityAttachments implements IAttachments {
 			this.Halo.Parent = characterHead;
 			this.Halo.Position = new Vector3(0, 1, 0);
 			testClone.Parent = this.Halo;
-			Logger.Log("Halo", " - Constructed\n");
+			//Logger.Log("Halo", " - Constructed\n");
 		}
 
 		// Body Attachment
@@ -51,7 +47,7 @@ export class EntityAttachments implements IAttachments {
 			this.Floor.Parent = this.Body;
 			this.Floor.Position = new Vector3(0, -2, 0);
 		}
-		
-		Logger.Log("EntityAttachments", " - Constructed\n");
+
+		//Logger.Log("EntityAttachments", " - Constructed\n");
 	}
 }

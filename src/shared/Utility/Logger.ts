@@ -24,7 +24,7 @@ export class Logger {
 
 		// Log message
 		
-		let logMessage = `\n${this._logLevel}: \n[${logTag}]\n `;
+		let logMessage = `================\n`;
 		warn(logTag);
 		// Iterate through messages and log them
 		messages.forEach((message) => {
@@ -46,6 +46,7 @@ export class Logger {
 			warn(logMessage);
 		} else {
 			print(logMessage);
+			print(`\n=\t End \t=\n\n`);
 		}
 	}
 

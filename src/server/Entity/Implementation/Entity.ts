@@ -5,6 +5,8 @@ import { EntityResource } from "./EntityResource";
 import { EntityAttachments } from "./EntityAttachment";
 import * as Calculator from "./EntityCalculator";
 import { Logger } from "shared/Utility/Logger";
+import { HttpService, ReplicatedStorage } from "@rbxts/services";
+import { SkillConfigurations } from "shared/WCS/Interfaces/SkillConfigurations";
 
 export class BaseEntity {
 	// CharacterModel
@@ -37,6 +39,13 @@ export class BaseEntity {
 	public MaxMana: number = 15;
 	public MaxStamina: number = 15;
 
+	// Events
+	private _eventEntityCreated: RemoteEvent = ReplicatedStorage.WaitForChild("Remotes").WaitForChild(
+		"ENTITY_Created",
+	) as RemoteEvent;
+	private _eventEntityDestroyed: RemoteEvent = ReplicatedStorage.WaitForChild("Remotes").WaitForChild(
+		"ENTITY_Destroyed",
+	) as RemoteEvent;
 
 	constructor(rig: Model) {
 		// Set the CharacterModel
@@ -45,7 +54,7 @@ export class BaseEntity {
 		// WCS Character
 		this.WCS_Character = new Character(rig);
 		this.WCS_Character.ApplyMoveset("DefaultMoveset");
-
+		
 		// Set the Attachments
 		this.EntityAttachments = new EntityAttachments(rig);
 
@@ -58,7 +67,17 @@ export class BaseEntity {
 
 		const humanoid = rig.WaitForChild("Humanoid") as Humanoid;
 
+		const player = this.WCS_Character.Player as Player;
+
+		if (player) {
+			this._eventEntityCreated.FireClient(player);
+		}
+
 		humanoid.Died.Connect(() => {
+			const player = this.WCS_Character.Player;
+			if (player) {
+				this._eventEntityDestroyed.FireClient(player);
+			}
 			this.Destroy();
 		});
 

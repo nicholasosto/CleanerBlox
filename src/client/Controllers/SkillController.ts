@@ -18,7 +18,7 @@ class AbilityButton {
 			const character = Character.GetLocalCharacter();
 			const wcsSkill = character?.GetSkills().find((skill) => skill.GetName() === this._skillId);
 			if (wcsSkill === undefined) {
-				Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
+				//Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
 				return;
 			}
 			wcsSkill.Start();
@@ -28,7 +28,7 @@ class AbilityButton {
 			const character = Character.GetLocalCharacter();
 			const wcsSkill = character?.GetSkills().find((skill) => skill.GetName() === this._skillId);
 			if (wcsSkill === undefined) {
-				Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
+				//Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
 				return;
 			}
 			wcsSkill.Stop();

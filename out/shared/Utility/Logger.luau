@@ -30,7 +30,7 @@ do
 			return nil
 		end
 		-- Log message
-		local logMessage = `\n{self._logLevel}: \n[{logTag}]\n `
+		local logMessage = `================\n`
 		warn(logTag)
 		-- Iterate through messages and log them
 		-- ▼ ReadonlyArray.forEach ▼
@@ -59,6 +59,7 @@ do
 			warn(logMessage)
 		else
 			print(logMessage)
+			print(`\n=\t End \t=\n\n`)
 		end
 	end
 	function Logger:StringifyCFrame(cf)

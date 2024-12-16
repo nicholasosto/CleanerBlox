@@ -3,19 +3,23 @@
 // GameStorage
 import { GameStorage } from "shared/Utility/GameStorage";
 import { SignalButton } from "./SignalButton";
-import { ProgressBar } from "./ProgressBar";
 import { Character } from "@rbxts/wcs";
 import { EffectList } from "shared/Effects/TEffect";
 
 // Template
 const Template = GameStorage.getGUI("Ability Button Template") as Frame;
 
+export class CooldownBar {
+	constructor() {
+	}
+}
+
 // Attribute Label Class
 export class AbilityButton {
 	// Private Variables
 	private _instance: Frame = Template.Clone();
-	private _imageButton: ImageButton = this._instance.FindFirstChild("ImageButton", true) as ImageButton;
-	private _progressBarFrame: Frame = this._instance.FindFirstChild("Progress Bar", true) as Frame;
+	private _imageButton: ImageButton = this._instance.FindFirstChild("ActivationButton", true) as ImageButton;
+	private _progressBarFrame: Frame = this._instance.FindFirstChild("CooldownBar", true) as Frame;
 	private _wcsSkillName: string;
 	public signalButton: SignalButton = new SignalButton(this._imageButton, { name:"DUMMY", holdable: true });
 
@@ -25,9 +29,9 @@ export class AbilityButton {
 	private _connection: RBXScriptConnection | undefined;
 
 	// Constructor
-	constructor(displayName: string, wcsSkillName: string, imageId: string) {
-		this._imageButton.SetAttribute("Image", imageId);
-		this._progressBarFrame.SetAttribute("TextValue", displayName);
+	constructor(displayName: string, wcsSkillName: string) {
+
+
 		this._instance.Name = displayName;
 		this._wcsSkillName = wcsSkillName;
 		

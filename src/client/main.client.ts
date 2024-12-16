@@ -6,7 +6,8 @@ import { CreateClient } from "@rbxts/wcs";
 import { KeyboardController } from "./Controllers/KeyboardController";
 import { SkillController } from "./Controllers/SkillController";
 import { FlightController } from "./Controllers/FlightController";
-import { UIController } from "./Controllers/UIController";
+import { ActionBar } from "./ActionBar/ActionBar";
+//import { UIController } from "./Controllers/UIController";
 
 // References
 import { WCSFolders } from "shared/WCS/Folders";
@@ -16,7 +17,8 @@ import { Logger } from "shared/Utility/Logger";
 KeyboardController.Start();
 SkillController.Start();
 FlightController.Start();
-UIController.Start();
+ActionBar.Start();
+//UIController.Start();
 
 // WCS Client Start
 const wcsClient = CreateClient();

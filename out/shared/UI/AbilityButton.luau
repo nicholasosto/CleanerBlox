@@ -7,6 +7,21 @@ local SignalButton = TS.import(script, game:GetService("ReplicatedStorage"), "TS
 local EffectList = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Effects", "TEffect").EffectList
 -- Template
 local Template = GameStorage:getGUI("Ability Button Template")
+local CooldownBar
+do
+	CooldownBar = setmetatable({}, {
+		__tostring = function()
+			return "CooldownBar"
+		end,
+	})
+	CooldownBar.__index = CooldownBar
+	function CooldownBar.new(...)
+		local self = setmetatable({}, CooldownBar)
+		return self:constructor(...) or self
+	end
+	function CooldownBar:constructor()
+	end
+end
 -- Attribute Label Class
 local AbilityButton
 do
@@ -20,16 +35,14 @@ do
 		local self = setmetatable({}, AbilityButton)
 		return self:constructor(...) or self
 	end
-	function AbilityButton:constructor(displayName, wcsSkillName, imageId)
+	function AbilityButton:constructor(displayName, wcsSkillName)
 		self._instance = Template:Clone()
-		self._imageButton = self._instance:FindFirstChild("ImageButton", true)
-		self._progressBarFrame = self._instance:FindFirstChild("Progress Bar", true)
+		self._imageButton = self._instance:FindFirstChild("ActivationButton", true)
+		self._progressBarFrame = self._instance:FindFirstChild("CooldownBar", true)
 		self.signalButton = SignalButton.new(self._imageButton, {
 			name = "DUMMY",
 			holdable = true,
 		})
-		self._imageButton:SetAttribute("Image", imageId)
-		self._progressBarFrame:SetAttribute("TextValue", displayName)
 		self._instance.Name = displayName
 		self._wcsSkillName = wcsSkillName
 	end
@@ -54,5 +67,6 @@ do
 	end
 end
 return {
+	CooldownBar = CooldownBar,
 	AbilityButton = AbilityButton,
 }

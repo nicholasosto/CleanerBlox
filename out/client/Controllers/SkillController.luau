@@ -45,7 +45,7 @@ do
 			end
 			local wcsSkill = _wcsSkill
 			if wcsSkill == nil then
-				Logger:Log("AbilityButton", "wcsSkill: ", self._skillId, " is undefined")
+				--Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
 				return nil
 			end
 			wcsSkill:Start()
@@ -71,7 +71,7 @@ do
 			end
 			local wcsSkill = _wcsSkill
 			if wcsSkill == nil then
-				Logger:Log("AbilityButton", "wcsSkill: ", self._skillId, " is undefined")
+				--Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
 				return nil
 			end
 			wcsSkill:Stop()

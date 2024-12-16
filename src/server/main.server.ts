@@ -25,7 +25,7 @@ function handleCharacterAdded(character: Model) {
 // Handle Player Added
 function handlePlayerAdded(player: Player) {
 	// Call DataManager OnPlayerJoined to load player data to the DataCache
-	DataManager.RegisterPlayer(player);
+	//DataManager.RegisterPlayer(player);
 
 	// Handle Character Added
 	player.CharacterAdded.Connect(handleCharacterAdded);

@@ -1,6 +1,4 @@
 -- Compiled with roblox-ts v3.0.0
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityAttachments
 do
 	EntityAttachments = setmetatable({}, {
@@ -14,6 +12,7 @@ do
 		return self:constructor(...) or self
 	end
 	function EntityAttachments:constructor(character)
+		--Logger.Log("EntityAttachments", " - Constructed\n");
 		local characterHead = character:WaitForChild("Head")
 		self.Head = character:FindFirstChild("HatAttachment")
 		self.LeftHand = character:FindFirstChild("LeftGripAttachment")
@@ -36,7 +35,7 @@ do
 			self.Halo.Parent = characterHead
 			self.Halo.Position = Vector3.new(0, 1, 0)
 			testClone.Parent = self.Halo
-			Logger:Log("Halo", " - Constructed\n")
+			--Logger.Log("Halo", " - Constructed\n");
 		end
 		-- Body Attachment
 		if self.Floor == nil then
@@ -45,7 +44,7 @@ do
 			self.Floor.Parent = self.Body
 			self.Floor.Position = Vector3.new(0, -2, 0)
 		end
-		Logger:Log("EntityAttachments", " - Constructed\n")
+		--Logger.Log("EntityAttachments", " - Constructed\n");
 	end
 end
 return {

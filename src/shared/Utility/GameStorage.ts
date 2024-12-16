@@ -25,6 +25,9 @@ export class GameStorage {
 	// Models
 	private static _modelsStorage: Folder = this._storageModel.WaitForChild("MODELS") as Folder;
 
+	// Models
+	private static _toolsStorage: Folder = this._storageModel.WaitForChild("TOOLS") as Folder;
+
 	// Particles
 	private static _particlesStorage: Folder = this._storageModel.WaitForChild("PARTICLES") as Folder;
 
@@ -97,7 +100,6 @@ export class GameStorage {
 
 		return _gui;
 	}
-
 	// MODEL STORAGE
 	public static getModel(modelName: string): Model {
 		// Get the model from the storage
@@ -110,6 +112,19 @@ export class GameStorage {
 		}
 
 		return _model;
+	}
+
+	public static cloneTool(toolName: string): Tool {
+		// Get the tool from the storage
+		const _tool = this._toolsStorage.FindFirstChild(toolName, true) as Tool;
+
+		// Validate the tool
+		if (!_tool) {
+			this.printAvailableItems(this._modelsStorage);
+			error(`Tool ${toolName} not found in storage.`);
+		}
+
+		return _tool.Clone();
 	}
 
 	// Clone Ability Model
