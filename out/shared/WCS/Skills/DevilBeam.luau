@@ -6,7 +6,9 @@ local SkillDecorator = _wcs.SkillDecorator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local SkillConfigurations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "SkillConfigurations").SkillConfigurations
-local HttpService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").HttpService
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local HttpService = _services.HttpService
+local TweenService = _services.TweenService
 -- AnimationID = 132928610589952 DevilBeam Fired
 local DevilBeam
 do
@@ -25,9 +27,9 @@ do
 	function DevilBeam:constructor(...)
 		super.constructor(self, ...)
 		self._animationInstance = GameStorage:getAnimation("DevilBeam Fired")
-		self._animationTrack = self.Character.Humanoid:LoadAnimation(self._animationInstance)
 		self.SkillConfiguration = SkillConfigurations.DevilBeam
 		self.DisplayName = "Devil Beam"
+		self.ActivationTime = 1
 		self._defaultHoldTime = 5
 		self._defaultCooldownTime = 3
 		self._defaultManaCost = 10
@@ -37,17 +39,17 @@ do
 		-- Load Animations and Particles
 		--Logger.Log("DevilBeam", " - Constructed\n");
 		local humanoid = self.Character.Humanoid
-		if humanoid == nil then
-			Logger:Log("DevilBeam", " - Humanoid Not Found\n")
-			return nil
+		local _animator = humanoid
+		if _animator ~= nil then
+			_animator = _animator:FindFirstChildOfClass("Animator")
 		end
-		-- Load Animation
-		local animator = humanoid:FindFirstChildOfClass("Animator")
-		if animator then
-			Logger:Log("DevilBeam", "Animator Found\n")
-			return nil
-		end
+		local animator = _animator
 		local animation = GameStorage:getAnimation("DevilBeam Fired")
+		local _result = animator
+		if _result ~= nil then
+			_result = _result:LoadAnimation(animation)
+		end
+		self._animationTrack = _result
 		warn(animation.AnimationId, " loaded")
 		if animation then
 			Logger:Log("DevilBeam", "Animation Found\n")
@@ -61,8 +63,29 @@ do
 		Logger:Log(HttpService:JSONEncode(self.Name))
 	end
 	function DevilBeam:OnStartServer()
-		-- Apply Cooldown and Hold Time
-		--this.AbilityModelInstance = new AbilityModel(this.Character, GameStorage.getModel("DevilBeam"));
+		local characterModel = self.Character.Instance
+		local primartyPart = characterModel.PrimaryPart
+		if self._animationTrack then
+			primartyPart.Anchored = true
+			local animationSpeed = self._animationTrack.Length / self.ActivationTime
+			self._animationTrack:Play()
+			self._animationTrack:AdjustSpeed(animationSpeed)
+		end
+		task.delay(self.ActivationTime, function()
+			primartyPart.Anchored = false
+		end)
+		local hitPart = self.Character.Instance:FindFirstChild("HitPart", true)
+		local tweenInfo = TweenInfo.new(self.ActivationTime, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out, 0, false, 0)
+		local _object = {
+			Size = Vector3.new(3, 30, 3),
+		}
+		local _left = "CFrame"
+		local _exp = hitPart.Position
+		local _position = hitPart.Position
+		local _vector3 = Vector3.new(0, 30, 0)
+		_object[_left] = CFrame.new(_exp, _position + _vector3)
+		local tween = TweenService:Create(hitPart, tweenInfo, _object)
+		tween:Play()
 		self:ApplyCooldown(self._defaultCooldownTime)
 		self:SetMaxHoldTime(self._defaultHoldTime)
 		-- Cooldown Timer
@@ -73,21 +96,12 @@ do
 		self.HoldTimer.secondReached:Connect(function(seconds)
 			return self:stageActivated(seconds)
 		end)
-		local characterModel = self.Character.Instance
-		local humnoidRootPart = characterModel:FindFirstChild("HumanoidRootPart")
-		local _rightHand = self.Character.Instance:FindFirstChild("RightHand")
-		humnoidRootPart.Anchored = true
-		task.delay(10, function()
-			humnoidRootPart.Anchored = false
-		end)
 	end
 	function DevilBeam:stageActivated(seconds)
 		Logger:Log(self:GetName(), "\n--------  Stage Activated Server  --------\n")
-		local devilBeamTool = GameStorage:cloneTool("DevilBeam")
+		--const devilBeamTool = GameStorage.cloneTool("DevilBeam");
 		repeat
 			if seconds == 1 then
-				--this.AbilityModelInstance.Activate(3);
-				devilBeamTool.Parent = self.Character.Instance
 				break
 			end
 			if seconds == 2 then

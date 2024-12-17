@@ -1,4 +1,4 @@
-// Type: TypeScript file
+import {CollectionService, Workspace} from "@rbxts/services";
 
 export class PositionGenerator {
 	private static _instance: PositionGenerator;
@@ -14,7 +14,7 @@ export class PositionGenerator {
 	}
 
 	// Default Target Position
-	public static GenerateDefaultTargetPosition(sourceModel: Model, offset: number = 10): Vector3 {
+	public static GenerateDefaultTargetPosition(sourceModel: Model | BasePart, offset: number = 10): Vector3 {
 		// get the source model's position and direction
 		const sourceFrame = sourceModel.GetPivot();
 		const sourcePosition = sourceFrame.Position;
@@ -24,13 +24,14 @@ export class PositionGenerator {
 		return targetPosition;
 	}
 
-	public static GenerateRandomPositionsAroundSource(sourceModel: Model, numPositions: number, radius: number): Vector3[] {
+	public static GenerateRandomPositionsAroundSource(sourceModel: Model | BasePart, numPositions: number, radius: number): Vector3[] {
 		// get the source model's position
 		const sourceFrame = sourceModel.GetPivot();
 
 		// set up the positions array
 		const positions: Vector3[] = [];
 		const angleIncrement = (2 * math.pi) / numPositions;
+		
 
 		// generate positions around the source model
 		for (let i = 0; i < numPositions; i++) {
@@ -44,7 +45,7 @@ export class PositionGenerator {
 		return positions;
 	}
 
-	public static createRing(userCFrame: CFrame, radius: number, numPositions: number): Vector3[] {
+	public static CreateRing(userCFrame: CFrame, radius: number, numPositions: number): Vector3[] {
 		const angleIncrement = (2 * math.pi) / numPositions;
 		const ringCFrames: Vector3[] = [];
 

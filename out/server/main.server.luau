@@ -6,9 +6,13 @@ local DataManager = TS.import(script, game:GetService("ServerScriptService"), "T
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "EntityManager").EntityManager
+local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Events", "CommunicationGod").CommunicationGod
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
+-- Test imports
 --const dataService = new DataService();
 DataManager:Start()
 EntityManager:Start()
+CommunicationGod:Summon()
 -- WCS Server Start
 local WCSServer = CreateServer()
 WCSServer:RegisterDirectory(WCSFolders.Skills)
@@ -18,6 +22,24 @@ WCSServer:Start()
 -- Handle Character Added
 local function handleCharacterAdded(character)
 	Logger:Log("Main", "Character Added")
+	warn("GameModels")
+	local _exp = GameStorage:getUniqueModelNameswithinWorkspace()
+	-- ▼ ReadonlyArray.forEach ▼
+	local _callback = function(name)
+		print(name)
+	end
+	for _k, _v in _exp do
+		_callback(_v, _k - 1, _exp)
+	end
+	-- ▲ ReadonlyArray.forEach ▲
+	local humanoid = character:WaitForChild("Humanoid")
+	local connection = humanoid.HealthChanged:Connect(function(health)
+		warn("Health Changed: ", health)
+	end)
+	local connection2 = humanoid.StateChanged:Connect(function(oldState, newState)
+		warn("State Changed: ")
+		print(oldState, " ==> ", newState)
+	end)
 end
 -- Handle Player Added
 local function handlePlayerAdded(player)

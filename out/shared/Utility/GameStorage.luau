@@ -142,6 +142,17 @@ do
 		-- Return the skill button
 		return skillButton
 	end
+	function GameStorage:getUniqueModelNameswithinWorkspace()
+		local modelNames = {}
+		local workspaceModels = game.Workspace:GetChildren()
+		for _, model in workspaceModels do
+			if model:IsA("Model") then
+				local _name = model.Name
+				table.insert(modelNames, _name)
+			end
+		end
+		return modelNames
+	end
 	GameStorage._storageModel = ReplicatedStorage:WaitForChild("SoulSteelStorage")
 	GameStorage._accessoriesStorage = GameStorage._storageModel:WaitForChild("ACCESSORIES")
 	GameStorage._animationsStorage = GameStorage._storageModel:WaitForChild("ANIMATIONS")

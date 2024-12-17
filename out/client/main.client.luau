@@ -12,11 +12,13 @@ local ActionBar = TS.import(script, script.Parent, "ActionBar", "ActionBar").Act
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Events", "CommunicationGod").CommunicationGod
 -- Start Controllers
 KeyboardController:Start()
 SkillController:Start()
 FlightController:Start()
 ActionBar:Start()
+CommunicationGod:Summon()
 --UIController.Start();
 -- WCS Client Start
 local wcsClient = CreateClient()
@@ -28,6 +30,16 @@ wcsClient:Start()
 local function handleCharacterAdded(character)
 	-- Add Controllers
 	--const wcsCharacter = Character.GetLocalCharacter();
+	local _exp = CommunicationGod.ServerSignals
+	-- ▼ ReadonlyMap.forEach ▼
+	local _callback = function(signal, name)
+		signal:FireServer()
+		print("Fired Signal: ", name)
+	end
+	for _k, _v in _exp do
+		_callback(_v, _k, _exp)
+	end
+	-- ▲ ReadonlyMap.forEach ▲
 	task.wait(1)
 end
 -- Handle Character Removing
@@ -41,3 +53,12 @@ end
 -- Character Added/Removing Events
 Players.LocalPlayer.CharacterAdded:Connect(handleCharacterAdded)
 Players.LocalPlayer.CharacterRemoving:Connect(handleCharacterRemoving)
+local TestSignal = CommunicationGod.ServerSignals.TestSignal
+local _result = TestSignal
+if _result ~= nil then
+	_result:FireServer()
+end
+local _result_1 = CommunicationGod.ServerSignals.TestSignal
+if _result_1 ~= nil then
+	_result_1:FireServer()
+end

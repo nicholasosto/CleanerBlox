@@ -1,5 +1,4 @@
 -- Compiled with roblox-ts v3.0.0
--- Type: TypeScript file
 local PositionGenerator
 do
 	PositionGenerator = setmetatable({}, {
@@ -63,7 +62,7 @@ do
 		end
 		return positions
 	end
-	function PositionGenerator:createRing(userCFrame, radius, numPositions)
+	function PositionGenerator:CreateRing(userCFrame, radius, numPositions)
 		local angleIncrement = (2 * math.pi) / numPositions
 		local ringCFrames = {}
 		do

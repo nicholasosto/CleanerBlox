@@ -1,4 +1,4 @@
-import { ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage, AssetService } from "@rbxts/services";
 import * as WCS from "@rbxts/wcs";
 
 export class GameStorage {
@@ -179,5 +179,16 @@ export class GameStorage {
 
 		// Return the skill button
 		return skillButton;
+	}
+
+	public static getUniqueModelNameswithinWorkspace(): string[] {
+		const modelNames: string[] = [];
+		const workspaceModels = game.Workspace.GetChildren();
+		for (const model of workspaceModels) {
+			if (model.IsA("Model")) {
+				modelNames.push(model.Name);
+			}
+		}
+		return modelNames;
 	}
 }
