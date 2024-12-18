@@ -4,7 +4,6 @@ local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts
 local EntityResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityResource").EntityResource
 local EntityAttachments = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityAttachment").EntityAttachments
 local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityCalculator")
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
 local BaseEntity
 do
@@ -74,11 +73,7 @@ do
 		self.Target = target
 	end
 	function BaseEntity:Destroy()
-		local _result = self
-		if _result ~= nil then
-			_result = _result.CharacterModel
-		end
-		Logger:Log("BaseEntity: Destroying: ", _result)
+		--Logger.Log("BaseEntity: Destroying: ", this?.CharacterModel);
 		self.Health:Destroy()
 		self.Mana:Destroy()
 		self.Stamina:Destroy()

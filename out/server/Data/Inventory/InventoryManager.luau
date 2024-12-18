@@ -1,6 +1,4 @@
 -- Compiled with roblox-ts v3.0.0
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local InventoryType = {
 	SkillInventory = "SkillInventory",
 	WeaponInventory = "WeaponInventory",
@@ -41,7 +39,7 @@ do
 		end
 		-- ▲ ReadonlyArray.find ▲
 		if _result ~= nil then
-			Logger:Log("InventoryManager", "Item already Exista", itemId)
+			--Logger.Log("InventoryManager", "Item already Exista", itemId);
 			return nil
 		end
 		local _itemId = itemId
@@ -55,7 +53,7 @@ do
 		local itemIndex = (table.find(_exp, _itemId) or 0) - 1
 		if itemIndex > -1 then
 			self._dataCache._playerData[inventoryType][itemIndex + 1] = ""
-			Logger:Log("InventoryManager", "Item Removed", itemId)
+			--Logger.Log("InventoryManager", "Item Removed", itemId);
 		end
 		self._dataCache:Save()
 	end

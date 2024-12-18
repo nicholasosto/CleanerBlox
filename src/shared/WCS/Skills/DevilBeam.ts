@@ -39,7 +39,6 @@ export class DevilBeam extends HoldableSkill {
 		const animation = GameStorage.getAnimation("DevilBeam Fired");
 		this._animationTrack = animator?.LoadAnimation(animation);
 
-
 		warn(animation.AnimationId, " loaded");
 		if (animation) {
 			Logger.Log("DevilBeam", "Animation Found\n");
@@ -52,7 +51,6 @@ export class DevilBeam extends HoldableSkill {
 	public OnConstructClient(): void {
 		//Logger.Log("DevilBeam", " - Constructed\n");
 		Logger.Log(HttpService.JSONEncode(this.Name));
-
 	}
 
 	// MOVE START
@@ -69,19 +67,23 @@ export class DevilBeam extends HoldableSkill {
 		task.delay(this.ActivationTime, () => {
 			primartyPart.Anchored = false;
 		});
-		const hitPart: BasePart | undefined = this.Character.Instance.FindFirstChild("HitPart",true) as BasePart
-		const tweenInfo = new TweenInfo(this.ActivationTime, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out, 0, false, 0);
-		const tween = TweenService.Create(hitPart, tweenInfo, 
-			{ 
-				Size: new Vector3(3, 30, 3),
-				CFrame: new CFrame(hitPart.Position, hitPart.Position.add(new Vector3(0, 30, 0))),
-			
-			}) as Tween;
-		
+		const hitPart: BasePart | undefined = this.Character.Instance.FindFirstChild("HitPart", true) as BasePart;
+		const tweenInfo = new TweenInfo(
+			this.ActivationTime,
+			Enum.EasingStyle.Cubic,
+			Enum.EasingDirection.Out,
+			0,
+			false,
+			0,
+		);
+		const tween = TweenService.Create(hitPart, tweenInfo, {
+			Size: new Vector3(3, 30, 3),
+			CFrame: new CFrame(hitPart.Position, hitPart.Position.add(new Vector3(0, 30, 0))),
+		}) as Tween;
+
 		tween.Play();
 		this.ApplyCooldown(this._defaultCooldownTime);
 		this.SetMaxHoldTime(this._defaultHoldTime);
-
 
 		// Cooldown Timer
 		this.CooldownTimer.secondReached.Connect((seconds) => {
@@ -95,11 +97,10 @@ export class DevilBeam extends HoldableSkill {
 	// Stages
 	private stageActivated(seconds: number) {
 		Logger.Log(this.GetName(), "\n--------  Stage Activated Server  --------\n");
-		
+
 		//const devilBeamTool = GameStorage.cloneTool("DevilBeam");
 		switch (seconds) {
 			case 1:
-				
 				break;
 			case 2:
 				this.Stage2();

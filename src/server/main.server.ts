@@ -5,12 +5,14 @@ import { WCSFolders } from "shared/WCS/Folders";
 import { Logger } from "shared/Utility/Logger";
 import { EntityManager } from "./Entity/EntityManager";
 import { CommunicationGod } from "shared/Events/CommunicationGod";
-
 import { GameStorage } from "shared/Utility/GameStorage";
 
-// Test imports
-import { AssetService } from "@rbxts/services";
-import { PositionGenerator } from "shared/Utility/PositionGenerator";
+// testRig
+const testRig = game.Workspace.WaitForChild("Positional Testing").WaitForChild("TestRig") as Model;
+const animator = testRig.FindFirstChild("Animator",true) as Animator;
+const testAnimation = new Instance("Animation");
+testAnimation.Name = "TestAnimation";
+testAnimation.AnimationId = "rbxassetid://0";
 
 //const dataService = new DataService();
 
@@ -28,21 +30,9 @@ WCSServer.Start();
 // Handle Character Added
 function handleCharacterAdded(character: Model) {
 	Logger.Log("Main", "Character Added");
-	warn("GameModels");
-	GameStorage.getUniqueModelNameswithinWorkspace().forEach((name) => {
-		print(name);
-	});
 
-	const humanoid: Humanoid = character.WaitForChild("Humanoid") as Humanoid;
 
-	const connection = humanoid.HealthChanged.Connect((health) => {
-		warn("Health Changed: ", health);
-	});
 
-	const connection2: RBXScriptConnection = humanoid.StateChanged.Connect((oldState, newState) => {
-		warn("State Changed: ");
-		print(oldState," ==> " ,newState);
-	});
 }
 
 // Handle Player Added

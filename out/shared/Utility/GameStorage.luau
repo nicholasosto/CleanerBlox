@@ -1,6 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local WCS = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
 local GameStorage
 do
@@ -16,14 +17,16 @@ do
 	end
 	function GameStorage:constructor()
 	end
-	function GameStorage:getAccessory(accessoryName)
+	function GameStorage:cloneAccessory(accessoryName)
 		-- Get the accessory from the storage
 		local _accessory = self._accessoriesStorage:FindFirstChild(accessoryName, true)
 		-- Validate the accessory
-		if not _accessory then
-			self:printAvailableItems(self._accessoriesStorage)
-			error(`Accessory {accessoryName} not found in storage.`)
+		if _accessory == nil then
+			Logger:Log("GameStorage", `Accessory {accessoryName} not found in storage.`)
+			return nil
 		end
+		-- Clone the accessory
+		local _clonedAccessory = _accessory:Clone()
 		return _accessory
 	end
 	function GameStorage:getAnimation(animationName)
@@ -119,14 +122,14 @@ do
 				local _exp = item:GetChildren()
 				-- ▼ ReadonlyArray.forEach ▼
 				local _callback = function(child)
-					print(child.Name)
+					--print(child.Name);
 				end
 				for _k, _v in _exp do
 					_callback(_v, _k - 1, _exp)
 				end
 				-- ▲ ReadonlyArray.forEach ▲
 			end
-			print(item.Name)
+			--print(item.Name);
 		end
 	end
 	function GameStorage:createSkillButton(wcsSkill)

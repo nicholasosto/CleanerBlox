@@ -24,7 +24,7 @@ do
 	end
 	function HomingSphere:constructor(owner)
 		self._state = HSState.Created
-		Logger:Log("HomingSphere", "Created", owner.Name)
+		--Logger.Log("HomingSphere", "Created", owner.Name);
 		self._instance = GameStorage:getModel("HomingSphere")
 		self._owner = owner
 		self._hitPart = self._instance:FindFirstChild("HitPart")
@@ -56,16 +56,16 @@ do
 		until true
 	end
 	function HomingSphere:onCreated()
-		print("HomingSphere Created")
+		Logger:Log("HomingSphere Created")
 	end
 	function HomingSphere:onSearching()
-		print("HomingSphere Searching")
+		Logger:Log("HomingSphere Searching")
 	end
 	function HomingSphere:onHoming()
-		print("HomingSphere Homing")
+		Logger:Log("HomingSphere Homing")
 	end
 	function HomingSphere:onExploding()
-		print("HomingSphere Exploding")
+		Logger:Log("HomingSphere Exploding")
 	end
 end
 return {

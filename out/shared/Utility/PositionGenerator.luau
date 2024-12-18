@@ -1,4 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local PositionGenerator
 do
 	PositionGenerator = setmetatable({}, {
@@ -87,6 +89,56 @@ do
 			end
 		end
 		return ringCFrames
+	end
+	function PositionGenerator:PositionGeneratorTests(start)
+		local scriptBlock = game:GetService("Workspace"):FindFirstChild("ScriptBlock", true)
+		if not start then
+			scriptBlock:ClearAllChildren()
+			Logger:Log("PositionGeneratorTests", "Cleared Children")
+			return nil
+		end
+		local scriptBlockAttachment = Instance.new("Attachment")
+		scriptBlock.Name = "ScriptBlockAttachment"
+		scriptBlockAttachment.Parent = scriptBlock
+		local randomPositionTest = PositionGenerator:GenerateRandomPositionsAroundSource(scriptBlock, 15, 22)
+		local fireIndicator = Instance.new("Fire")
+		fireIndicator.Color = Color3.fromRGB(255, 222, 0)
+		fireIndicator.Parent = scriptBlock
+		local beamCreated = false
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback = function(position)
+			local firePart = Instance.new("Part")
+			local fire = Instance.new("Fire")
+			local fireAttachment = Instance.new("Attachment")
+			fireAttachment.Parent = firePart
+			local beam = Instance.new("Beam")
+			if not beamCreated then
+				beamCreated = true
+				beam.Parent = firePart
+				beam.Color = ColorSequence.new(Color3.new(1, 0, 0))
+				beam.FaceCamera = true
+				beam.LightEmission = 1
+				beam.LightInfluence = 0
+				beam.Segments = 10
+				beam.Attachment0 = scriptBlockAttachment
+				beam.Attachment1 = fireAttachment
+				firePart.Name = "HitPart"
+				firePart.Color = Color3.fromRGB(255, 0, 0)
+			else
+				beamCreated = false
+			end
+			fire.Color = Color3.fromRGB(255, 222, 0)
+			fire.Parent = firePart
+			firePart.Size = Vector3.new(1, 1, 1)
+			firePart.Position = position
+			firePart.Anchored = true
+			firePart.Parent = scriptBlock
+		end
+		for _k, _v in randomPositionTest do
+			_callback(_v, _k - 1, randomPositionTest)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
+		local defaultTargetPosition = PositionGenerator:GenerateDefaultTargetPosition(scriptBlock, 10)
 	end
 end
 return {

@@ -44,7 +44,7 @@ do
 		Logger:Log("Spotlight", "Toucher", _exp, _result)
 	end
 	function Spotlight:OnStateChanged()
-		print("State Changed: ", (self.instance:GetAttribute("State")))
+		--print("State Changed: ", this.instance.GetAttribute("State"));
 		local _exp = self.instance:GetAttribute("State")
 		repeat
 			if _exp == "Active" then
@@ -56,7 +56,7 @@ do
 				break
 			end
 			if _exp == "Inactive" then
-				print("TODO: Spotlight is Inactive")
+				--print("TODO: Spotlight is Inactive");
 				break
 			end
 			if _exp == "Homing" then

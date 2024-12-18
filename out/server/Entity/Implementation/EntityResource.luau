@@ -1,7 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local RunService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").RunService
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityResource
 do
 	EntityResource = setmetatable({}, {
@@ -50,7 +49,7 @@ do
 		local timeSinceLastTick = tick() - self._lastRegenTick
 		if timeSinceLastTick >= self.RegenRate and self.CurrentValue < self.MaxValue then
 			self.CurrentValue += self.RegenAmount
-			Logger:Log("EntityResource", self.Name, self.CurrentValue)
+			--Logger.Log("EntityResource", this.Name, this.CurrentValue);
 		end
 		if self.CurrentValue < self.MaxValue then
 			self.CurrentValue += self.RegenAmount

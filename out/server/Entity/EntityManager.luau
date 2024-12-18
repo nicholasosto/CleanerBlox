@@ -3,6 +3,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- eslint-disable prettier/prettier 
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local BaseEntity = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "Entity").BaseEntity
+local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Events", "CommunicationGod").CommunicationGod
 local EntityManager
 do
 	EntityManager = setmetatable({}, {
@@ -51,6 +52,7 @@ do
 		__entities[_name] = nil
 	end
 	EntityManager._entities = {}
+	EntityManager._entityCreatedEvent = CommunicationGod.ServerSignals.Entity_Created
 end
 return {
 	EntityManager = EntityManager,

@@ -104,7 +104,7 @@ do
 		local destinationAttachment = Instance.new("Attachment")
 		destinationAttachment.Name = "DestinationAttachment"
 		destinationAttachment.Position = Vector3.new(sourceAttachment.WorldCFrame.X, sourceAttachment.WorldCFrame.Y, sourceAttachment.WorldCFrame.Z - distanceFromSource)
-		print("Destination Attachment Position: ", destinationAttachment.Position)
+		--Logger.Log("Destination Attachment Position: ", destinationAttachment.Position);
 		-- Calculate the segment length based on the number of positions and the distance from the source
 		local segmentLength = distanceFromSource / numPositions
 		-- Create the line formation

@@ -30,17 +30,6 @@ wcsClient:Start()
 local function handleCharacterAdded(character)
 	-- Add Controllers
 	--const wcsCharacter = Character.GetLocalCharacter();
-	local _exp = CommunicationGod.ServerSignals
-	-- ▼ ReadonlyMap.forEach ▼
-	local _callback = function(signal, name)
-		signal:FireServer()
-		print("Fired Signal: ", name)
-	end
-	for _k, _v in _exp do
-		_callback(_v, _k, _exp)
-	end
-	-- ▲ ReadonlyMap.forEach ▲
-	task.wait(1)
 end
 -- Handle Character Removing
 local function handleCharacterRemoving(character)

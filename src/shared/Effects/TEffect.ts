@@ -29,13 +29,13 @@ export class TEffect {
 
 	public playEffect(parent: Instance) {
 		if (this._particleGroupingPart) {
-			print("Playing Effect: " + this.Name);
+			//Logger.Log("Playing Effect: " + this.Name);
 			this._particleGroupingPart.Parent = parent;
 			//Debris.AddItem(this._particleGroupingPart, 5);
 		}
 
 		if (this._soundEffect) {
-			print("Playing Sound: " + this._soundEffect.Name);
+			Logger.Log("Playing Sound: " + this._soundEffect.Name);
 			this._soundEffect.Play();
 		}
 	}

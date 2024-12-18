@@ -70,7 +70,7 @@ export class SkillsManager {
 		const playersSkills = this._dataCache._playerData.SkillInventory;
 		const matchingSkill = playersSkills.find((skill) => skill === skillId);
 		if (matchingSkill === undefined) {
-			Logger.Log("SkillSlotManager", "\nSkill not found in player's inventory\n", skillId);
+			//Logger.Log("SkillSlotManager", "\nSkill not found in player's inventory\n", skillId);
 			return;
 		}
 		switch (slot) {

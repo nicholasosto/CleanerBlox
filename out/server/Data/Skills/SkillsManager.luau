@@ -1,7 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 -- Remote Events
 local SKILL_GetSlots = ReplicatedStorage:FindFirstChild("SKILL_GetSlots", true)
 local SKILL_GetInventory = ReplicatedStorage:FindFirstChild("SKILL_GetInventory", true)
@@ -96,7 +95,7 @@ do
 		-- ▲ ReadonlyArray.find ▲
 		local matchingSkill = _result
 		if matchingSkill == nil then
-			Logger:Log("SkillSlotManager", "\nSkill not found in player's inventory\n", skillId)
+			--Logger.Log("SkillSlotManager", "\nSkill not found in player's inventory\n", skillId);
 			return nil
 		end
 		repeat

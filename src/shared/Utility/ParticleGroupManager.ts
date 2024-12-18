@@ -1,11 +1,8 @@
 import { GameStorage } from "./GameStorage";
 import { Logger } from "./Logger";
 
-
-
 export class ParticleGroupManager {
 	private constructor() {}
-
 
 	// Helper function to get all particle effects in a particle group
 	private static getParticleDecendants(particleParent: Instance): ParticleEmitter[] {
@@ -13,28 +10,46 @@ export class ParticleGroupManager {
 		return particleEffects;
 	}
 
-	// Print all particle effects in a particle group
-	public static PrintParticleGroup(particleGroup: Instance) {
-		const particleEffects = ParticleGroupManager.getParticleDecendants(particleGroup);
-		particleEffects.forEach((particle) => {
-			Logger.Log("Particle", particle.Name);
-		});
-	}
-
-	// Get a particle group by name
-	public static GetParticleGroup(name: string): Instance {
-		const particleGroup = GameStorage.getModel(name);
+	// Get a cloned array of particle effects in a particle group
+	public static GetParticleGroup(name: string): ParticleEmitter[] {
+		const particleGroup = GameStorage.cloneParticleGroupAttachment(name).GetDescendants().filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
 		if (particleGroup === undefined) {
 			Logger.Log("ParticleGroupManager", "Particle Group not found", name);
 		}
 		return particleGroup;
 	}
 
+	// Parent all particle effects in a particle group to a parent
+	public static ParentParticleEmtters(particleGroup: ParticleEmitter[], parent: Instance): void {
+		particleGroup.forEach((particle) => {
+			particle.Parent = parent;
+		});
+	}
+
+	// Get a particle group by name
+	public static SpawnParticleGroup(name: string, parent: Instance): void {
+		const particleGroup = GameStorage.cloneParticleGroupAttachment(name).GetDescendants().filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
+		if (particleGroup === undefined) {
+			Logger.Log("ParticleGroupManager", "Particle Group not found", name);
+		}
+		particleGroup.forEach((particle) => {
+			particle.Parent = parent;
+		});
+
+	}
+
 	// Enable all particle effects in a particle group
-	public static EnableParticleGroup(particleGroup: Instance) {
-		const particleEffects = ParticleGroupManager.getParticleDecendants(particleGroup);
-		particleEffects.forEach((particle) => {
+	public static EnableParticleEmitters(particleEmitter: [ParticleEmitter]): void {
+		particleEmitter.forEach((particle) => {
 			particle.Enabled = true;
+			Logger.Log("BasicMelee", "Enabling Particle Emitter", particle.Name);
+		});
+	}
+
+	// Disable all particle effects in a particle group
+	public static DisableParticleEmitters(particleEmitter: [ParticleEmitter]): void {
+		particleEmitter.forEach((particle) => {
+			particle.Enabled = false;
 		});
 	}
 
@@ -45,4 +60,5 @@ export class ParticleGroupManager {
 			particle.Size = new NumberSequence([new NumberSequenceKeypoint(0, 0), new NumberSequenceKeypoint(1, scale)]);
 		});
 	}
+
 }

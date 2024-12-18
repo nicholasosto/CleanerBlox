@@ -1,4 +1,5 @@
 import {CollectionService, Workspace} from "@rbxts/services";
+import {Logger} from "./Logger";
 
 export class PositionGenerator {
 	private static _instance: PositionGenerator;
@@ -60,4 +61,54 @@ export class PositionGenerator {
 
 		return ringCFrames;
 	}
+
+	private static PositionGeneratorTests(start: boolean) {
+			const scriptBlock = game.GetService("Workspace").FindFirstChild("ScriptBlock", true) as BasePart;
+			if (!start) {
+				scriptBlock.ClearAllChildren();
+				Logger.Log("PositionGeneratorTests", "Cleared Children");
+				return;
+			}
+			const scriptBlockAttachment = new Instance("Attachment");
+			scriptBlock.Name = "ScriptBlockAttachment";
+			scriptBlockAttachment.Parent = scriptBlock;
+	
+			const randomPositionTest = PositionGenerator.GenerateRandomPositionsAroundSource(scriptBlock, 15, 22);
+			const fireIndicator = new Instance("Fire");
+			fireIndicator.Color = Color3.fromRGB(255, 222, 0);
+			fireIndicator.Parent = scriptBlock;
+			let beamCreated = false;
+			randomPositionTest.forEach((position) => {
+				const firePart = new Instance("Part");
+				const fire = new Instance("Fire");
+				const fireAttachment = new Instance("Attachment");
+				fireAttachment.Parent = firePart;
+				const beam = new Instance("Beam");
+				if (!beamCreated) {
+					beamCreated = true;
+					beam.Parent = firePart;
+					beam.Color = new ColorSequence(new Color3(1, 0, 0));
+					beam.FaceCamera = true;
+					beam.LightEmission = 1;
+					beam.LightInfluence = 0;
+					beam.Segments = 10;
+					beam.Attachment0 = scriptBlockAttachment;
+					beam.Attachment1 = fireAttachment;
+	
+					firePart.Name = "HitPart";
+					firePart.Color = Color3.fromRGB(255, 0, 0);
+				} else {
+					beamCreated = false;
+				}
+	
+				fire.Color = Color3.fromRGB(255, 222, 0);
+				fire.Parent = firePart;
+				firePart.Size = new Vector3(1, 1, 1);
+				firePart.Position = position;
+				firePart.Anchored = true;
+				firePart.Parent = scriptBlock;
+			});
+	
+			const defaultTargetPosition = PositionGenerator.GenerateDefaultTargetPosition(scriptBlock, 10);
+		}
 }

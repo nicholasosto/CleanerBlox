@@ -6,7 +6,6 @@ import { PositionGenerator } from "shared/Utility/PositionGenerator";
 import { ParticleGroupManager } from "shared/Utility/ParticleGroupManager";
 import { Logger } from "shared/Utility/Logger";
 
-
 @SkillDecorator
 export class Spotlights extends HoldableSkill {
 	// Configuration Properties
@@ -20,7 +19,6 @@ export class Spotlights extends HoldableSkill {
 	private createSpotlight(cFrame: CFrame) {
 		Logger.Log("Spotlights", "Creating Spotlight");
 		const spotlightModel = GameStorage.getModel("Spotlight").Clone();
-		const testParticles = ParticleGroupManager.GetParticleGroup("TestParticles");
 		spotlightModel.Parent = Workspace;
 		spotlightModel.PivotTo(cFrame);
 		const spotlight = new Spotlight(spotlightModel);
@@ -33,7 +31,6 @@ export class Spotlights extends HoldableSkill {
 
 		// Connect to the HoldTimer's secondReached event
 		this.HoldTimer.secondReached.Connect((seconds) => this.stageActivated(seconds));
-
 	}
 
 	// MOVE START
@@ -43,7 +40,7 @@ export class Spotlights extends HoldableSkill {
 
 	// Stages
 	private stageActivated(stage: number) {
-		print("Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
+		//Logger.Log("Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
 		switch (stage) {
 			case 1:
 				this.Stage3();
@@ -61,7 +58,6 @@ export class Spotlights extends HoldableSkill {
 
 	// STAGE 1
 	private Stage1() {
-
 		const spotlightPosition = PositionGenerator.GenerateDefaultTargetPosition(this.Character.Instance as Model, 10);
 		this.createSpotlight(new CFrame(spotlightPosition));
 		Logger.Log("Spotlights", "Stage 1", spotlightPosition);

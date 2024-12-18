@@ -7,7 +7,6 @@ local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS"
 local Workspace = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Workspace
 local Spotlight = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Skill Parts", "Spotlight").Spotlight
 local PositionGenerator = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "PositionGenerator").PositionGenerator
-local ParticleGroupManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "ParticleGroupManager").ParticleGroupManager
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local Spotlights
 do
@@ -33,7 +32,6 @@ do
 	function Spotlights:createSpotlight(cFrame)
 		Logger:Log("Spotlights", "Creating Spotlight")
 		local spotlightModel = GameStorage:getModel("Spotlight"):Clone()
-		local testParticles = ParticleGroupManager:GetParticleGroup("TestParticles")
 		spotlightModel.Parent = Workspace
 		spotlightModel:PivotTo(cFrame)
 		local spotlight = Spotlight.new(spotlightModel)
@@ -50,7 +48,7 @@ do
 		self:ApplyCooldown(10)
 	end
 	function Spotlights:stageActivated(stage)
-		print("Stage Activated: ", stage, self.CooldownTimer:getTimeLeft())
+		--Logger.Log("Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
 		repeat
 			if stage == 1 then
 				self:Stage3()

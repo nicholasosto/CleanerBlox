@@ -29,8 +29,11 @@ do
 		if not self._enabled then
 			return nil
 		end
+		if self._filterTag ~= "" and logTag ~= self._filterTag then
+			return nil
+		end
 		-- Log message
-		local logMessage = `================\n`
+		local logMessage = `=________________=\n`
 		warn(logTag)
 		-- Iterate through messages and log them
 		-- ▼ ReadonlyArray.forEach ▼
@@ -104,9 +107,17 @@ do
 	function Logger:GetInstance()
 		return self._logger
 	end
+	function Logger:PrintSkillInfo(skill)
+		warn(`Skill: {skill:GetName()}\n`)
+		print("Player: ", skill.Player)
+		print("Character: ", skill.Character)
+		print("Type: ", skill:GetSkillType())
+		print("Cooldown Time: ", skill.MetadataChanged)
+	end
 	Logger._logger = Logger.new()
 	Logger._logLevel = LogLevel.Info
 	Logger._enabled = true
+	Logger._filterTag = "BasicMelee"
 end
 return {
 	LogLevel = LogLevel,

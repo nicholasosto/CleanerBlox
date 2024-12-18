@@ -3,6 +3,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- Objective: Progress Bar Class
 -- GameStorage
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 -- ProgressBar Template
 local Template = GameStorage:getGUI("Progress Bar Template")
 -- ProgressBar Class
@@ -37,7 +38,7 @@ do
 		self._targetInstance:GetAttributeChangedSignal(maxAttributeName):Connect(function()
 			self:updateProgressBar(minAttributeName, maxAttributeName)
 		end)
-		print("** Connections Set **")
+		--Logger.Log("** Connections Set **");
 		-- Set the parent
 		self._instance.Parent = self._parent
 		self._instance:SetAttribute("TextValue", displayName)
@@ -50,7 +51,7 @@ do
 		local maxAttribute = self._targetInstance:GetAttribute(maxName)
 		-- Check if the attributes are undefined
 		if currentAttribute == nil or maxAttribute == nil then
-			print("Current or Max Attribute is undefined")
+			Logger:Log("Current or Max Attribute is undefined")
 			return nil
 		end
 		-- Calculate the percentage

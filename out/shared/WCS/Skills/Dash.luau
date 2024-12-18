@@ -23,14 +23,14 @@ do
 		super.constructor(self, ...)
 	end
 	function Dash:updateCooldown()
-		print(`Cooldown updated. {self:GetDebounceEndTimestamp()}`)
+		--Logger.Log`Cooldown updated. ${this.GetDebounceEndTimestamp()}`);
 	end
 	function Dash:OnStartServer()
 		local stun = Stun.new(self.Character)
 		self:ApplyCooldown(5)
 		stun:Start(1)
 		self:updateCooldown()
-		print("Hi, dash just started!")
+		-- Logger.Log("Hi, dash just started!");
 	end
 	local _descriptor = Message({
 		Type = "Event",

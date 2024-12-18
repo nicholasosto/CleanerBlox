@@ -23,7 +23,7 @@ export class InventoryManager {
 		const playersInventory = this._dataCache._playerData[inventoryType] as string[];
 
 		if (playersInventory.find((item) => item === itemId) !== undefined) {
-			Logger.Log("InventoryManager", "Item already Exista", itemId);
+			//Logger.Log("InventoryManager", "Item already Exista", itemId);
 			return;
 		}
 		playersInventory.push(itemId);
@@ -36,7 +36,7 @@ export class InventoryManager {
 		const itemIndex = this._dataCache._playerData[inventoryType].indexOf(itemId);
 		if (itemIndex > -1) {
 			this._dataCache._playerData[inventoryType][itemIndex] = "";
-			Logger.Log("InventoryManager", "Item Removed", itemId);
+			//Logger.Log("InventoryManager", "Item Removed", itemId);
 		}
 		this._dataCache.Save();
 	}

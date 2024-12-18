@@ -61,7 +61,7 @@ export class EntityResource implements IResource {
 		const timeSinceLastTick = tick() - this._lastRegenTick;
 		if (timeSinceLastTick >= this.RegenRate && this.CurrentValue < this.MaxValue) {
 			this.CurrentValue += this.RegenAmount;
-			Logger.Log("EntityResource", this.Name, this.CurrentValue);
+			//Logger.Log("EntityResource", this.Name, this.CurrentValue);
 		}
 		if (this.CurrentValue < this.MaxValue) {
 			this.CurrentValue += this.RegenAmount;

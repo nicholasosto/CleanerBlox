@@ -38,7 +38,7 @@ export class Spotlight {
 
 	// State Changed
 	protected OnStateChanged() {
-		print("State Changed: ", this.instance.GetAttribute("State"));
+		//print("State Changed: ", this.instance.GetAttribute("State"));
 		switch (this.instance.GetAttribute("State")) {
 			case "Active":
 				this.OnActive();
@@ -47,7 +47,7 @@ export class Spotlight {
 				this.OnTriggered();
 				break;
 			case "Inactive":
-				print("TODO: Spotlight is Inactive");
+				//print("TODO: Spotlight is Inactive");
 				break;
 			case "Homing":
 				this.OnHoming();

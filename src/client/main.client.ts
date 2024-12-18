@@ -34,11 +34,6 @@ wcsClient.Start();
 function handleCharacterAdded(character: Model) {
 	// Add Controllers
 	//const wcsCharacter = Character.GetLocalCharacter();
-	CommunicationGod.ServerSignals.forEach((signal, name) => {
-		signal.FireServer();
-		print("Fired Signal: ", name);
-	});
-	task.wait(1);
 }
 
 // Handle Character Removing
@@ -54,7 +49,6 @@ if (Players.LocalPlayer.Character) {
 // Character Added/Removing Events
 Players.LocalPlayer.CharacterAdded.Connect(handleCharacterAdded);
 Players.LocalPlayer.CharacterRemoving.Connect(handleCharacterRemoving);
-
 
 const TestSignal = CommunicationGod.ServerSignals.get("TestSignal");
 TestSignal?.FireServer();

@@ -1,6 +1,5 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local TweenService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").TweenService
 local SkillPartState = {
 	Spawning = "Spawning",
@@ -33,7 +32,7 @@ do
 		self._primaryPart = model.PrimaryPart
 		self._hitPart = model:FindFirstChild("HitPart")
 		if not self._hitPart or not self._primaryPart then
-			Logger:Log("SkillPart", "HitPart not found", model.Name)
+			--Logger.Log("SkillPart", "HitPart not found", model.Name);
 			error("HitPart not found in SkillPart")
 		end
 		-- Set the Initial State
@@ -75,7 +74,7 @@ do
 	end
 	function SkillPartClass:onSpawn()
 		self._hitPart.Color = Color3.fromRGB(255, 222, 220)
-		Logger:Log("SkillPart", "Spawn!", self.State)
+		--Logger.Log("SkillPart", "Spawn!", this.State);
 		-- Add any initialization or setup logic here
 		task.wait(2)
 		self:transitionTo(SkillPartState.Active)
@@ -111,18 +110,18 @@ do
 		}
 		local tween = TweenService:Create(self._primaryPart, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), goal)
 		tween:Play()
-		Logger:Log("SkillPart", "onEnd", self.State)
+		--Logger.Log("SkillPart", "onEnd", this.State);
 		-- Add logic for when the skill becomes active
 	end
 	function SkillPartClass:onTrigger()
-		Logger:Log("SkillPart", "onEnd", self.State)
+		--Logger.Log("SkillPart", "onEnd", this.State);
 		self._hitPart.Color = Color3.fromRGB(255, 0, 0)
 		task.wait(2)
 		self:transitionTo(SkillPartState.Active)
 		-- Add logic for triggered behavior (like firing a projectile or applying an effect)
 	end
 	function SkillPartClass:onEnd()
-		Logger:Log("SkillPart", "onEnd", self.State)
+		--Logger.Log("SkillPart", "onEnd", this.State);
 		-- Add cleanup logic here
 	end
 end

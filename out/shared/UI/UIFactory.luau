@@ -23,7 +23,7 @@ do
 		local attributeFrame = AttributeFrameTemplate:Clone()
 		-- Listen for attribute changes
 		player:GetAttributeChangedSignal(attribute):Connect(function(changedAttribute)
-			print(`Attribute {attribute} changed to {changedAttribute}`)
+			--Logger.Log`Attribute ${attribute} changed to ${changedAttribute}`);
 		end)
 		return attributeFrame
 	end

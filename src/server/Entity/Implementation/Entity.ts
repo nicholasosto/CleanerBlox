@@ -103,7 +103,7 @@ export class BaseEntity {
 	}
 
 	public Destroy() {
-		Logger.Log("BaseEntity: Destroying: ", this?.CharacterModel);
+		//Logger.Log("BaseEntity: Destroying: ", this?.CharacterModel);
 		this.Health.Destroy();
 		this.Mana.Destroy();
 		this.Stamina.Destroy();

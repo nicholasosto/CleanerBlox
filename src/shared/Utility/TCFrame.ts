@@ -97,7 +97,7 @@ export class TCFrame {
 			sourceAttachment.WorldCFrame.Y,
 			sourceAttachment.WorldCFrame.Z - distanceFromSource,
 		);
-		print("Destination Attachment Position: ", destinationAttachment.Position);
+		//Logger.Log("Destination Attachment Position: ", destinationAttachment.Position);
 
 		// Calculate the segment length based on the number of positions and the distance from the source
 		const segmentLength = distanceFromSource / numPositions;

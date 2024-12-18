@@ -1,46 +1,33 @@
 import { ReplicatedStorage, AssetService } from "@rbxts/services";
+import { Logger } from "./Logger";
 import * as WCS from "@rbxts/wcs";
 
 export class GameStorage {
 	// Main Package
 	private static _storageModel: Model = ReplicatedStorage.WaitForChild("SoulSteelStorage") as Model;
 
-	// Sub-Packages
-
-	// Accessory Storage
+	// Sub Folders
 	private static _accessoriesStorage: Folder = this._storageModel.WaitForChild("ACCESSORIES") as Folder;
-
-	// Animation Storage
 	private static _animationsStorage: Folder = this._storageModel.WaitForChild("ANIMATIONS") as Folder;
-
-	// Audio
 	private static _audioStorage: Folder = this._storageModel.WaitForChild("AUDIO") as Folder;
-
-	// Configuration
 	private static _configurationStorage: Folder = this._storageModel.WaitForChild("CONFIGURATIONS") as Folder;
-
-	// GUI
 	private static _guiStorage: Folder = this._storageModel.WaitForChild("GUI") as Folder;
-
-	// Models
 	private static _modelsStorage: Folder = this._storageModel.WaitForChild("MODELS") as Folder;
-
-	// Models
 	private static _toolsStorage: Folder = this._storageModel.WaitForChild("TOOLS") as Folder;
-
-	// Particles
 	private static _particlesStorage: Folder = this._storageModel.WaitForChild("PARTICLES") as Folder;
 
 	// ACCESSORY STORAGE
-	public static getAccessory(accessoryName: string): Model {
+	public static cloneAccessory(accessoryName: string): Accessory | undefined {
 		// Get the accessory from the storage
-		const _accessory = this._accessoriesStorage.FindFirstChild(accessoryName, true) as Model;
+		const _accessory = this._accessoriesStorage.FindFirstChild(accessoryName, true) as Accessory;
 
 		// Validate the accessory
-		if (!_accessory) {
-			this.printAvailableItems(this._accessoriesStorage);
-			error(`Accessory ${accessoryName} not found in storage.`);
+		if (_accessory === undefined) {
+			Logger.Log("GameStorage", `Accessory ${accessoryName} not found in storage.`);
+			return;
 		}
+		// Clone the accessory
+		const _clonedAccessory = _accessory.Clone();
 
 		return _accessory;
 	}
@@ -159,10 +146,10 @@ export class GameStorage {
 		for (const item of _items) {
 			if (item.IsA("Folder")) {
 				item.GetChildren().forEach((child) => {
-					print(child.Name);
+					//print(child.Name);
 				});
 			}
-			print(item.Name);
+			//print(item.Name);
 		}
 	}
 

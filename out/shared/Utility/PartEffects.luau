@@ -17,7 +17,7 @@ local function rotatePart(part, duration)
 	-- Remove the RenderStepped connection code
 end
 local function rotateModel(model, duration)
-	print("Rotating model: ", model.Name, " for ", duration, " seconds")
+	--Logger.Log("Rotating model: ", model.Name, " for ", duration, " seconds");
 	local primaryPart = model.PrimaryPart
 	if not primaryPart then
 		warn("Model does not have a PrimaryPart set.")

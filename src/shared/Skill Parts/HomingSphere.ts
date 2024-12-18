@@ -19,7 +19,7 @@ export class HomingSphere {
 	private _state: HSState = HSState.Created;
 
 	constructor(owner: Model) {
-		Logger.Log("HomingSphere", "Created", owner.Name);
+		//Logger.Log("HomingSphere", "Created", owner.Name);
 		this._instance = GameStorage.getModel("HomingSphere");
 		this._owner = owner;
 
@@ -53,18 +53,18 @@ export class HomingSphere {
 	}
 
 	public onCreated(): void {
-		print("HomingSphere Created");
+		Logger.Log("HomingSphere Created");
 	}
 
 	public onSearching(): void {
-		print("HomingSphere Searching");
+		Logger.Log("HomingSphere Searching");
 	}
 
 	public onHoming(): void {
-		print("HomingSphere Homing");
+		Logger.Log("HomingSphere Homing");
 	}
 
 	public onExploding(): void {
-		print("HomingSphere Exploding");
+		Logger.Log("HomingSphere Exploding");
 	}
 }

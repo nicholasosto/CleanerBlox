@@ -13,7 +13,7 @@ export class UIFactory {
 
 		// Listen for attribute changes
 		player.GetAttributeChangedSignal(attribute).Connect((changedAttribute) => {
-			print(`Attribute ${attribute} changed to ${changedAttribute}`);
+			//Logger.Log`Attribute ${attribute} changed to ${changedAttribute}`);
 		});
 
 		return attributeFrame;

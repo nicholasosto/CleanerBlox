@@ -2,6 +2,7 @@
 
 // GameStorage
 import { GameStorage } from "shared/Utility/GameStorage";
+import { Logger } from "shared/Utility/Logger";
 
 // ProgressBar Template
 const Template: Frame = GameStorage.getGUI("Progress Bar Template") as Frame;
@@ -40,7 +41,7 @@ export class ProgressBar {
 			this.updateProgressBar(minAttributeName, maxAttributeName);
 		});
 
-		print("** Connections Set **");
+		//Logger.Log("** Connections Set **");
 
 		// Set the parent
 		this._instance.Parent = this._parent;
@@ -59,7 +60,7 @@ export class ProgressBar {
 
 		// Check if the attributes are undefined
 		if (currentAttribute === undefined || maxAttribute === undefined) {
-			print("Current or Max Attribute is undefined");
+			Logger.Log("Current or Max Attribute is undefined");
 			return;
 		}
 

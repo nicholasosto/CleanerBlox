@@ -1,6 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local scriptTag = "TEffect"
 local TEffect
 do
@@ -48,12 +49,12 @@ do
 	end
 	function TEffect:playEffect(parent)
 		if self._particleGroupingPart then
-			print("Playing Effect: " .. self.Name)
+			--Logger.Log("Playing Effect: " + this.Name);
 			self._particleGroupingPart.Parent = parent
 			--Debris.AddItem(this._particleGroupingPart, 5);
 		end
 		if self._soundEffect then
-			print("Playing Sound: " .. self._soundEffect.Name)
+			Logger:Log("Playing Sound: " .. self._soundEffect.Name)
 			self._soundEffect:Play()
 		end
 	end

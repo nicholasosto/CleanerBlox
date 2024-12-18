@@ -1,4 +1,5 @@
 import { HttpService } from "@rbxts/services";
+import { Skill } from "@rbxts/wcs";
 
 // Note: Utility class for logging
 type Printable = string | object | CFrame | Vector3 | AttributeValue | Instance;
@@ -16,15 +17,18 @@ export class Logger {
 	private static _logger: Logger = new Logger();
 	private static _logLevel: LogLevel = LogLevel.Info;
 	private static _enabled: boolean = true;
+	private static _filterTag: string = "BasicMelee";
 
 	// Log: Log messages to the console
 	public static Log(logTag: string, ...messages: Array<Printable>) {
 		// Check if logging is enabled
 		if (!this._enabled) return;
 
+		if (this._filterTag !== "" && logTag !== this._filterTag) return;
+
 		// Log message
-		
-		let logMessage = `================\n`;
+
+		let logMessage = `=________________=\n`;
 		warn(logTag);
 		// Iterate through messages and log them
 		messages.forEach((message) => {
@@ -96,7 +100,7 @@ export class Logger {
 		const message = HttpService.JSONEncode(json);
 		const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 		const Developer = playerGui.WaitForChild("Developer") as ScreenGui;
-		const ScrollingTextFrame = Developer.FindFirstChild("UIConsoleScroller",true) as Frame;
+		const ScrollingTextFrame = Developer.FindFirstChild("UIConsoleScroller", true) as Frame;
 
 		const ScriptNameLabel = ScrollingTextFrame.WaitForChild("ScriptName") as TextLabel;
 		ScriptNameLabel.Text = scriptName;
@@ -107,5 +111,13 @@ export class Logger {
 	// GetInstance: Get the instance of the logger
 	public static GetInstance(): Logger {
 		return this._logger;
+	}
+
+	public static PrintSkillInfo(skill: Skill) {
+		warn(`Skill: ${skill.GetName()}\n`);
+		print("Player: ", skill.Player);
+		print("Character: ", skill.Character);
+		print("Type: ", skill.GetSkillType());
+		print("Cooldown Time: ", skill.MetadataChanged);
 	}
 }
