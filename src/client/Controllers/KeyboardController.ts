@@ -1,5 +1,5 @@
 // Begin: KeyboardController.ts
-import { UserInputService } from "@rbxts/services";
+import { HttpService, UserInputService, Workspace } from "@rbxts/services";
 import { Character, Skill } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
 import { PositionGenerator } from "shared/Utility/PositionGenerator";
@@ -11,8 +11,10 @@ const Skills: Map<Enum.KeyCode, string> = new Map<Enum.KeyCode, string>();
 Skills.set(Enum.KeyCode.Q, "BasicMelee");
 Skills.set(Enum.KeyCode.E, "CleanHold");
 Skills.set(Enum.KeyCode.R, "BigRed");
+Skills.set(Enum.KeyCode.T, "ShapeTester");
 
 CommunicationGod.Summon();
+const AI_Request = GameStorage.getEvent("AI_Request");
 
 export class KeyboardController {
 	private static instance: KeyboardController;
@@ -47,6 +49,10 @@ export class KeyboardController {
 		// Input Began Connection
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan.Connect(
 			(input: InputObject, isProcessed: boolean) => {
+				if (input.KeyCode === Enum.KeyCode.F) {
+					print("F Pressed");
+					AI_Request.FireServer(Workspace.FindFirstChild("TrembusTech") as Model);
+				}
 				KeyboardController.InputBegan(input, isProcessed);
 			},
 		);

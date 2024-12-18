@@ -6,8 +6,7 @@ import { CreateClient } from "@rbxts/wcs";
 import { KeyboardController } from "./Controllers/KeyboardController";
 import { SkillController } from "./Controllers/SkillController";
 import { FlightController } from "./Controllers/FlightController";
-import { ActionBar } from "./ActionBar/ActionBar";
-//import { UIController } from "./Controllers/UIController";
+import { GUIController } from "./Controllers/GUIController";
 
 // References
 import { WCSFolders } from "shared/WCS/Folders";
@@ -18,7 +17,7 @@ import { CommunicationGod } from "shared/Events/CommunicationGod";
 KeyboardController.Start();
 SkillController.Start();
 FlightController.Start();
-ActionBar.Start();
+GUIController.Start();
 CommunicationGod.Summon();
 
 //UIController.Start();
@@ -32,8 +31,7 @@ wcsClient.Start();
 
 // Handle Character Added
 function handleCharacterAdded(character: Model) {
-	// Add Controllers
-	//const wcsCharacter = Character.GetLocalCharacter();
+	Logger.Log("Client", "Character Added: ", character);
 }
 
 // Handle Character Removing
@@ -49,7 +47,3 @@ if (Players.LocalPlayer.Character) {
 // Character Added/Removing Events
 Players.LocalPlayer.CharacterAdded.Connect(handleCharacterAdded);
 Players.LocalPlayer.CharacterRemoving.Connect(handleCharacterRemoving);
-
-const TestSignal = CommunicationGod.ServerSignals.get("TestSignal");
-TestSignal?.FireServer();
-CommunicationGod.ServerSignals.get("TestSignal")?.FireServer();

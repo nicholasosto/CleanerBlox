@@ -1,8 +1,11 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- Begin: KeyboardController.ts
-local UserInputService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").UserInputService
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local UserInputService = _services.UserInputService
+local Workspace = _services.Workspace
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
+local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Events", "CommunicationGod").CommunicationGod
 -- Set the skills here
 local Skills = {}
@@ -12,7 +15,10 @@ local _e = Enum.KeyCode.E
 Skills[_e] = "CleanHold"
 local _r = Enum.KeyCode.R
 Skills[_r] = "BigRed"
+local _t = Enum.KeyCode.T
+Skills[_t] = "ShapeTester"
 CommunicationGod:Summon()
+local AI_Request = GameStorage:getEvent("AI_Request")
 local KeyboardController
 do
 	KeyboardController = setmetatable({}, {
@@ -53,6 +59,10 @@ do
 		local wcsCharacter = Character.GetLocalCharacter()
 		-- Input Began Connection
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan:Connect(function(input, isProcessed)
+			if input.KeyCode == Enum.KeyCode.F then
+				print("F Pressed")
+				AI_Request:FireServer(Workspace:FindFirstChild("TrembusTech"))
+			end
 			KeyboardController:InputBegan(input, isProcessed)
 		end)
 		-- Input Ended Connection

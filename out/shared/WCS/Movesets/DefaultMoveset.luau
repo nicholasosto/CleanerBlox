@@ -5,7 +5,8 @@ local CreateMoveset = TS.import(script, game:GetService("ReplicatedStorage"), "r
 --import { BigRed } from "../Skills/BigRed";
 local BasicMelee = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicMelee").BasicMelee
 local BasicHold = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicHold").BasicHold
-local DefaultMoveset = CreateMoveset("DefaultMoveset", { BasicMelee, BasicHold })
+local ShapeTester = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "ShapeTester").ShapeTester
+local DefaultMoveset = CreateMoveset("DefaultMoveset", { ShapeTester, BasicMelee, BasicHold })
 return {
 	DefaultMoveset = DefaultMoveset,
 }

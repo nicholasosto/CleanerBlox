@@ -90,6 +90,33 @@ do
 		end
 		return ringCFrames
 	end
+	function PositionGenerator:CreateSpiral(userCFrame, radius, numPositions, stepHeight)
+		local angleIncrement = (2 * math.pi) / numPositions
+		local ringCFrames = {}
+		do
+			local i = 0
+			local _shouldIncrement = false
+			while true do
+				if _shouldIncrement then
+					i += 1
+				else
+					_shouldIncrement = true
+				end
+				if not (i < numPositions) then
+					break
+				end
+				local angle = i * angleIncrement
+				local x = radius * math.cos(angle)
+				local z = radius * math.sin(angle)
+				local y = i * stepHeight
+				local position = Vector3.new(x, y, z)
+				local cframe = CFrame.new(userCFrame.Position + position)
+				local _position = cframe.Position
+				table.insert(ringCFrames, _position)
+			end
+		end
+		return ringCFrames
+	end
 	function PositionGenerator:PositionGeneratorTests(start)
 		local scriptBlock = game:GetService("Workspace"):FindFirstChild("ScriptBlock", true)
 		if not start then

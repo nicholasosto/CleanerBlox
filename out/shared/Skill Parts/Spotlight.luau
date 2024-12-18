@@ -1,6 +1,5 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local TTweener = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "TTweener").TTweener
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local Spotlight
 do
@@ -74,8 +73,8 @@ do
 		Logger:Log("Spotlight", "[State]", self.instance:GetAttribute("State"))
 		local primaryPart = self.instance.PrimaryPart
 		Logger:Log("Spotlight", "PrimaryPart", primaryPart)
-		local tween = TTweener:tweenPartCFrame(self.instance.PrimaryPart, CFrame.new(0, 0, 0), 22)
-		tween:Play()
+		--const tween = TTweener.tweenPartCFrame(this.instance.PrimaryPart as Part, new CFrame(0, 0, 0), 22);
+		--tween.Play();
 	end
 	function Spotlight:OnTriggered()
 		Logger:Log("Spotlight", "[State]", self.instance:GetAttribute("State"))

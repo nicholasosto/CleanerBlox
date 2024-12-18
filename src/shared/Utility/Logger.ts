@@ -17,7 +17,7 @@ export class Logger {
 	private static _logger: Logger = new Logger();
 	private static _logLevel: LogLevel = LogLevel.Info;
 	private static _enabled: boolean = true;
-	private static _filterTag: string = "BasicMelee";
+	private static _filterTag: string = "";
 
 	// Log: Log messages to the console
 	public static Log(logTag: string, ...messages: Array<Printable>) {

@@ -3,7 +3,6 @@ import { GameStorage } from "shared/Utility/GameStorage";
 import { Workspace } from "@rbxts/services";
 import { Spotlight } from "shared/Skill Parts/Spotlight";
 import { PositionGenerator } from "shared/Utility/PositionGenerator";
-import { ParticleGroupManager } from "shared/Utility/ParticleGroupManager";
 import { Logger } from "shared/Utility/Logger";
 
 @SkillDecorator

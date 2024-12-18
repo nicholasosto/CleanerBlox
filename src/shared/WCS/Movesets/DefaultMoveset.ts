@@ -4,5 +4,6 @@ import { CreateMoveset } from "@rbxts/wcs";
 //import { BigRed } from "../Skills/BigRed";
 import { BasicMelee } from "../Skills/BasicMelee";
 import { BasicHold } from "../Skills/BasicHold";
+import { ShapeTester } from "../Skills/ShapeTester";
 
-export const DefaultMoveset = CreateMoveset("DefaultMoveset", [BasicMelee, BasicHold]);
+export const DefaultMoveset = CreateMoveset("DefaultMoveset", [ShapeTester,BasicMelee, BasicHold]);

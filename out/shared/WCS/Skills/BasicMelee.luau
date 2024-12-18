@@ -9,6 +9,7 @@ local AudioManager = _SkillManagers.AudioManager
 local ParticleGroupManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "ParticleGroupManager").ParticleGroupManager
 local WeaponManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Movesets", "WeaponManager").WeaponManager
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local BasicMelee
 do
 	local super = Skill
@@ -27,7 +28,7 @@ do
 		super.constructor(self, ...)
 	end
 	function BasicMelee:OnConstruct()
-		Logger:Log("BasicMelee", "OnConstruct")
+		--Logger.Log("BasicMelee", "OnConstruct");
 	end
 	function BasicMelee:OnConstructServer()
 		Logger:Log("BasicMelee", "OnConstructServer")
@@ -36,6 +37,7 @@ do
 			Logger:Log("BasicMelee", "No Character Found")
 			return nil
 		end
+		self.DamageContainer = self:CreateDamageContainer(BasicMelee.SkillConfiguration.DefaultHealthChange)
 		-- Load Sound
 		-- eslint-disable-next-line prettier/prettier
 		self.ActivationSound = AudioManager:LoadWCSSound(self.Character, "BasicMelee_ActivationAudio", BasicMelee.SkillConfiguration.ActivationSoundId)
@@ -55,7 +57,7 @@ do
 		end
 		self.SkillHitPart = _result
 		if self.SkillHitPart == nil then
-			Logger:Log("BasicMelee", "No Hit Part Found")
+			--Logger.Log("BasicMelee", "No Hit Part Found");
 			return nil
 		end
 		local _result_1 = self.HitPartConnection
@@ -63,21 +65,37 @@ do
 			_result_1:Disconnect()
 		end
 		self.HitPartConnection = self.SkillHitPart.Touched:Connect(function(hit)
-			Logger:Log("BasicMelee", "Hit Part Touched")
-			local damageContainer = self:CreateDamageContainer(111)
+			local _result_2 = hit.Parent
+			if _result_2 ~= nil then
+				_result_2 = _result_2.Name
+			end
+			Logger:Log("BasicMelee", `Hit: {_result_2}`)
 			if hit.Parent == self.Character.Instance then
 				Logger:Log("BasicMelee", "Hit Self")
 				return nil
 			end
-			local _result_2 = hit.Parent
-			if _result_2 ~= nil then
-				_result_2 = _result_2:FindFirstChild("Humanoid")
+			local _result_3 = hit.Parent
+			if _result_3 ~= nil then
+				_result_3 = _result_3:FindFirstChild("Humanoid")
 			end
-			if _result_2 == nil then
+			if _result_3 == nil then
 				Logger:Log("BasicMelee", "No Humanoid Found")
 				return nil
 			end
-			hit.Parent = nil
+			local targetCharacter = Character.GetCharacterFromInstance(hit.Parent)
+			if targetCharacter == nil then
+				local _result_4 = hit.Parent
+				if _result_4 ~= nil then
+					_result_4 = _result_4.Parent
+				end
+				targetCharacter = Character.GetCharacterFromInstance(_result_4)
+				Logger:Log("BasicMelee", "No Target Character Found")
+				local _result_5 = targetCharacter
+				if _result_5 ~= nil then
+					_result_5:TakeDamage(self.DamageContainer)
+				end
+			end
+			--hit.Parent = undefined;
 		end)
 		--ParticleGroupManager.DisableParticleEmitters(this.ActivationParticles as [ParticleEmitter]);
 		Logger:Log("BasicMelee", "Animation, Sound, and Particles Loaded")

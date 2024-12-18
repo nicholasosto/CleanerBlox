@@ -95,7 +95,6 @@ do
 		-- ▲ ReadonlyArray.find ▲
 		local matchingSkill = _result
 		if matchingSkill == nil then
-			--Logger.Log("SkillSlotManager", "\nSkill not found in player's inventory\n", skillId);
 			return nil
 		end
 		repeat

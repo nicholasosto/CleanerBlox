@@ -29,6 +29,13 @@ do
 		local _clonedAccessory = _accessory:Clone()
 		return _accessory
 	end
+	function GameStorage:getEvent(event)
+		local _event = ReplicatedStorage:WaitForChild("Remotes"):FindFirstChild(event, true)
+		if not _event then
+			error(`Event {event} not found in storage.`)
+		end
+		return _event
+	end
 	function GameStorage:getAnimation(animationName)
 		-- Get the animation from the storage
 		local _animation = self._animationsStorage:FindFirstChild(animationName, true)

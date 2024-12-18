@@ -25,6 +25,9 @@ export class CommunicationGod {
 		// Notification Signals
 		CommunicationGod._registerSignal("Notify_Player");
 		CommunicationGod._registerSignal("Notify_All");
+		// AI Signals
+		CommunicationGod._registerSignal("AI_Request");
+		CommunicationGod._registerSignal("AI_Response");
 		return this;
 	}
 
@@ -47,7 +50,7 @@ export class CommunicationGod {
 		CommunicationGod.ServerSignals.set(eventName, remoteEvent);
 	}
 
-	private static getSignals(): Map<string, RemoteEvent> {
+	public static getSignals(): Map<string, RemoteEvent> {
 		return this.ServerSignals;
 	}
 }

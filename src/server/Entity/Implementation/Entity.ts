@@ -6,7 +6,6 @@ import { EntityAttachments } from "./EntityAttachment";
 import * as Calculator from "./EntityCalculator";
 import { Logger } from "shared/Utility/Logger";
 import { HttpService, ReplicatedStorage } from "@rbxts/services";
-import { SkillConfigurations } from "shared/WCS/Interfaces/SkillConfigurations";
 
 export class BaseEntity {
 	// CharacterModel

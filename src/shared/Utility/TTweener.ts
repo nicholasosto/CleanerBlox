@@ -2,75 +2,39 @@ import { TweenService, CollectionService } from "@rbxts/services";
 import { Logger } from "shared/Utility/Logger";
 import { PositionGenerator } from "./PositionGenerator";
 
-export const InfoTable = {
-	Standard: {
-		Default: new TweenInfo(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
-		Fast: new TweenInfo(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
-		Slow: new TweenInfo(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
-	},
-	Elastic: {
-		Default: new TweenInfo(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, -1, false, 0),
-		Fast: new TweenInfo(0.2, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, -1, false, 0),
-		Slow: new TweenInfo(1, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, -1, false, 0),
-	},
-	Bounce: {
-		Default: new TweenInfo(0.5, Enum.EasingStyle.Bounce, Enum.EasingDirection.InOut, -1, false, 0),
-		Fast: new TweenInfo(0.2, Enum.EasingStyle.Bounce, Enum.EasingDirection.InOut, -1, false, 0),
-		Slow: new TweenInfo(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.InOut, -1, false, 0),
-	},
-};
+export class TagTweener {
+	private static _instance: TagTweener;
 
-export type TweenablePartProperties = {
-	Position?: Vector3;
-	Orientation?: Vector3;
-	Size?: Vector3;
-	Color?: Color3;
-	Transparency?: number;
-	Reflectance?: number;
-	CFrame?: CFrame;
-};
+	private _instanceAddedConnection: RBXScriptConnection | undefined;
 
-export class TTweener {
-	private constructor() {}
+	private constructor() {
+		this._instanceAddedConnection = CollectionService.GetInstanceAddedSignal("TweenAttachment").Connect((instance) => {
+			const attachment = instance as Attachment;
+			if (attachment === undefined) {
+				Logger.Log("BasicMelee", "Instance is not an attachment");
+				return;
+			}
 
-	// eslint-disable-next-line prettier/prettier
-	public static tweenPart(part: Part,  properties: TweenablePartProperties, callback?: () => void): Tween {
-		const tween = TweenService.Create(part, InfoTable.Standard.Default, properties);
-		if (callback) {
-			tween.Completed.Connect(callback);
-		}
-		return tween;
+			const duration = 1;
+			const endPosition = new Vector3(5, 0, 0);
+			const repetes = -1;
+			TagTweener.StartLinearTween(attachment, duration, endPosition, repetes);
+		});
 	}
-	public static tweenPartCFrame(part: Part, newCFrame: CFrame, overDuration: number, callback?: () => void): Tween {
-		const defaultTweenInfo = InfoTable.Standard.Default;
-		const tweenInfo = new TweenInfo(
-			overDuration,
-			defaultTweenInfo.EasingStyle,
-			defaultTweenInfo.EasingDirection,
-			-1,
-			false,
-			defaultTweenInfo.DelayTime,
-		);
-        const properties = { CFrame: newCFrame };
-        const tween = TweenService.Create(part, tweenInfo, properties);
 
-        if (callback) {
-            tween.Completed.Connect(callback);
-        }
-        return tween;
+	public static Start() {
+		if (this._instance === undefined) {
+			this._instance = new TagTweener();
+		}	
+	}
+
+	public static StartLinearTween(attachment: Attachment, duration: number, endPosition: Vector3, repetes: number) {
+		const startPosition = attachment.Position;
+		const tweenInfo = new TweenInfo(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, repetes, false, 0);
+		const tween = TweenService.Create(attachment, tweenInfo, { Position: endPosition });
+		tween.Completed.Connect(() => {
+			attachment.Position = endPosition;
+		});
+		tween.Play();
 	}
 }
-
-CollectionService.GetInstanceAddedSignal("TweenablePart").Connect((instance) => {
-	Logger.Log("TTweener", "TweenablePart added", instance);
-	const model: Model = instance as Model;
-
-	const target = model.FindFirstChild("Target") as CFrameValue; 
-	const properties = {
-		CFrame: target.Value,
-	};
-	if (!model.PrimaryPart) {
-		error("PrimaryPart not found in TweenablePart");
-	}
-	TweenService.Create(model.PrimaryPart, new TweenInfo(20), { CFrame: target.Value}).Play();
-});

@@ -117,7 +117,7 @@ do
 	Logger._logger = Logger.new()
 	Logger._logLevel = LogLevel.Info
 	Logger._enabled = true
-	Logger._filterTag = "BasicMelee"
+	Logger._filterTag = ""
 end
 return {
 	LogLevel = LogLevel,

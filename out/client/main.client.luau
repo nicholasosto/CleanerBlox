@@ -7,8 +7,7 @@ local CreateClient = TS.import(script, game:GetService("ReplicatedStorage"), "rb
 local KeyboardController = TS.import(script, script.Parent, "Controllers", "KeyboardController").KeyboardController
 local SkillController = TS.import(script, script.Parent, "Controllers", "SkillController").SkillController
 local FlightController = TS.import(script, script.Parent, "Controllers", "FlightController").FlightController
-local ActionBar = TS.import(script, script.Parent, "ActionBar", "ActionBar").ActionBar
---import { UIController } from "./Controllers/UIController";
+local GUIController = TS.import(script, script.Parent, "Controllers", "GUIController").GUIController
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
@@ -17,7 +16,7 @@ local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"),
 KeyboardController:Start()
 SkillController:Start()
 FlightController:Start()
-ActionBar:Start()
+GUIController:Start()
 CommunicationGod:Summon()
 --UIController.Start();
 -- WCS Client Start
@@ -28,8 +27,7 @@ wcsClient:RegisterDirectory(WCSFolders.StatusEffects)
 wcsClient:Start()
 -- Handle Character Added
 local function handleCharacterAdded(character)
-	-- Add Controllers
-	--const wcsCharacter = Character.GetLocalCharacter();
+	Logger:Log("Client", "Character Added: ", character)
 end
 -- Handle Character Removing
 local function handleCharacterRemoving(character)
@@ -42,12 +40,3 @@ end
 -- Character Added/Removing Events
 Players.LocalPlayer.CharacterAdded:Connect(handleCharacterAdded)
 Players.LocalPlayer.CharacterRemoving:Connect(handleCharacterRemoving)
-local TestSignal = CommunicationGod.ServerSignals.TestSignal
-local _result = TestSignal
-if _result ~= nil then
-	_result:FireServer()
-end
-local _result_1 = CommunicationGod.ServerSignals.TestSignal
-if _result_1 ~= nil then
-	_result_1:FireServer()
-end

@@ -1,4 +1,4 @@
-import { TTweener } from "shared/Utility/TTweener";
+import { TagTweener } from "shared/Utility/TTweener";
 import { Logger } from "shared/Utility/Logger";
 
 export class Spotlight {
@@ -66,9 +66,9 @@ export class Spotlight {
 
 		const primaryPart = this.instance.PrimaryPart as Part;
 		Logger.Log("Spotlight", "PrimaryPart", primaryPart);
-		const tween = TTweener.tweenPartCFrame(this.instance.PrimaryPart as Part, new CFrame(0, 0, 0), 22);
+		//const tween = TTweener.tweenPartCFrame(this.instance.PrimaryPart as Part, new CFrame(0, 0, 0), 22);
 
-		tween.Play();
+		//tween.Play();
 	}
 
 	// State: Triggered

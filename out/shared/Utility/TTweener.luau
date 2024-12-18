@@ -4,72 +4,48 @@ local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts
 local TweenService = _services.TweenService
 local CollectionService = _services.CollectionService
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local InfoTable = {
-	Standard = {
-		Default = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
-		Fast = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
-		Slow = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false, 0),
-	},
-	Elastic = {
-		Default = TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, -1, false, 0),
-		Fast = TweenInfo.new(0.2, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, -1, false, 0),
-		Slow = TweenInfo.new(1, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, -1, false, 0),
-	},
-	Bounce = {
-		Default = TweenInfo.new(0.5, Enum.EasingStyle.Bounce, Enum.EasingDirection.InOut, -1, false, 0),
-		Fast = TweenInfo.new(0.2, Enum.EasingStyle.Bounce, Enum.EasingDirection.InOut, -1, false, 0),
-		Slow = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.InOut, -1, false, 0),
-	},
-}
-local TTweener
+local TagTweener
 do
-	TTweener = setmetatable({}, {
+	TagTweener = setmetatable({}, {
 		__tostring = function()
-			return "TTweener"
+			return "TagTweener"
 		end,
 	})
-	TTweener.__index = TTweener
-	function TTweener.new(...)
-		local self = setmetatable({}, TTweener)
+	TagTweener.__index = TagTweener
+	function TagTweener.new(...)
+		local self = setmetatable({}, TagTweener)
 		return self:constructor(...) or self
 	end
-	function TTweener:constructor()
+	function TagTweener:constructor()
+		self._instanceAddedConnection = CollectionService:GetInstanceAddedSignal("TweenAttachment"):Connect(function(instance)
+			local attachment = instance
+			if attachment == nil then
+				Logger:Log("BasicMelee", "Instance is not an attachment")
+				return nil
+			end
+			local duration = 1
+			local endPosition = Vector3.new(5, 0, 0)
+			local repetes = -1
+			TagTweener:StartLinearTween(attachment, duration, endPosition, repetes)
+		end)
 	end
-	function TTweener:tweenPart(part, properties, callback)
-		local tween = TweenService:Create(part, InfoTable.Standard.Default, properties)
-		if callback then
-			tween.Completed:Connect(callback)
+	function TagTweener:Start()
+		if self._instance == nil then
+			self._instance = TagTweener.new()
 		end
-		return tween
 	end
-	function TTweener:tweenPartCFrame(part, newCFrame, overDuration, callback)
-		local defaultTweenInfo = InfoTable.Standard.Default
-		local tweenInfo = TweenInfo.new(overDuration, defaultTweenInfo.EasingStyle, defaultTweenInfo.EasingDirection, -1, false, defaultTweenInfo.DelayTime)
-		local properties = {
-			CFrame = newCFrame,
-		}
-		local tween = TweenService:Create(part, tweenInfo, properties)
-		if callback then
-			tween.Completed:Connect(callback)
-		end
-		return tween
+	function TagTweener:StartLinearTween(attachment, duration, endPosition, repetes)
+		local startPosition = attachment.Position
+		local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, repetes, false, 0)
+		local tween = TweenService:Create(attachment, tweenInfo, {
+			Position = endPosition,
+		})
+		tween.Completed:Connect(function()
+			attachment.Position = endPosition
+		end)
+		tween:Play()
 	end
 end
-CollectionService:GetInstanceAddedSignal("TweenablePart"):Connect(function(instance)
-	Logger:Log("TTweener", "TweenablePart added", instance)
-	local model = instance
-	local target = model:FindFirstChild("Target")
-	local properties = {
-		CFrame = target.Value,
-	}
-	if not model.PrimaryPart then
-		error("PrimaryPart not found in TweenablePart")
-	end
-	TweenService:Create(model.PrimaryPart, TweenInfo.new(20), {
-		CFrame = target.Value,
-	}):Play()
-end)
 return {
-	InfoTable = InfoTable,
-	TTweener = TTweener,
+	TagTweener = TagTweener,
 }

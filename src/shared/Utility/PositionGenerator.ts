@@ -61,6 +61,22 @@ export class PositionGenerator {
 
 		return ringCFrames;
 	}
+	public static CreateSpiral(userCFrame: CFrame, radius: number, numPositions: number, stepHeight: number): Vector3[] {
+		const angleIncrement = (2 * math.pi) / numPositions;
+		const ringCFrames: Vector3[] = [];
+
+		for (let i = 0; i < numPositions; i++) {
+			const angle = i * angleIncrement;
+			const x = radius * math.cos(angle);
+			const z = radius * math.sin(angle);
+			const y = i * stepHeight;
+			const position = new Vector3(x, y, z);
+			const cframe = new CFrame(userCFrame.Position.add(position));
+			ringCFrames.push(cframe.Position);
+		}
+
+		return ringCFrames;
+	}
 
 	private static PositionGeneratorTests(start: boolean) {
 			const scriptBlock = game.GetService("Workspace").FindFirstChild("ScriptBlock", true) as BasePart;

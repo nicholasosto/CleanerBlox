@@ -32,6 +32,14 @@ export class GameStorage {
 		return _accessory;
 	}
 
+	public static getEvent(event: string): RemoteEvent {
+		const _event = ReplicatedStorage.WaitForChild("Remotes").FindFirstChild(event, true) as RemoteEvent;
+		if (!_event) {
+			error(`Event ${event} not found in storage.`);
+		}
+		return _event;
+	}
+
 	// ANIMATION STORAGE
 	public static getAnimation(animationName: string): Animation {
 		// Get the animation from the storage

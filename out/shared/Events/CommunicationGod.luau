@@ -30,6 +30,9 @@ do
 		-- Notification Signals
 		CommunicationGod:_registerSignal("Notify_Player")
 		CommunicationGod:_registerSignal("Notify_All")
+		-- AI Signals
+		CommunicationGod:_registerSignal("AI_Request")
+		CommunicationGod:_registerSignal("AI_Response")
 		return self
 	end
 	function CommunicationGod:Summon()
