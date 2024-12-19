@@ -6,6 +6,25 @@ import { EntityAttachments } from "./EntityAttachment";
 import * as Calculator from "./EntityCalculator";
 import { Logger } from "shared/Utility/Logger";
 import { HttpService, ReplicatedStorage } from "@rbxts/services";
+import { ProgressBar } from "shared/UI/ProgressBar";
+
+export class AbilityButton {
+	private _imageId: string | undefined;
+	private _progressBar: Frame | undefined;
+	private _imageButton: ImageButton | undefined;
+	constructor(displayName:string, imageId: string, frame: Frame) {
+		Logger.Log("AbilityButton: Constructing");
+		this._imageId = imageId;
+		this._progressBar = frame.FindFirstChild("Progress Bar",true) as Frame;
+		this._imageButton = frame.FindFirstChild("ImageButton",true) as ImageButton;
+		if(this._imageButton === undefined || this._progressBar === undefined) {
+			Logger.Log("AbilityButton: Image Button not found");
+			return;
+		}
+
+		this._progressBar.SetAttribute("TextValue",displayName);
+	}
+}
 
 export class BaseEntity {
 	// CharacterModel
@@ -53,6 +72,11 @@ export class BaseEntity {
 		// WCS Character
 		this.WCS_Character = new Character(rig);
 		this.WCS_Character.ApplyMoveset("DefaultMoveset");
+
+		const skill = this.WCS_Character.GetSkillFromString("ShapeTester");
+
+		
+		
 		
 		// Set the Attachments
 		this.EntityAttachments = new EntityAttachments(rig);
@@ -67,7 +91,14 @@ export class BaseEntity {
 		const humanoid = rig.WaitForChild("Humanoid") as Humanoid;
 
 		const player = this.WCS_Character.Player as Player;
+		const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
+		const hudScreen = playerGui.WaitForChild("HUD") as ScreenGui;
+		const abilitySlotsFrame = (hudScreen.FindFirstChild("AbilitySlots",true) as Frame).GetChildren();
+		const abilitySlots = abilitySlotsFrame.filter((child) => child.IsA("Frame"));
 
+		abilitySlots.forEach((slot) => {
+			const abilityButton = new AbilityButton("ShapeTester","102596975485791",slot as Frame);
+		});
 		if (player) {
 			this._eventEntityCreated.FireClient(player);
 		}

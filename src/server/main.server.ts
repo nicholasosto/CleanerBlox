@@ -34,7 +34,6 @@ function handleCharacterAdded(character: Model) {
 // Handle Player Added
 function handlePlayerAdded(player: Player) {
 	player.CharacterAdded.Connect(handleCharacterAdded);
-	
 }
 
 // Connect Player Added

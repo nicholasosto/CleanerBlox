@@ -46,35 +46,21 @@ do
 			return nil
 		end
 		local spiral = PositionGenerator:CreateSpiral(character:GetPivot(), 10, 100, 2)
-		local spiralParts = {}
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback = function(position)
 			local part = Instance.new("Part")
+			local attachment = Instance.new("Attachment")
+			attachment.Parent = part
 			part.Size = Vector3.new(1, 1, 1)
 			part.Position = position
 			part.Name = "SpiralPart" .. tostring(position.X) .. tostring(position.Y) .. tostring(position.Z)
-			part.Anchored = true
+			part.Anchored = false
 			part.Parent = Workspace:FindFirstChild("JSONParts")
-			table.insert(spiralParts, part)
+			wait(0.3)
+			part:AddTag("SoulSeeker")
 		end
 		for _k, _v in spiral do
 			_callback(_v, _k - 1, spiral)
-		end
-		-- ▲ ReadonlyArray.forEach ▲
-		local _result = Workspace:FindFirstChild("JSONParts")
-		if _result ~= nil then
-			_result = _result:GetChildren()
-		end
-		local spawnedParts = _result
-		-- ▼ ReadonlyArray.forEach ▼
-		local _callback_1 = function(part)
-			print(part:GetPivot().Position)
-			local position = part:GetPivot().Position
-			print(position)
-			task.wait(1)
-		end
-		for _k, _v in spawnedParts do
-			_callback_1(_v, _k - 1, spawnedParts)
 		end
 		-- ▲ ReadonlyArray.forEach ▲
 	end

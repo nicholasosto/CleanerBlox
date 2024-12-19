@@ -36,24 +36,18 @@ export class ShapeTester extends Skill {
 			return;
 		}
 		const spiral = PositionGenerator.CreateSpiral(character.GetPivot(), 10, 100, 2);
-		const spiralParts: Part[] = [];
+
 		spiral.forEach((position) => {
 			const part = new Instance("Part");
+			const attachment = new Instance("Attachment");
+			attachment.Parent = part;
 			part.Size = new Vector3(1, 1, 1);
 			part.Position = position;
 			part.Name = "SpiralPart" + tostring(position.X) + tostring(position.Y) + tostring(position.Z);
-			part.Anchored = true;
+			part.Anchored = false;
 			part.Parent = Workspace.FindFirstChild("JSONParts") as Folder;
-			spiralParts.push(part);
-		});
-
-		const spawnedParts = Workspace.FindFirstChild("JSONParts")?.GetChildren() as Array<Part>
-		
-		spawnedParts.forEach((part) => {
-			print(part.GetPivot().Position);
-			const position = part.GetPivot().Position;
-			print(position);
-			task.wait(1);
+			wait(0.3);
+			part.AddTag("SoulSeeker");
 		});
 	}
 

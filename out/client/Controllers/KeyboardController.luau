@@ -90,9 +90,7 @@ do
 	function KeyboardController:onKeyPress(key, begin)
 		local _key = key
 		local skillName = Skills[_key]
-		if skillName ~= "" and skillName then
-			self:SkillToggle(skillName, begin)
-		end
+		self:SkillToggle(skillName, begin)
 	end
 end
 -- End: KeyboardController.ts

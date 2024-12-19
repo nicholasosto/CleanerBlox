@@ -4,7 +4,32 @@ local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts
 local EntityResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityResource").EntityResource
 local EntityAttachments = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityAttachment").EntityAttachments
 local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityCalculator")
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local ReplicatedStorage = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").ReplicatedStorage
+local AbilityButton
+do
+	AbilityButton = setmetatable({}, {
+		__tostring = function()
+			return "AbilityButton"
+		end,
+	})
+	AbilityButton.__index = AbilityButton
+	function AbilityButton.new(...)
+		local self = setmetatable({}, AbilityButton)
+		return self:constructor(...) or self
+	end
+	function AbilityButton:constructor(displayName, imageId, frame)
+		Logger:Log("AbilityButton: Constructing")
+		self._imageId = imageId
+		self._progressBar = frame:FindFirstChild("Progress Bar", true)
+		self._imageButton = frame:FindFirstChild("ImageButton", true)
+		if self._imageButton == nil or self._progressBar == nil then
+			Logger:Log("AbilityButton: Image Button not found")
+			return nil
+		end
+		self._progressBar:SetAttribute("TextValue", displayName)
+	end
+end
 local BaseEntity
 do
 	BaseEntity = setmetatable({}, {
@@ -36,6 +61,7 @@ do
 		-- WCS Character
 		self.WCS_Character = Character.new(rig)
 		self.WCS_Character:ApplyMoveset("DefaultMoveset")
+		local skill = self.WCS_Character:GetSkillFromString("ShapeTester")
 		-- Set the Attachments
 		self.EntityAttachments = EntityAttachments.new(rig)
 		self:updateAttributes()
@@ -45,6 +71,31 @@ do
 		self.Health = EntityResource.new(self.CharacterModel, "Health", self.MaxHealth, 1, 10)
 		local humanoid = rig:WaitForChild("Humanoid")
 		local player = self.WCS_Character.Player
+		local playerGui = player:WaitForChild("PlayerGui")
+		local hudScreen = playerGui:WaitForChild("HUD")
+		local abilitySlotsFrame = (hudScreen:FindFirstChild("AbilitySlots", true)):GetChildren()
+		-- ▼ ReadonlyArray.filter ▼
+		local _newValue = {}
+		local _callback = function(child)
+			return child:IsA("Frame")
+		end
+		local _length = 0
+		for _k, _v in abilitySlotsFrame do
+			if _callback(_v, _k - 1, abilitySlotsFrame) == true then
+				_length += 1
+				_newValue[_length] = _v
+			end
+		end
+		-- ▲ ReadonlyArray.filter ▲
+		local abilitySlots = _newValue
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback_1 = function(slot)
+			local abilityButton = AbilityButton.new("ShapeTester", "102596975485791", slot)
+		end
+		for _k, _v in abilitySlots do
+			_callback_1(_v, _k - 1, abilitySlots)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
 		if player then
 			self._eventEntityCreated:FireClient(player)
 		end
@@ -81,5 +132,6 @@ do
 	end
 end
 return {
+	AbilityButton = AbilityButton,
 	BaseEntity = BaseEntity,
 }

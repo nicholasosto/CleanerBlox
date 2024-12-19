@@ -20,7 +20,6 @@ export class EntityResource implements IResource {
 	_maxChangeConnection: RBXScriptConnection | undefined;
 
 	constructor(parent: Instance, name: string, maxValue: number, regenRate: number, regenAmount: number = 1) {
-		
 		// Parent Entity
 		this.Entity = parent;
 
@@ -78,9 +77,9 @@ export class EntityResource implements IResource {
 	}
 
 	public assignOnMaxChange(callback: (value: number) => void) {
-		if(this._maxChangeConnection && this._maxChangeConnection.Connected) {
+		if (this._maxChangeConnection && this._maxChangeConnection.Connected) {
 			this._maxChangeConnection.Disconnect();
-		} 
+		}
 		this._maxChangeConnection = this.Entity.GetAttributeChangedSignal(this.Name + "Max").Connect(callback);
 	}
 

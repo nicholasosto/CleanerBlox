@@ -91,9 +91,7 @@ export class KeyboardController {
 	// Main Function: onKeyPress
 	private static onKeyPress(key: Enum.KeyCode, begin: boolean): void {
 		const skillName = Skills.get(key);
-		if (skillName) {
-			this.SkillToggle(skillName, begin);
-		}
+		this.SkillToggle(skillName as string, begin);
 	}
 }
 // End: KeyboardController.ts
