@@ -1,5 +1,6 @@
 // Begin: KeyboardController.ts
 import { HttpService, UserInputService, Workspace } from "@rbxts/services";
+import { ClientInventoryService } from "client/Services/ClientInventoryService";
 import { Character, Skill } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
 import { PositionGenerator } from "shared/Utility/PositionGenerator";
@@ -14,9 +15,6 @@ Skills.set(Enum.KeyCode.R, "BigRed");
 Skills.set(Enum.KeyCode.T, "ShapeTester");
 
 CommunicationGod.Summon();
-const AI_Request = GameStorage.getEvent("AI_Request");
-const eventInventoryEquipRequest = GameStorage.getEvent("INVENTORY_EquipRequest");
-const eventInventoryUnequipRequest = GameStorage.getEvent("INVENTORY_UnequipRequest");
 
 export class KeyboardController {
 	private static instance: KeyboardController;
@@ -27,6 +25,7 @@ export class KeyboardController {
 	public static Start() {
 		if (this.instance === undefined) {
 			this.instance = new KeyboardController();
+
 		}
 	}
 	// Constructor
@@ -54,15 +53,16 @@ export class KeyboardController {
 				switch (input.KeyCode) {
 					case Enum.KeyCode.F:
 						print("F Pressed");
-						AI_Request.FireServer(Workspace.FindFirstChild("TrembusTech") as Model);
 						break;
 					case Enum.KeyCode.G:
 						print("G Pressed");
-						eventInventoryEquipRequest.FireServer("Weapon", "Scythe_Epic_Black");
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
-						eventInventoryUnequipRequest.FireServer("Weapon");
+						break;
+					case Enum.KeyCode.J:
+						print("J Pressed");
+						ClientInventoryService.SendEquipRequest("Weapon", "Scythe_Epic_Black");
 						break;
 					default:
 						KeyboardController.InputBegan(input, isProcessed);

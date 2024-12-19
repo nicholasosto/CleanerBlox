@@ -2,7 +2,10 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- Game Services
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
+-- Plugin Services
 local CreateClient = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").CreateClient
+-- My Services
+local ClientInventoryService = TS.import(script, script.Parent, "Services", "ClientInventoryService").ClientInventoryService
 -- Controllers
 local KeyboardController = TS.import(script, script.Parent, "Controllers", "KeyboardController").KeyboardController
 local SkillController = TS.import(script, script.Parent, "Controllers", "SkillController").SkillController
@@ -13,6 +16,7 @@ local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS",
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Events", "CommunicationGod").CommunicationGod
 -- Start Controllers
+ClientInventoryService:Start()
 KeyboardController:Start()
 SkillController:Start()
 FlightController:Start()

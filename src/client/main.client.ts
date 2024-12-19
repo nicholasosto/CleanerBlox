@@ -1,6 +1,11 @@
 // Game Services
 import { Players } from "@rbxts/services";
+
+// Plugin Services
 import { CreateClient } from "@rbxts/wcs";
+
+// My Services
+import { ClientInventoryService } from "./Services/ClientInventoryService";
 
 // Controllers
 import { KeyboardController } from "./Controllers/KeyboardController";
@@ -14,6 +19,7 @@ import { Logger } from "shared/Utility/Logger";
 import { CommunicationGod } from "shared/Events/CommunicationGod";
 
 // Start Controllers
+ClientInventoryService.Start();
 KeyboardController.Start();
 SkillController.Start();
 FlightController.Start();

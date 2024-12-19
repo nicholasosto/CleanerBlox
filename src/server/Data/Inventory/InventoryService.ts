@@ -15,7 +15,8 @@ export class InventoryService {
 	private static _connectionInventroyEquip: RBXScriptConnection | undefined;
 	private static _connectionInventoryUnequip: RBXScriptConnection | undefined;
 
-	constructor() {
+	private constructor() {
+		InventoryService.ClearConnections();
 		// Equip Request Listener
 		InventoryService._connectionInventroyEquip = eventEquipRequest.OnServerEvent.Connect(
 			(player: Player, ...args: Array<unknown>) => {
@@ -61,7 +62,12 @@ export class InventoryService {
 
 	public static EquipPlayer(player: Player, category: EquipmentSlots, equipmentId: string): boolean {
 		if (InventoryService.ValidateEquipment(player, category, equipmentId)) {
-			print("Equipment is valid");
+			const equipment = GameStorage.cloneAccessory(equipmentId);
+			if(equipment === undefined) {
+				print("Equipment is undefined");
+				return false;
+			}
+			equipment.Parent = player.Character as Model;
 			return true;
 		} else {
 			print("Equipment is invalid");
@@ -75,11 +81,38 @@ export class InventoryService {
 	}
 
 	private static ValidateEquipment(player: Player, equipmentCategory: EquipmentSlots, equipmentId: string): boolean {
+
+		// Get the Player Data
 		const userId = tostring(player.UserId);
 		const playerData = DataManager.GetDataCache(userId)._playerData;
 
-		print("Validating Equipment", equipmentCategory, equipmentId, playerData.HelmetInventory);
+		// Map the Inventory to the Equipment Category
+		const inventoryMap: Map<EquipmentSlots, Array<string>> = new Map<EquipmentSlots, Array<string>>();
+		inventoryMap.set(EquipmentSlots.Helmet, playerData.HelmetInventory);
+		inventoryMap.set(EquipmentSlots.Weapon, playerData.WeaponInventory);
+		inventoryMap.set(EquipmentSlots.Boots, playerData.BootsInventory);
+		inventoryMap.set(EquipmentSlots.Familiar, playerData.FamiliarInventory);
+		inventoryMap.set(EquipmentSlots.Accessory, playerData.AccessoryInventory);
+
+		// Set the Inventory
+		const inventory = inventoryMap.get(equipmentCategory);
+
+		// Invalid Category Check
+		if (inventory === undefined) {
+			print("Invalid Equipment Category", equipmentCategory);
+			return false;
+		}
+
+		// Inventory Check
+		if (inventory.find((item) => item === equipmentId) === undefined) {
+			print("Item not found in inventory", equipmentId);
+			return false;
+		}
 
 		return true;
+	}
+	public static ClearConnections() {
+		InventoryService._connectionInventroyEquip?.Disconnect();
+		InventoryService._connectionInventoryUnequip?.Disconnect();
 	}
 }
