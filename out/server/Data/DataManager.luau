@@ -3,9 +3,6 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
 local Players = _services.Players
 local DataStoreService = _services.DataStoreService
-local EquipmentManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "Equipment", "EquipmentManager").EquipmentManager
-local SkillsManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "Skills", "SkillsManager").SkillsManager
-local InventoryManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "Inventory", "InventoryManager").InventoryManager
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local IData = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Interfaces", "IData")
 -- Data Types
@@ -99,9 +96,6 @@ do
 		local userId = tostring(player.UserId)
 		local storedData = (DataManager.GameDataStore:GetAsync(userId))
 		local dataCache = DataCache.new(userId, DataManager.GameDataStore)
-		local skillSlotManager = SkillsManager.new(dataCache)
-		local equipmentManager = EquipmentManager.new(dataCache)
-		local inventoryManager = InventoryManager.new(dataCache)
 		local _exp = self.PlayerCache
 		table.insert(_exp, dataCache)
 	end

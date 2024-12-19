@@ -36,8 +36,18 @@ local EquipmentSlots = {
 	Weapon = "Weapon",
 	Helmet = "Helmet",
 	Body = "Body",
+	Boots = "Boots",
 	Accessory = "Accessory",
 	Familiar = "Familiar",
+}
+local InventoryType = {
+	SkillInventory = "SkillInventory",
+	WeaponInventory = "WeaponInventory",
+	ArmorInventory = "ArmorInventory",
+	HelmetInventory = "HelmetInventory",
+	BootsInventory = "BootsInventory",
+	FamiliarInventory = "FamiliarInventory",
+	AccessoryInventory = "AccessoryInventory",
 }
 local AnimationGroups = {
 	Combat = "Combat",
@@ -55,10 +65,33 @@ local CombatEffects = {
 	Freeze = "Freeze",
 	Shock = "Shock",
 }
+local EntityStates = {
+	Idle = "Idle",
+	Walking = "Walking",
+	Running = "Running",
+	Jumping = "Jumping",
+	Falling = "Falling",
+	Attacking = "Attacking",
+	Casting = "Casting",
+	Dead = "Dead",
+	Interacting = "Interacting",
+}
+local EntityTypes = {
+	Player = "Player",
+	Mob = "Mob",
+	Boss = "Boss",
+	Wildlife = "Wildlife",
+	Pet = "Pet",
+	Shopkeeper = "Shopkeeper",
+	QuestGiver = "QuestGiver",
+}
 return {
 	SkillName = SkillName,
 	EventNames = EventNames,
 	EquipmentSlots = EquipmentSlots,
+	InventoryType = InventoryType,
 	AnimationGroups = AnimationGroups,
 	CombatEffects = CombatEffects,
+	EntityStates = EntityStates,
+	EntityTypes = EntityTypes,
 }

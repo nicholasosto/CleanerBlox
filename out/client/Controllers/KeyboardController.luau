@@ -19,6 +19,8 @@ local _t = Enum.KeyCode.T
 Skills[_t] = "ShapeTester"
 CommunicationGod:Summon()
 local AI_Request = GameStorage:getEvent("AI_Request")
+local eventInventoryEquipRequest = GameStorage:getEvent("INVENTORY_EquipRequest")
+local eventInventoryUnequipRequest = GameStorage:getEvent("INVENTORY_UnequipRequest")
 local KeyboardController
 do
 	KeyboardController = setmetatable({}, {
@@ -59,11 +61,26 @@ do
 		local wcsCharacter = Character.GetLocalCharacter()
 		-- Input Began Connection
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan:Connect(function(input, isProcessed)
-			if input.KeyCode == Enum.KeyCode.F then
-				print("F Pressed")
-				AI_Request:FireServer(Workspace:FindFirstChild("TrembusTech"))
-			end
-			KeyboardController:InputBegan(input, isProcessed)
+			local _exp = input.KeyCode
+			repeat
+				if _exp == (Enum.KeyCode.F) then
+					print("F Pressed")
+					AI_Request:FireServer(Workspace:FindFirstChild("TrembusTech"))
+					break
+				end
+				if _exp == (Enum.KeyCode.G) then
+					print("G Pressed")
+					eventInventoryEquipRequest:FireServer("Weapon", "Scythe_Epic_Black")
+					break
+				end
+				if _exp == (Enum.KeyCode.H) then
+					print("H Pressed")
+					eventInventoryUnequipRequest:FireServer("Weapon")
+					break
+				end
+				KeyboardController:InputBegan(input, isProcessed)
+				break
+			until true
 		end)
 		-- Input Ended Connection
 		KeyboardController.inputEndedConnection = UserInputService.InputEnded:Connect(function(input, isProcessed)

@@ -15,6 +15,8 @@ Skills.set(Enum.KeyCode.T, "ShapeTester");
 
 CommunicationGod.Summon();
 const AI_Request = GameStorage.getEvent("AI_Request");
+const eventInventoryEquipRequest = GameStorage.getEvent("INVENTORY_EquipRequest");
+const eventInventoryUnequipRequest = GameStorage.getEvent("INVENTORY_UnequipRequest");
 
 export class KeyboardController {
 	private static instance: KeyboardController;
@@ -49,11 +51,23 @@ export class KeyboardController {
 		// Input Began Connection
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan.Connect(
 			(input: InputObject, isProcessed: boolean) => {
-				if (input.KeyCode === Enum.KeyCode.F) {
-					print("F Pressed");
-					AI_Request.FireServer(Workspace.FindFirstChild("TrembusTech") as Model);
+				switch (input.KeyCode) {
+					case Enum.KeyCode.F:
+						print("F Pressed");
+						AI_Request.FireServer(Workspace.FindFirstChild("TrembusTech") as Model);
+						break;
+					case Enum.KeyCode.G:
+						print("G Pressed");
+						eventInventoryEquipRequest.FireServer("Weapon", "Scythe_Epic_Black");
+						break;
+					case Enum.KeyCode.H:
+						print("H Pressed");
+						eventInventoryUnequipRequest.FireServer("Weapon");
+						break;
+					default:
+						KeyboardController.InputBegan(input, isProcessed);
+						break;
 				}
-				KeyboardController.InputBegan(input, isProcessed);
 			},
 		);
 

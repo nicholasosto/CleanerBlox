@@ -1,20 +1,27 @@
+import { Logger } from "shared/Utility/Logger";
 import { Players } from "@rbxts/services";
 import { CreateServer } from "@rbxts/wcs";
 import { DataManager } from "./Data/DataManager";
+import { InventoryService } from "./Data/Inventory/InventoryService";
 import { WCSFolders } from "shared/WCS/Folders";
-import { Logger } from "shared/Utility/Logger";
 import { EntityManager } from "./Entity/EntityManager";
-import { GameStorage } from "shared/Utility/GameStorage";
 import { AIInstanceCreator } from "./AI/AIInstanceCreator";
 import { TagGod } from "./TagClasses/TagGod";
-import { HttpService } from "@rbxts/services";
 import { NotificationManager } from "./Notification/NotificationManager";
 
+// Data and Data related services
 DataManager.Start();
+InventoryService.Start();
+
+// Entity Manager
 EntityManager.Start();
+
+// Notification Manager
+NotificationManager.Start();
+
+// Testing OK to remove if necessary
 AIInstanceCreator.Start();
 TagGod.Start();
-NotificationManager.Start();
 
 // WCS Server Start
 const WCSServer = CreateServer();
@@ -26,7 +33,6 @@ WCSServer.Start();
 // Handle Character Added
 function handleCharacterAdded(character: Model) {
 	Logger.Log("Main", "Character Added");
-	const JSONTestString = HttpService.JSONEncode(WCSServer);
 	const player = Players.GetPlayerFromCharacter(character) as Player;
 	NotificationManager.Notify(player, "Welcome to the game!");
 }

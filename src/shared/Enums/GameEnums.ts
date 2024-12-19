@@ -40,8 +40,19 @@ export enum EquipmentSlots {
 	Weapon = "Weapon",
 	Helmet = "Helmet",
 	Body = "Body",
+	Boots = "Boots",
 	Accessory = "Accessory",
 	Familiar = "Familiar",
+}
+
+export enum InventoryType {
+	SkillInventory = "SkillInventory",
+	WeaponInventory = "WeaponInventory",
+	ArmorInventory = "ArmorInventory",
+	HelmetInventory = "HelmetInventory",
+	BootsInventory = "BootsInventory",
+	FamiliarInventory = "FamiliarInventory",
+	AccessoryInventory = "AccessoryInventory",
 }
 
 export enum AnimationGroups {
@@ -61,3 +72,27 @@ export enum CombatEffects {
 	Freeze = "Freeze",
 	Shock = "Shock",
 }
+
+
+export enum EntityStates {
+	Idle = "Idle",
+	Walking = "Walking",
+	Running = "Running",
+	Jumping = "Jumping",
+	Falling = "Falling",
+	Attacking = "Attacking", // Attacking with a weapon
+	Casting = "Casting", // Casting a spell
+	Dead = "Dead", // Dead
+	Interacting = "Interacting", // Talking to NPC
+}
+
+export enum EntityTypes {
+	Player = "Player",
+	Mob = "Mob",
+	Boss = "Boss",
+	Wildlife = "Wildlife",
+	Pet = "Pet",
+	Shopkeeper = "Shopkeeper",
+	QuestGiver = "QuestGiver",
+}
+

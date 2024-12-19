@@ -1,8 +1,6 @@
 import { Players, DataStoreService, HttpService } from "@rbxts/services";
-import { EquipmentManager } from "./Equipment/EquipmentManager";
-import { SkillsManager } from "./Skills/SkillsManager";
-import { InventoryManager } from "./Inventory/InventoryManager";
 import { Logger } from "../../shared/Utility/Logger";
+import { EquipmentSlots } from "shared/Enums/GameEnums";
 import * as IData from "../../shared/Interfaces/IData";
 
 // Data Types
@@ -104,9 +102,6 @@ export class DataManager {
 		const userId = tostring(player.UserId);
 		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerData;
 		const dataCache = new DataCache(userId, DataManager.GameDataStore);
-		const skillSlotManager = new SkillsManager(dataCache);
-		const equipmentManager = new EquipmentManager(dataCache);
-		const inventoryManager = new InventoryManager(dataCache);
 		this.PlayerCache.push(dataCache);
 	}
 

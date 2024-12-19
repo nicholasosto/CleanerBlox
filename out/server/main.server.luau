@@ -1,20 +1,25 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
 local CreateServer = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").CreateServer
 local DataManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataManager").DataManager
+local InventoryService = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "Inventory", "InventoryService").InventoryService
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "EntityManager").EntityManager
 local AIInstanceCreator = TS.import(script, game:GetService("ServerScriptService"), "TS", "AI", "AIInstanceCreator").AIInstanceCreator
 local TagGod = TS.import(script, game:GetService("ServerScriptService"), "TS", "TagClasses", "TagGod").TagGod
-local HttpService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").HttpService
 local NotificationManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Notification", "NotificationManager").NotificationManager
+-- Data and Data related services
 DataManager:Start()
+InventoryService:Start()
+-- Entity Manager
 EntityManager:Start()
+-- Notification Manager
+NotificationManager:Start()
+-- Testing OK to remove if necessary
 AIInstanceCreator:Start()
 TagGod:Start()
-NotificationManager:Start()
 -- WCS Server Start
 local WCSServer = CreateServer()
 WCSServer:RegisterDirectory(WCSFolders.Skills)
@@ -24,7 +29,6 @@ WCSServer:Start()
 -- Handle Character Added
 local function handleCharacterAdded(character)
 	Logger:Log("Main", "Character Added")
-	local JSONTestString = HttpService:JSONEncode(WCSServer)
 	local player = Players:GetPlayerFromCharacter(character)
 	NotificationManager:Notify(player, "Welcome to the game!")
 end
