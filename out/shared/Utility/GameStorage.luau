@@ -27,7 +27,7 @@ do
 		end
 		-- Clone the accessory
 		local _clonedAccessory = _accessory:Clone()
-		return _accessory
+		return _clonedAccessory
 	end
 	function GameStorage:getEvent(event)
 		local _event = ReplicatedStorage:WaitForChild("Remotes"):FindFirstChild(event, true)

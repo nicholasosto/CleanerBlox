@@ -1,11 +1,8 @@
-export const DataTemplate = {
-	key: "Datatemplate",
-	version: 12,
+import { IPlayerData, TEquipmentSlot, TSkillSlot, TCurrency } from "shared/SharedReference";
 
-	// Player Level and Experience
-	Level: 11,
-	Experience: 0,
-	ExperienceToNextLevel: 100,
+export const DataTemplate: IPlayerData = {
+	key: "Datatemplate",
+	version: 2,
 
 	// Character Name
 	CharacterName: "Default Name",
@@ -21,38 +18,48 @@ export const DataTemplate = {
 
 	// Character Stats
 	Stats: {
-		Strength: 10,
-		Speed: 10,
-		Dexterity: 10,
-		Intelligence: 10,
-		Constitution: 200,
+		Level: 1,
+		Experience: 0,
+		ExperienceToNextLevel: 100,
+		Strength: 10, // Physical Damage, Health, Armor
+		Speed: 10, // Attack Speed, Movement Speed
+		Dexterity: 10, // Critical Hit Chance, Dodge Chance, Stamina Regen
+		Intelligence: 10, // Magic Damage, Mana Regen, Spell Crit Chance
+		Constitution: 200, // Health, Health Regen
+		AttributePoints: 0,
 	},
 
-	// Character Skills
-	Skills: {
-		Slot_1: "DevilBeam",
-		Slot_2: "BigRed",
-		Slot_3: "Spotlights",
-		Slot_4: "Empty",
-		Slot_5: "Empty",
-	},
+	// Currencies
+	Currencies: [
+		{ CurrencyId: "Souls", CurrencyAmount: 140 },
+		{ CurrencyId: "GodShard", CurrencyAmount: 14 },
+		{ CurrencyId: "SSZeno", CurrencyAmount: 1 },
+	] as TCurrency[],
 
-	// Character Equipment
-	Equipment: {
-		Weapon: "Fists",
-		Armor: "Cloth",
-		Helmet: "None",
-		Boots: "None",
-		Familiar: "None",
-		Accessory: "None",
-	},
+	// Skill Slots
+	SkillSlots: [
+		{ SlotId: "Slot_1", SkillId: "Spotlights" },
+		{ SlotId: "Slot_2", SkillId: "BigRed" },
+		{ SlotId: "Slot_3", SkillId: "Empty" },
+		{ SlotId: "Slot_4", SkillId: "Empty" },
+		{ SlotId: "Slot_5", SkillId: "Empty" },
+	] as TSkillSlot[],
+
+	// Equipment Slots
+	EquipmentSlots: [
+		{ SlotId: "Weapon", EquipmentId: "Fists" },
+		{ SlotId: "Armor", EquipmentId: "Cloth" },
+		{ SlotId: "Helmet", EquipmentId: "None" },
+		{ SlotId: "Boots", EquipmentId: "None" },
+		{ SlotId: "Familiar", EquipmentId: "None" },
+		{ SlotId: "Accessory", EquipmentId: "None" },
+	] as TEquipmentSlot[],
 
 	// Character Inventory
-	SkillInventory: { 0: "Attack", 1: "Block", 2: "Spotlights" },
-	WeaponInventory: { 0: "Fists", 1: "Dagger", 2: "Sword", 3: "Axe", 4: "Bow", 5: "Staff" },
-	ArmorInventory: { 0: "Cloth", 1: "Leather", 2: "Chainmail", 3: "Plate" },
-	HelmetInventory: { 0: "None", 1: "Hood", 2: "Helmet", 3: "Crown" },
-	BootsInventory: { 0: "None", 1: "Shoes", 2: "Boots", 3: "Greaves" },
-	FamiliarInventory: { 0: "None", 1: "Bat", 2: "Cat", 3: "Dog", 4: "Owl" },
-	AccessoryInventory: { 0: "None", 1: "Ring", 2: "Amulet", 3: "Bracelet", 4: "Belt" },
+	SkillInventory: ["Attack", "Block", "Spotlights", "Heal", "Buff", "Debuff", "Stun"],
+	WeaponInventory: ["Fists", "Dagger", "Sword", "Axe", "Bow", "Staff"],
+	ArmorInventory: ["Cloth", "Leather", "Chainmail", "Plate"],
+	HelmetInventory: ["None", "Hood", "Helmet", "Crown"],
+	FamiliarInventory: ["None", "Bat", "Cat", "Dog", "Owl"],
+	AccessoryInventory: ["None", "Ring", "Amulet", "Bracelet", "Belt"],
 };

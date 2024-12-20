@@ -30,7 +30,11 @@ WCSServer:Start()
 local function handleCharacterAdded(character)
 	Logger:Log("Main", "Character Added")
 	local player = Players:GetPlayerFromCharacter(character)
-	NotificationManager:Notify(player, "Welcome to the game!")
+	local response = {
+		success = true,
+		message = "Character Added",
+	}
+	NotificationManager:Notify(player, response)
 end
 -- Handle Player Added
 local function handlePlayerAdded(player)

@@ -21,21 +21,6 @@ export enum SkillName {
 	FeignDeath = "FeignDeath", // Spawns a fake rig that runs around and attacks enemies another clone ragdolls and the player becomes invisible for 3 seconds
 }
 
-export enum EventNames {
-	// Character Events
-	MoveAction = "MoveAction", // Possible actions: "Jump", "Crouch", "Sprint", "Walk", "Idle", "Fly", "Land"
-    TargetModel = "TargetModel", // Target a model in the game world (used for combat and skill targeting and other interactions)
-
-	// Skill Events
-	SkillInventory_Unlock = "SkillInventory_Unlock", // Unlocks a skill in the skill inventory
-
-	// Equipment Events
-	Equipment_ToggleEquip = "Equipment_Equip", // Equips or unequips an equipment in the equipment inventory
-	Equipment_Unlock = "Equipment_Unlock", // Unlocks an equipment in the equipment inventory through drops or purchases
-	Equipment_Lock = "Equipment_Lock", // Locks an equipment in the equipment inventory if sold or traded
-
-}
-
 export enum EquipmentSlots {
 	Weapon = "Weapon",
 	Helmet = "Helmet",
@@ -43,16 +28,6 @@ export enum EquipmentSlots {
 	Boots = "Boots",
 	Accessory = "Accessory",
 	Familiar = "Familiar",
-}
-
-export enum InventoryType {
-	SkillInventory = "SkillInventory",
-	WeaponInventory = "WeaponInventory",
-	ArmorInventory = "ArmorInventory",
-	HelmetInventory = "HelmetInventory",
-	BootsInventory = "BootsInventory",
-	FamiliarInventory = "FamiliarInventory",
-	AccessoryInventory = "AccessoryInventory",
 }
 
 export enum AnimationGroups {
@@ -95,4 +70,3 @@ export enum EntityTypes {
 	Shopkeeper = "Shopkeeper",
 	QuestGiver = "QuestGiver",
 }
-

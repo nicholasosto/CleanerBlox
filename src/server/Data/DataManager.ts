@@ -1,15 +1,10 @@
+// Roblox Services
 import { Players, DataStoreService, HttpService } from "@rbxts/services";
+
+// My Imports
 import { Logger } from "../../shared/Utility/Logger";
-import { EquipmentSlots } from "shared/Enums/GameEnums";
-import * as IData from "../../shared/Interfaces/IData";
-
-// Data Types
-export type IPlayerData = IData.PlayerData;
-export type IPlayerDataTemplate = IData.PlayerData;
-export type IPlayerCache = IData.PlayerCache;
-
-// Data Template
-export const DataTemplate = IData.DataTemplate;
+import { IPlayerData } from "shared/SharedReference";
+import { DataTemplate } from "./DataTemplate";
 
 // Data Cache Class for use in the DataManager
 export class DataCache {
@@ -102,6 +97,7 @@ export class DataManager {
 		const userId = tostring(player.UserId);
 		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerData;
 		const dataCache = new DataCache(userId, DataManager.GameDataStore);
+		Logger.Log("DM", "Player Registered: ", userId);
 		this.PlayerCache.push(dataCache);
 	}
 

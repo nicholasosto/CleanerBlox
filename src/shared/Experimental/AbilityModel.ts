@@ -1,30 +1,7 @@
 import { Character } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
 
-export interface IAbilityModel {
-	// Model and Reference
-	Model: Model;
-	HitPart: BasePart;
-	WCSCharacterReference: Character;
-	_AlignOrientation: AlignOrientation;
-	_UniversalConstraint: UniversalConstraint;
-
-	// Audio and Animation Tracks
-	AnimationTracks: Map<string, AnimationTrack>;
-	AudioTracks: Map<string, Sound>;
-
-	// Connection
-	HitConnection: RBXScriptConnection;
-
-	// Methods
-	Activate(phase: number): void;
-
-	Cancel(): void; // Called when the ability is cancelled/interrupted
-	OnEnded(): void; // Called when the ability ends from a WCSSkill
-	OnHit(): void; // Called when the ability hits;
-}
-
-export class AbilityModel implements IAbilityModel {
+export class AbilityModel {
 	Model: Model;
 	HitPart: BasePart;
 	WCSCharacterReference: Character;
@@ -47,14 +24,9 @@ export class AbilityModel implements IAbilityModel {
 		this.Model.Parent = this.WCSCharacterReference.Instance;
 		this.HitPart.Anchored = true;
 
-
 		// Attach to AlignOrientation and UniversalConstraint
-		this._AlignOrientation = this.Model.FindFirstChild("AlignOrientation",true) as AlignOrientation;
-		this._UniversalConstraint = this.Model.FindFirstChild("UniversalConstraint",true) as UniversalConstraint;
-		
-		
-	
-
+		this._AlignOrientation = this.Model.FindFirstChild("AlignOrientation", true) as AlignOrientation;
+		this._UniversalConstraint = this.Model.FindFirstChild("UniversalConstraint", true) as UniversalConstraint;
 		this.HitConnection = this.HitPart.Touched.Connect((hit) => {
 			if (hit.Parent === this.WCSCharacterReference.Instance) {
 				Logger.Log("AbilityModel", " - Hit Self\n");

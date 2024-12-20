@@ -24,14 +24,6 @@ local SkillName = {
 	DevilBeam = "DevilBeam",
 	FeignDeath = "FeignDeath",
 }
-local EventNames = {
-	MoveAction = "MoveAction",
-	TargetModel = "TargetModel",
-	SkillInventory_Unlock = "SkillInventory_Unlock",
-	Equipment_ToggleEquip = "Equipment_Equip",
-	Equipment_Unlock = "Equipment_Unlock",
-	Equipment_Lock = "Equipment_Lock",
-}
 local EquipmentSlots = {
 	Weapon = "Weapon",
 	Helmet = "Helmet",
@@ -39,15 +31,6 @@ local EquipmentSlots = {
 	Boots = "Boots",
 	Accessory = "Accessory",
 	Familiar = "Familiar",
-}
-local InventoryType = {
-	SkillInventory = "SkillInventory",
-	WeaponInventory = "WeaponInventory",
-	ArmorInventory = "ArmorInventory",
-	HelmetInventory = "HelmetInventory",
-	BootsInventory = "BootsInventory",
-	FamiliarInventory = "FamiliarInventory",
-	AccessoryInventory = "AccessoryInventory",
 }
 local AnimationGroups = {
 	Combat = "Combat",
@@ -87,9 +70,7 @@ local EntityTypes = {
 }
 return {
 	SkillName = SkillName,
-	EventNames = EventNames,
 	EquipmentSlots = EquipmentSlots,
-	InventoryType = InventoryType,
 	AnimationGroups = AnimationGroups,
 	CombatEffects = CombatEffects,
 	EntityStates = EntityStates,

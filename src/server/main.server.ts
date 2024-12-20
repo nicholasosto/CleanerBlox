@@ -8,6 +8,7 @@ import { EntityManager } from "./Entity/EntityManager";
 import { AIInstanceCreator } from "./AI/AIInstanceCreator";
 import { TagGod } from "./TagClasses/TagGod";
 import { NotificationManager } from "./Notification/NotificationManager";
+import { TEventSuccessResponse } from "shared/SharedReference";
 
 // Data and Data related services
 DataManager.Start();
@@ -34,7 +35,12 @@ WCSServer.Start();
 function handleCharacterAdded(character: Model) {
 	Logger.Log("Main", "Character Added");
 	const player = Players.GetPlayerFromCharacter(character) as Player;
-	NotificationManager.Notify(player, "Welcome to the game!");
+	const response: TEventSuccessResponse = {
+		success: true,
+		message: "Character Added",
+	};
+
+	NotificationManager.Notify(player, response);
 }
 
 // Handle Player Added

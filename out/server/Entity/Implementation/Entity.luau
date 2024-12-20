@@ -1,6 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
+local DataTemplate = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataTemplate").DataTemplate
 local EntityResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityResource").EntityResource
 local EntityAttachments = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityAttachment").EntityAttachments
 local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityCalculator")
@@ -43,14 +44,7 @@ do
 		return self:constructor(...) or self
 	end
 	function BaseEntity:constructor(rig)
-		self.StatsData = {
-			Level = 1,
-			Strength = 10,
-			Dexterity = 10,
-			Intelligence = 10,
-			Constitution = 10,
-			Speed = 10,
-		}
+		self.StatsData = DataTemplate.Stats
 		self.MaxHealth = 15
 		self.MaxMana = 15
 		self.MaxStamina = 15

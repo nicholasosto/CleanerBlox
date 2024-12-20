@@ -6,22 +6,18 @@ local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_i
 local CreateClient = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").CreateClient
 -- My Services
 local ClientInventoryService = TS.import(script, script.Parent, "Services", "ClientInventoryService").ClientInventoryService
+local ClientSkillService = TS.import(script, script.Parent, "Services", "ClientSkillService").ClientSkillService
 -- Controllers
 local KeyboardController = TS.import(script, script.Parent, "Controllers", "KeyboardController").KeyboardController
-local SkillController = TS.import(script, script.Parent, "Controllers", "SkillController").SkillController
 local FlightController = TS.import(script, script.Parent, "Controllers", "FlightController").FlightController
 local GUIController = TS.import(script, script.Parent, "Controllers", "GUIController").GUIController
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Events", "CommunicationGod").CommunicationGod
--- Start Controllers
+local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
+-- Start Services
 ClientInventoryService:Start()
-KeyboardController:Start()
-SkillController:Start()
-FlightController:Start()
-GUIController:Start()
-CommunicationGod:Summon()
+ClientSkillService:Start()
 --UIController.Start();
 -- WCS Client Start
 local wcsClient = CreateClient()
@@ -29,6 +25,11 @@ wcsClient:RegisterDirectory(WCSFolders.Skills)
 wcsClient:RegisterDirectory(WCSFolders.Movesets)
 wcsClient:RegisterDirectory(WCSFolders.StatusEffects)
 wcsClient:Start()
+-- Start Controllers
+KeyboardController:Start()
+FlightController:Start()
+GUIController:Start()
+CommunicationGod:Summon()
 -- Handle Character Added
 local function handleCharacterAdded(character)
 	Logger:Log("Client", "Character Added: ", character)

@@ -1,11 +1,13 @@
 // Begin: KeyboardController.ts
 import { HttpService, UserInputService, Workspace } from "@rbxts/services";
 import { ClientInventoryService } from "client/Services/ClientInventoryService";
+import { ClientSkillService } from "client/Services/ClientSkillService";
 import { Character, Skill } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
 import { PositionGenerator } from "shared/Utility/PositionGenerator";
 import { GameStorage } from "shared/Utility/GameStorage";
-import { CommunicationGod } from "shared/Events/CommunicationGod";
+import { CommunicationGod } from "shared/Experimental/CommunicationGod";
+import { InventoryReference } from "shared/SharedReference";
 
 // Set the skills here
 const Skills: Map<Enum.KeyCode, string> = new Map<Enum.KeyCode, string>();
@@ -25,7 +27,6 @@ export class KeyboardController {
 	public static Start() {
 		if (this.instance === undefined) {
 			this.instance = new KeyboardController();
-
 		}
 	}
 	// Constructor
@@ -51,18 +52,22 @@ export class KeyboardController {
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan.Connect(
 			(input: InputObject, isProcessed: boolean) => {
 				switch (input.KeyCode) {
-					case Enum.KeyCode.F:
-						print("F Pressed");
+					case Enum.KeyCode.V:
+						print("V Pressed");
+						ClientSkillService.AssignSlotRequest("1", "Basic");
 						break;
 					case Enum.KeyCode.G:
 						print("G Pressed");
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
+						this.InventoryToggle(InventoryReference.EInventorySlot.Body,"Plate_Legendary_RB", true);
+						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet,"Demon Lord Halo", true);
 						break;
 					case Enum.KeyCode.J:
 						print("J Pressed");
-						ClientInventoryService.SendEquipRequest("Weapon", "Scythe_Epic_Black");
+						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand,"Scythe_Epic_Black", true);
+						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand,"Scythe_Epic_Black", true);
 						break;
 					default:
 						KeyboardController.InputBegan(input, isProcessed);
@@ -74,7 +79,28 @@ export class KeyboardController {
 		// Input Ended Connection
 		KeyboardController.inputEndedConnection = UserInputService.InputEnded.Connect(
 			(input: InputObject, isProcessed: boolean) => {
-				KeyboardController.InputEnded(input, isProcessed);
+				switch (input.KeyCode) {
+					case Enum.KeyCode.V:
+						print("V Pressed");
+						ClientSkillService.AssignSlotRequest("1", "Basic");
+						break;
+					case Enum.KeyCode.G:
+						print("G Pressed");
+						break;
+					case Enum.KeyCode.H:
+						print("H Pressed");
+						this.InventoryToggle(InventoryReference.EInventorySlot.Body,"Plate_Legendary_RB", false);
+						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet,"Demon Lord Halo", false);
+						break;
+					case Enum.KeyCode.J:
+						print("J Pressed");
+						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand,"Scythe_Epic_Black", false);
+						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand,"Scythe_Epic_Black", false);
+						break;
+					default:
+						KeyboardController.InputEnded(input, isProcessed);
+						break;
+			}
 			},
 		);
 	}
@@ -87,9 +113,21 @@ export class KeyboardController {
 		KeyboardController.onKeyPress(input.KeyCode, false);
 	}
 
+	private static InventoryToggle(equipmentSlot: InventoryReference.EInventorySlot, weaponName: string, begin: boolean) {
+		if(begin) {
+			ClientInventoryService.SendEquipRequest(equipmentSlot, weaponName);
+		} else {
+			ClientInventoryService.SendUnequipRequest(equipmentSlot);
+		}
+	}
+
 	// Helper: Skill Toggle
 	private static SkillToggle(skillName: string, begin: boolean): void {
 		const character = Character.GetLocalCharacter() as Character;
+
+		if (!character) {
+			return;
+		}
 
 		const skill = character.GetSkillFromString(skillName) as Skill;
 

@@ -23,8 +23,11 @@ do
 		end
 		return NotificationManager._instance
 	end
-	function NotificationManager:Notify(player, message)
-		NotificationManager._notificationEvent:FireClient(player, message)
+	function NotificationManager:Notify(player, eventResponse, timeout)
+		if timeout == nil then
+			timeout = 2
+		end
+		-- Enable player's notification panel
 		local playerGui = player:FindFirstChildOfClass("PlayerGui")
 		local _result = playerGui
 		if _result ~= nil then
@@ -32,9 +35,17 @@ do
 		end
 		local NotificationPanel = _result
 		NotificationPanel.Enabled = true
+		-- Set the message
 		local MessageLabel = NotificationPanel:FindFirstChild("MessageLabel", true)
-		MessageLabel.Text = message
-		task.delay(2, function()
+		MessageLabel.Text = eventResponse.message
+		-- Set the color
+		if eventResponse.success then
+			MessageLabel.TextColor3 = Color3.new(0, 1, 0)
+		else
+			MessageLabel.TextColor3 = Color3.new(1, 0, 0)
+		end
+		-- Hide the panel after the timeout
+		task.delay(timeout, function()
 			NotificationPanel.Enabled = false
 			MessageLabel.Text = ""
 		end)

@@ -6,25 +6,23 @@ import { CreateClient } from "@rbxts/wcs";
 
 // My Services
 import { ClientInventoryService } from "./Services/ClientInventoryService";
+import { ClientSkillService } from "./Services/ClientSkillService";
 
 // Controllers
 import { KeyboardController } from "./Controllers/KeyboardController";
-import { SkillController } from "./Controllers/SkillController";
 import { FlightController } from "./Controllers/FlightController";
 import { GUIController } from "./Controllers/GUIController";
 
 // References
 import { WCSFolders } from "shared/WCS/Folders";
 import { Logger } from "shared/Utility/Logger";
-import { CommunicationGod } from "shared/Events/CommunicationGod";
+import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 
-// Start Controllers
+// Start Services
 ClientInventoryService.Start();
-KeyboardController.Start();
-SkillController.Start();
-FlightController.Start();
-GUIController.Start();
-CommunicationGod.Summon();
+ClientSkillService.Start();
+
+
 
 //UIController.Start();
 
@@ -34,6 +32,12 @@ wcsClient.RegisterDirectory(WCSFolders.Skills);
 wcsClient.RegisterDirectory(WCSFolders.Movesets);
 wcsClient.RegisterDirectory(WCSFolders.StatusEffects);
 wcsClient.Start();
+
+// Start Controllers
+KeyboardController.Start();
+FlightController.Start();
+GUIController.Start();
+CommunicationGod.Summon();
 
 // Handle Character Added
 function handleCharacterAdded(character: Model) {

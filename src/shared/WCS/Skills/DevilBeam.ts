@@ -1,6 +1,6 @@
 import { HoldableSkill, SkillDecorator } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
-import { AbilityModel } from "shared/WCS/Interfaces/IAbilityModel";
+import { AbilityModel } from "shared/Experimental/AbilityModel";
 import { GameStorage } from "shared/Utility/GameStorage";
 import { ParticleGroupManager } from "shared/Utility/ParticleGroupManager";
 import { SkillConfigurations } from "../Interfaces/SkillConfigurations";

@@ -1,6 +1,7 @@
 import { Character } from "@rbxts/wcs";
 import { IAttachments } from "../Interfaces/IAttachments";
-import { ICoreStats } from "shared/Interfaces/IData";
+import { TCoreStats } from "shared/SharedReference";
+import { DataTemplate } from "server/Data/DataTemplate";
 import { EntityResource } from "./EntityResource";
 import { EntityAttachments } from "./EntityAttachment";
 import * as Calculator from "./EntityCalculator";
@@ -12,17 +13,17 @@ export class AbilityButton {
 	private _imageId: string | undefined;
 	private _progressBar: Frame | undefined;
 	private _imageButton: ImageButton | undefined;
-	constructor(displayName:string, imageId: string, frame: Frame) {
+	constructor(displayName: string, imageId: string, frame: Frame) {
 		Logger.Log("AbilityButton: Constructing");
 		this._imageId = imageId;
-		this._progressBar = frame.FindFirstChild("Progress Bar",true) as Frame;
-		this._imageButton = frame.FindFirstChild("ImageButton",true) as ImageButton;
-		if(this._imageButton === undefined || this._progressBar === undefined) {
+		this._progressBar = frame.FindFirstChild("Progress Bar", true) as Frame;
+		this._imageButton = frame.FindFirstChild("ImageButton", true) as ImageButton;
+		if (this._imageButton === undefined || this._progressBar === undefined) {
 			Logger.Log("AbilityButton: Image Button not found");
 			return;
 		}
 
-		this._progressBar.SetAttribute("TextValue",displayName);
+		this._progressBar.SetAttribute("TextValue", displayName);
 	}
 }
 
@@ -38,14 +39,7 @@ export class BaseEntity {
 	EntityAttachments: IAttachments;
 
 	// Data with default values
-	StatsData: ICoreStats = {
-		Level: 1,
-		Strength: 10,
-		Dexterity: 10,
-		Intelligence: 10,
-		Constitution: 10,
-		Speed: 10,
-	};
+	StatsData: TCoreStats = DataTemplate.Stats;
 
 	// Resources with default values
 	public Health: EntityResource;
@@ -75,9 +69,6 @@ export class BaseEntity {
 
 		const skill = this.WCS_Character.GetSkillFromString("ShapeTester");
 
-		
-		
-		
 		// Set the Attachments
 		this.EntityAttachments = new EntityAttachments(rig);
 
@@ -93,11 +84,11 @@ export class BaseEntity {
 		const player = this.WCS_Character.Player as Player;
 		const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 		const hudScreen = playerGui.WaitForChild("HUD") as ScreenGui;
-		const abilitySlotsFrame = (hudScreen.FindFirstChild("AbilitySlots",true) as Frame).GetChildren();
+		const abilitySlotsFrame = (hudScreen.FindFirstChild("AbilitySlots", true) as Frame).GetChildren();
 		const abilitySlots = abilitySlotsFrame.filter((child) => child.IsA("Frame"));
 
 		abilitySlots.forEach((slot) => {
-			const abilityButton = new AbilityButton("ShapeTester","102596975485791",slot as Frame);
+			const abilityButton = new AbilityButton("ShapeTester", "102596975485791", slot as Frame);
 		});
 		if (player) {
 			this._eventEntityCreated.FireClient(player);

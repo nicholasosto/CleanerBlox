@@ -29,7 +29,7 @@ export class GameStorage {
 		// Clone the accessory
 		const _clonedAccessory = _accessory.Clone();
 
-		return _accessory;
+		return _clonedAccessory;
 	}
 
 	public static getEvent(event: string): RemoteEvent {

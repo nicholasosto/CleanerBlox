@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Players } from "@rbxts/services";
 import { BaseEntity } from "./Implementation/Entity";
-import { CommunicationGod } from "shared/Events/CommunicationGod";
+import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 import Signal from "@rbxts/signal";
 
 export class EntityManager {

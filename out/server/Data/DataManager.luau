@@ -1,13 +1,12 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+-- Roblox Services
 local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
 local Players = _services.Players
 local DataStoreService = _services.DataStoreService
+-- My Imports
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local IData = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Interfaces", "IData")
--- Data Types
--- Data Template
-local DataTemplate = IData.DataTemplate
+local DataTemplate = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataTemplate").DataTemplate
 -- Data Cache Class for use in the DataManager
 local DataCache
 do
@@ -96,6 +95,7 @@ do
 		local userId = tostring(player.UserId)
 		local storedData = (DataManager.GameDataStore:GetAsync(userId))
 		local dataCache = DataCache.new(userId, DataManager.GameDataStore)
+		Logger:Log("DM", "Player Registered: ", userId)
 		local _exp = self.PlayerCache
 		table.insert(_exp, dataCache)
 	end
@@ -141,7 +141,6 @@ do
 	DataManager.AutoSaveInterval = 15
 end
 return {
-	DataTemplate = DataTemplate,
 	DataCache = DataCache,
 	DataManager = DataManager,
 }

@@ -1,11 +1,12 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "SharedReference").InventoryReference
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 -- Events
-local eventEquipRequest = GameStorage:getEvent("INVENTORY_EquipRequest")
-local eventUnequipRequest = GameStorage:getEvent("INVENTORY_UnequipRequest")
-local eventEquipResponse = GameStorage:getEvent("INVENTORY_EquipResponse")
-local eventUnequipResponse = GameStorage:getEvent("INVENTORY_UnequipResponse")
+local eventEquipRequest = GameStorage:getEvent(InventoryReference.EInventoryEvent.EquipRequest)
+local eventUnequipRequest = GameStorage:getEvent(InventoryReference.EInventoryEvent.UnequipRequest)
+local eventEquipResponse = GameStorage:getEvent(InventoryReference.EInventoryEvent.EquipResponse)
+local eventUnequipResponse = GameStorage:getEvent(InventoryReference.EInventoryEvent.UnequipResponse)
 local ClientInventoryService
 do
 	ClientInventoryService = setmetatable({}, {
