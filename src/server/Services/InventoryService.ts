@@ -1,7 +1,7 @@
 // Note: Inventory Service
 import { Logger } from "shared/Utility/Logger";
 import { GameStorage } from "shared/Utility/GameStorage";
-import { DataManager } from "../DataManager";
+import { DataManager } from "../Data/DataManager";
 //import { EquipmentSlots } from "shared/Enums/GameEnums";
 import { NotificationManager } from "server/Notification/NotificationManager";
 import { TEventSuccessResponse, InventoryReference } from "shared/SharedReference";
@@ -91,7 +91,6 @@ export class InventoryService {
 	// Equip: Function
 	// eslint-disable-next-line prettier/prettier
 	public static EquipCharacterModel(characterRig: Model, category: InventoryReference.EInventorySlot, equipmentId: string): TEventSuccessResponse {
-		
 		// Get Response Ready
 		const response: TEventSuccessResponse = {
 			success: true,
@@ -107,10 +106,9 @@ export class InventoryService {
 			return response;
 		}
 
-
 		const attachment: Attachment | undefined = handle?.FindFirstChildWhichIsA("Attachment") as Attachment;
 
-		if(attachment === undefined) {
+		if (attachment === undefined) {
 			response.message = "Attachment not found";
 			response.success = false;
 			return response;

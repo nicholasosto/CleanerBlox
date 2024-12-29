@@ -27,4 +27,3 @@ export enum EInventoryNames {
 	Familiar = "FamiliarInventory",
 	Accessory = "AccessoryInventory",
 }
-

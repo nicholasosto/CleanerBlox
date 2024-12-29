@@ -45,7 +45,7 @@ do
 			Logger:Log("ShapeTester", "No Character Found")
 			return nil
 		end
-		local spiral = PositionGenerator:CreateSpiral(character:GetPivot(), 10, 100, 2)
+		local spiral = PositionGenerator:CreateSpiral(character:GetPivot(), math.pi, 100, 1)
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback = function(position)
 			local part = Instance.new("Part")
@@ -54,9 +54,9 @@ do
 			part.Size = Vector3.new(1, 1, 1)
 			part.Position = position
 			part.Name = "SpiralPart" .. tostring(position.X) .. tostring(position.Y) .. tostring(position.Z)
-			part.Anchored = false
+			part.Anchored = true
 			part.Parent = Workspace:FindFirstChild("JSONParts")
-			wait(0.3)
+			--wait(0.3);
 			part:AddTag("SoulSeeker")
 		end
 		for _k, _v in spiral do

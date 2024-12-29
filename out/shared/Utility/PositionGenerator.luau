@@ -109,7 +109,7 @@ do
 				local x = radius * math.cos(angle)
 				local z = radius * math.sin(angle)
 				local y = i * stepHeight
-				local position = Vector3.new(x, y, z)
+				local position = Vector3.new(3 * math.pi * x, y, 3 * z)
 				local cframe = CFrame.new(userCFrame.Position + position)
 				local _position = cframe.Position
 				table.insert(ringCFrames, _position)

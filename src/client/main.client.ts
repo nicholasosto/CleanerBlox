@@ -22,8 +22,6 @@ import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 ClientInventoryService.Start();
 ClientSkillService.Start();
 
-
-
 //UIController.Start();
 
 // WCS Client Start

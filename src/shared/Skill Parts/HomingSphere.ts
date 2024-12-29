@@ -20,7 +20,7 @@ export class HomingSphere {
 
 	constructor(owner: Model) {
 		//Logger.Log("HomingSphere", "Created", owner.Name);
-		this._instance = GameStorage.getModel("HomingSphere");
+		this._instance = GameStorage.cloneModel("HomingSphere");
 		this._owner = owner;
 
 		this._hitPart = this._instance.FindFirstChild("HitPart") as BasePart;

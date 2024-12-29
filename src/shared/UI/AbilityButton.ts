@@ -4,10 +4,9 @@
 import { GameStorage } from "shared/Utility/GameStorage";
 import { SignalButton } from "./SignalButton";
 import { Character } from "@rbxts/wcs";
-import { EffectList } from "shared/Effects/TEffect";
 
 // Template
-const Template = GameStorage.getGUI("Ability Button Template") as Frame;
+const Template = GameStorage.cloneGUIComponent("Ability Button Template") as Frame;
 
 export class CooldownBar {
 	constructor() {
@@ -50,7 +49,6 @@ export class AbilityButton {
 		this._connection = this._imageButton.Activated.Connect(() => {
 			const player = game.GetService("Players").LocalPlayer;
 			const character = player.Character;
-			EffectList.BlackHole_01.playEffect(character?.FindFirstChild("HumanoidRootPart") as Instance);
 			print("Ability Button Activated");
 		});
 	}

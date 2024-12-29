@@ -24,7 +24,7 @@ do
 		return self:constructor(...) or self
 	end
 	function TestPart:constructor(spawnCFrame, targetCFrame, owner)
-		self.SkillPartModel = GameStorage:getModel("TestPart"):Clone()
+		self.SkillPartModel = GameStorage:cloneModel("TestPart")
 		self.PartState = "Spawning"
 		self.HealthChangeAmount = 0
 		self._primaryPart = self.SkillPartModel.PrimaryPart
@@ -40,7 +40,7 @@ do
 		if owner then
 			self.Owner = owner
 		else
-			self.Owner = GameStorage:getModel("TestOwner")
+			self.Owner = GameStorage:cloneModel("TestOwner")
 		end
 		-- Log the creation of the skill part instance
 		Logger:Log("SkillPart", self.SkillPartModel.Name, "Created")

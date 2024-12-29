@@ -4,9 +4,8 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- GameStorage
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local SignalButton = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "UI", "SignalButton").SignalButton
-local EffectList = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Effects", "TEffect").EffectList
 -- Template
-local Template = GameStorage:getGUI("Ability Button Template")
+local Template = GameStorage:cloneGUIComponent("Ability Button Template")
 local CooldownBar
 do
 	CooldownBar = setmetatable({}, {
@@ -56,12 +55,6 @@ do
 		self._connection = self._imageButton.Activated:Connect(function()
 			local player = game:GetService("Players").LocalPlayer
 			local character = player.Character
-			local _blackHole_01 = EffectList.BlackHole_01
-			local _result = character
-			if _result ~= nil then
-				_result = _result:FindFirstChild("HumanoidRootPart")
-			end
-			_blackHole_01:playEffect(_result)
 			print("Ability Button Activated")
 		end)
 	end

@@ -4,7 +4,7 @@
 import { GameStorage } from "shared/Utility/GameStorage";
 
 // Template
-const Template = GameStorage.getGUI("Attribute Label Template") as Frame;
+const Template = GameStorage.cloneGUIComponent("Attribute Label Template") as Frame;
 
 // Attribute Label Class
 export class AttributeLabel {

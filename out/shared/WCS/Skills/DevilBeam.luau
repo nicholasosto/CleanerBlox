@@ -26,7 +26,7 @@ do
 	end
 	function DevilBeam:constructor(...)
 		super.constructor(self, ...)
-		self._animationInstance = GameStorage:getAnimation("DevilBeam Fired")
+		self._animationInstance = GameStorage:cloneAnimation("DevilBeam Fired")
 		self.SkillConfiguration = SkillConfigurations.DevilBeam
 		self.DisplayName = "Devil Beam"
 		self.ActivationTime = 1
@@ -44,7 +44,7 @@ do
 			_animator = _animator:FindFirstChildOfClass("Animator")
 		end
 		local animator = _animator
-		local animation = GameStorage:getAnimation("DevilBeam Fired")
+		local animation = GameStorage:cloneAnimation("DevilBeam Fired")
 		local _result = animator
 		if _result ~= nil then
 			_result = _result:LoadAnimation(animation)
@@ -131,7 +131,7 @@ do
 		--this.AbilityModelInstance.OnEnded();
 	end
 	function DevilBeam:_loadAnimation()
-		local animation = GameStorage:getAnimation("DevilBeam Fired")
+		local animation = GameStorage:cloneAnimation("DevilBeam Fired")
 		if animation then
 			Logger:Log("DevilBeam", "Animation Found\n")
 			return nil

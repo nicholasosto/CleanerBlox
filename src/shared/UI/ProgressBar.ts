@@ -5,7 +5,7 @@ import { GameStorage } from "shared/Utility/GameStorage";
 import { Logger } from "shared/Utility/Logger";
 
 // ProgressBar Template
-const Template: Frame = GameStorage.getGUI("Progress Bar Template") as Frame;
+const Template: Frame = GameStorage.cloneGUIComponent("Progress Bar Template") as Frame;
 
 // ProgressBar Class
 export class ProgressBar {

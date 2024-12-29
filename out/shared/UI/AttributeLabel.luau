@@ -4,7 +4,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- GameStorage
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 -- Template
-local Template = GameStorage:getGUI("Attribute Label Template")
+local Template = GameStorage:cloneGUIComponent("Attribute Label Template")
 -- Attribute Label Class
 local AttributeLabel
 do

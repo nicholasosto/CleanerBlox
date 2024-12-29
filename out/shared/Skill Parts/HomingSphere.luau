@@ -25,7 +25,7 @@ do
 	function HomingSphere:constructor(owner)
 		self._state = HSState.Created
 		--Logger.Log("HomingSphere", "Created", owner.Name);
-		self._instance = GameStorage:getModel("HomingSphere")
+		self._instance = GameStorage:cloneModel("HomingSphere")
 		self._owner = owner
 		self._hitPart = self._instance:FindFirstChild("HitPart")
 		if not self._hitPart then

@@ -113,6 +113,10 @@ export class Logger {
 		return this._logger;
 	}
 
+	public static NPCLog(logmessage: string, optionalInstance?: Instance | undefined) {
+		warn("NPCLog: ", logmessage, optionalInstance);
+	}
+
 	public static PrintSkillInfo(skill: Skill) {
 		warn(`Skill: ${skill.GetName()}\n`);
 		print("Player: ", skill.Player);

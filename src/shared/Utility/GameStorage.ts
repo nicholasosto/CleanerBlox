@@ -16,6 +16,7 @@ export class GameStorage {
 	private static _toolsStorage: Folder = this._storageModel.WaitForChild("TOOLS") as Folder;
 	private static _particlesStorage: Folder = this._storageModel.WaitForChild("PARTICLES") as Folder;
 
+
 	// ACCESSORY STORAGE
 	public static cloneAccessory(accessoryName: string): Accessory | undefined {
 		// Get the accessory from the storage
@@ -40,8 +41,24 @@ export class GameStorage {
 		return _event;
 	}
 
+	public static cloneRigCharacter(rigName: string): Model {
+		// Get the rig from the storage
+		const _rig = this._modelsStorage.FindFirstChild(rigName, true) as Model;
+
+		// Validate the rig
+		if (!_rig) {
+			this.printAvailableItems(this._modelsStorage);
+			error(`Rig ${rigName} not found in storage.`);
+		}
+
+		// Clone the rig
+		const _clonedRig = _rig.Clone();
+
+		return _clonedRig;
+	}
+
 	// ANIMATION STORAGE
-	public static getAnimation(animationName: string): Animation {
+	public static cloneAnimation(animationName: string): Animation {
 		// Get the animation from the storage
 		const _animation = this._animationsStorage.FindFirstChild(animationName, true) as Animation;
 
@@ -51,25 +68,28 @@ export class GameStorage {
 			error(`Animation ${animationName} not found in storage.`);
 		}
 
-		return _animation;
+		return _animation.Clone();
 	}
 
 	// AUDIO STORAGE
-	public static getAudio(audioName: string): Sound {
-		// Get the audio from the storage
-		const _audio = this._audioStorage.FindFirstChild(audioName, true) as Sound;
+	public static cloneSound(instanceName: string, parent?: Instance): Sound | undefined {
+		// Get the sound from the storage
+		const _sound = this._audioStorage.FindFirstChild(instanceName, true) as Sound;
 
-		// Validate the audio
-		if (!_audio) {
-			this.printAvailableItems(this._audioStorage);
-			error(`Audio ${audioName} not found in storage.`);
+		if (_sound === undefined) {
+			Logger.Log("GameStorage", `Sound ${instanceName} not found in storage.`);
+			return;
+		}
+		const _clonedSound = _sound.Clone();
+		if (parent) {
+			_clonedSound.Parent = parent;
 		}
 
-		return _audio;
+		return _clonedSound;
 	}
 
 	// CONFIGURATION STORAGE
-	public static getConfiguration(configurationName: string): Configuration {
+	public static cloneConfiguration(configurationName: string): Configuration {
 		// Get the configuration from the storage
 		const _configuration = this._configurationStorage.FindFirstChild(configurationName, true) as Configuration;
 
@@ -83,7 +103,7 @@ export class GameStorage {
 	}
 
 	// GUI STORAGE
-	public static getGUI(guiName: string): GuiObject {
+	public static cloneGUIComponent(guiName: string): GuiObject {
 		// Get the GUI from the storage
 		const _gui = this._guiStorage.FindFirstChild(guiName, true) as GuiObject;
 
@@ -96,7 +116,7 @@ export class GameStorage {
 		return _gui;
 	}
 	// MODEL STORAGE
-	public static getModel(modelName: string): Model {
+	public static cloneModel(modelName: string): Model {
 		// Get the model from the storage
 		const _model = this._modelsStorage.FindFirstChild(modelName, true) as Model;
 
@@ -106,7 +126,7 @@ export class GameStorage {
 			error(`Model ${modelName} not found in storage.`);
 		}
 
-		return _model;
+		return _model.Clone();
 	}
 
 	public static cloneTool(toolName: string): Tool {
@@ -120,17 +140,6 @@ export class GameStorage {
 		}
 
 		return _tool.Clone();
-	}
-
-	// Clone Ability Model
-
-	// Clone Model
-	public static cloneModel(modelName: string): Model {
-		const _model = this.getModel(modelName) as Model;
-		if (_model === undefined) {
-			error(`Model ${modelName} not found in storage.`);
-		}
-		return _model.Clone();
 	}
 
 	// Particles Storage
@@ -163,7 +172,7 @@ export class GameStorage {
 
 	public static createSkillButton(wcsSkill: WCS.AnySkill): ImageButton {
 		// Create the skill button
-		const skillButton = this.getGUI("SkillButton") as ImageButton;
+		const skillButton = this.cloneGUIComponent("SkillButton") as ImageButton;
 		// skillButton.Name = wcsSkill.GetName();
 		// skillButton.Image = wcsSkill.StateChanged.Connect((state) => {
 		// 	state.StarterParams.

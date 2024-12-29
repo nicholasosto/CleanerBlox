@@ -17,7 +17,7 @@ export class Spotlights extends HoldableSkill {
 
 	private createSpotlight(cFrame: CFrame) {
 		Logger.Log("Spotlights", "Creating Spotlight");
-		const spotlightModel = GameStorage.getModel("Spotlight").Clone();
+		const spotlightModel = GameStorage.cloneModel("Spotlight").Clone();
 		spotlightModel.Parent = Workspace;
 		spotlightModel.PivotTo(cFrame);
 		const spotlight = new Spotlight(spotlightModel);

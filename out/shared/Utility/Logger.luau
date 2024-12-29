@@ -107,6 +107,9 @@ do
 	function Logger:GetInstance()
 		return self._logger
 	end
+	function Logger:NPCLog(logmessage, optionalInstance)
+		warn("NPCLog: ", logmessage, optionalInstance)
+	end
 	function Logger:PrintSkillInfo(skill)
 		warn(`Skill: {skill:GetName()}\n`)
 		print("Player: ", skill.Player)

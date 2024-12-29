@@ -31,7 +31,7 @@ do
 	end
 	function Spotlights:createSpotlight(cFrame)
 		Logger:Log("Spotlights", "Creating Spotlight")
-		local spotlightModel = GameStorage:getModel("Spotlight"):Clone()
+		local spotlightModel = GameStorage:cloneModel("Spotlight"):Clone()
 		spotlightModel.Parent = Workspace
 		spotlightModel:PivotTo(cFrame)
 		local spotlight = Spotlight.new(spotlightModel)

@@ -13,7 +13,7 @@ import { logError } from "@rbxts/wcs/out/source/utility";
 export class DevilBeam extends HoldableSkill {
 	// Properties
 	//public AbilityModelInstance: AbilityModel = new AbilityModel(this.Character, GameStorage.getModel("DevilBeam"));
-	private _animationInstance: Animation = GameStorage.getAnimation("DevilBeam Fired");
+	private _animationInstance: Animation = GameStorage.cloneAnimation("DevilBeam Fired");
 	private _animationTrack: AnimationTrack | undefined;
 	private SkillConfiguration = SkillConfigurations["DevilBeam"];
 
@@ -36,7 +36,7 @@ export class DevilBeam extends HoldableSkill {
 
 		const humanoid = this.Character.Humanoid;
 		const animator = humanoid?.FindFirstChildOfClass("Animator");
-		const animation = GameStorage.getAnimation("DevilBeam Fired");
+		const animation = GameStorage.cloneAnimation("DevilBeam Fired");
 		this._animationTrack = animator?.LoadAnimation(animation);
 
 		warn(animation.AnimationId, " loaded");
@@ -137,7 +137,7 @@ export class DevilBeam extends HoldableSkill {
 	}
 
 	private _loadAnimation() {
-		const animation = GameStorage.getAnimation("DevilBeam Fired");
+		const animation = GameStorage.cloneAnimation("DevilBeam Fired");
 		if (animation) {
 			Logger.Log("DevilBeam", "Animation Found\n");
 			return;

@@ -36,7 +36,19 @@ do
 		end
 		return _event
 	end
-	function GameStorage:getAnimation(animationName)
+	function GameStorage:cloneRigCharacter(rigName)
+		-- Get the rig from the storage
+		local _rig = self._modelsStorage:FindFirstChild(rigName, true)
+		-- Validate the rig
+		if not _rig then
+			self:printAvailableItems(self._modelsStorage)
+			error(`Rig {rigName} not found in storage.`)
+		end
+		-- Clone the rig
+		local _clonedRig = _rig:Clone()
+		return _clonedRig
+	end
+	function GameStorage:cloneAnimation(animationName)
 		-- Get the animation from the storage
 		local _animation = self._animationsStorage:FindFirstChild(animationName, true)
 		-- Validate the animation
@@ -44,19 +56,22 @@ do
 			self:printAvailableItems(self._animationsStorage)
 			error(`Animation {animationName} not found in storage.`)
 		end
-		return _animation
+		return _animation:Clone()
 	end
-	function GameStorage:getAudio(audioName)
-		-- Get the audio from the storage
-		local _audio = self._audioStorage:FindFirstChild(audioName, true)
-		-- Validate the audio
-		if not _audio then
-			self:printAvailableItems(self._audioStorage)
-			error(`Audio {audioName} not found in storage.`)
+	function GameStorage:cloneSound(instanceName, parent)
+		-- Get the sound from the storage
+		local _sound = self._audioStorage:FindFirstChild(instanceName, true)
+		if _sound == nil then
+			Logger:Log("GameStorage", `Sound {instanceName} not found in storage.`)
+			return nil
 		end
-		return _audio
+		local _clonedSound = _sound:Clone()
+		if parent then
+			_clonedSound.Parent = parent
+		end
+		return _clonedSound
 	end
-	function GameStorage:getConfiguration(configurationName)
+	function GameStorage:cloneConfiguration(configurationName)
 		-- Get the configuration from the storage
 		local _configuration = self._configurationStorage:FindFirstChild(configurationName, true)
 		-- Validate the configuration
@@ -66,7 +81,7 @@ do
 		end
 		return _configuration
 	end
-	function GameStorage:getGUI(guiName)
+	function GameStorage:cloneGUIComponent(guiName)
 		-- Get the GUI from the storage
 		local _gui = self._guiStorage:FindFirstChild(guiName, true)
 		-- Validate the GUI
@@ -76,7 +91,7 @@ do
 		end
 		return _gui
 	end
-	function GameStorage:getModel(modelName)
+	function GameStorage:cloneModel(modelName)
 		-- Get the model from the storage
 		local _model = self._modelsStorage:FindFirstChild(modelName, true)
 		-- Validate the model
@@ -84,7 +99,7 @@ do
 			self:printAvailableItems(self._modelsStorage)
 			error(`Model {modelName} not found in storage.`)
 		end
-		return _model
+		return _model:Clone()
 	end
 	function GameStorage:cloneTool(toolName)
 		-- Get the tool from the storage
@@ -95,13 +110,6 @@ do
 			error(`Tool {toolName} not found in storage.`)
 		end
 		return _tool:Clone()
-	end
-	function GameStorage:cloneModel(modelName)
-		local _model = self:getModel(modelName)
-		if _model == nil then
-			error(`Model {modelName} not found in storage.`)
-		end
-		return _model:Clone()
 	end
 	function GameStorage:cloneParticleGroupAttachment(particleGroupName)
 		-- Get the particle group part from the storage
@@ -141,7 +149,7 @@ do
 	end
 	function GameStorage:createSkillButton(wcsSkill)
 		-- Create the skill button
-		local skillButton = self:getGUI("SkillButton")
+		local skillButton = self:cloneGUIComponent("SkillButton")
 		-- skillButton.Name = wcsSkill.GetName();
 		-- skillButton.Image = wcsSkill.StateChanged.Connect((state) => {
 		-- 	state.StarterParams.

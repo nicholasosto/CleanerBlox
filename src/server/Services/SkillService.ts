@@ -1,6 +1,6 @@
 import { TEventSuccessResponse, TSkillSlot } from "shared/SharedReference";
 import { GameStorage } from "shared/Utility/GameStorage";
-import { DataManager } from "../DataManager";
+import { DataManager } from "../Data/DataManager";
 import { Logger } from "shared/Utility/Logger";
 
 // Remote Events

@@ -1,4 +1,4 @@
-import * as InventoryReference from "./Refrences/InventoryReferences";
+import * as InventoryReference from "./Refrences/InventoryReference";
 
 export { InventoryReference };
 

@@ -1,6 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Refrences", "InventoryReferences")
+local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Refrences", "InventoryReference")
 -- [[[[[[  Notifications ]]]]]] 
 -- [[[[[[  Event Names ]]]]]] 
 -- SKILL Events

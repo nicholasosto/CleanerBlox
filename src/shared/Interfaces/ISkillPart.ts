@@ -38,7 +38,7 @@ export class TestPart implements ISkillPart {
 	TargetCFrame: CFrame;
 
 	// Public Properties
-	SkillPartModel: Model = GameStorage.getModel("TestPart").Clone();
+	SkillPartModel: Model = GameStorage.cloneModel("TestPart");
 	Owner: Model;
 	PartState: string = "Spawning";
 	HealthChangeAmount: number = 0;
@@ -61,7 +61,7 @@ export class TestPart implements ISkillPart {
 		if (owner) {
 			this.Owner = owner;
 		} else {
-			this.Owner = GameStorage.getModel("TestOwner");
+			this.Owner = GameStorage.cloneModel("TestOwner");
 		}
 
 		// Log the creation of the skill part instance
