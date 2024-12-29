@@ -8,6 +8,5 @@ export interface IState {
 	// Called when exiting this state
 	onExit(nextState: IState): void;
 
-	// Return the name of this state (useful for debugging/logging)
-	getName(): string;
+	name: string;
 }

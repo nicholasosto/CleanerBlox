@@ -13,22 +13,31 @@ do
 		local self = setmetatable({}, AttackState)
 		return self:constructor(...) or self
 	end
-	function AttackState:constructor()
+	function AttackState:constructor(stateMachine)
+		self.name = "Attack"
+		Logger:NPCLog("Creating Attack State")
+		self._stateMachine = stateMachine
+		return self
 	end
 	function AttackState:onEnter(previousState)
-		Logger:NPCLog("Entering Attack state")
 		-- Play idle animation, reset timers, etc.
+		Logger:NPCLog("-- Enter Attack State")
+		self._stateMachine.highlight.Enabled = true
+		self._stateMachine.highlight.FillColor = Color3.fromRGB(255, 0, 0)
+		self._stateMachine.highlight.OutlineColor = Color3.fromRGB(255, 0, 0)
 	end
 	function AttackState:onUpdate(dt)
-		-- Check conditions to transition out of Idle
-		-- For example: if a player is detected, we might transition to Attack
-		-- If we have a waypoint set, we move to Walking
+		-- Scan for players
+		Logger:NPCLog("Attack - Scanning for players")
+		task.wait(1)
+		self._stateMachine:changeState(self._stateMachine._states.Idle)
 	end
 	function AttackState:onExit(nextState)
 		-- Cleanup if necessary (e.g., stop idle animation)
+		Logger:NPCLog("-- Exit Attack State")
 	end
 	function AttackState:getName()
-		return "Idle"
+		return "Attack"
 	end
 end
 return {

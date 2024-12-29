@@ -13,21 +13,29 @@ do
 		local self = setmetatable({}, IdleState)
 		return self:constructor(...) or self
 	end
-	function IdleState:constructor(NPCController)
-		self.idleTimer = 0
-		self.NPCController = NPCController
+	function IdleState:constructor(stateMachine)
+		self.name = "Idle"
+		Logger:NPCLog("Creating Idle State")
+		self._stateMachine = stateMachine
+		return self
 	end
 	function IdleState:onEnter(previousState)
 		-- Play idle animation, reset timers, etc.
-		Logger:NPCLog("Entering Idle state")
+		Logger:NPCLog("-- Enter Idle State")
+		self._stateMachine.highlight.Enabled = true
+		self._stateMachine.highlight.FillColor = Color3.fromRGB(0, 0, 255)
+		self._stateMachine.highlight.OutlineColor = Color3.fromRGB(0, 0, 255)
+		task.wait(1)
 	end
 	function IdleState:onUpdate(dt)
-		-- Check conditions to transition out of Idle
-		-- For example: if a player is detected, we might transition to Attack
-		-- If we have a waypoint set, we move to Walking
+		-- Scan for players
+		Logger:NPCLog("Idle - Scanning for players")
+		task.wait(2)
+		self._stateMachine:changeState(self._stateMachine._states.Patrol)
 	end
 	function IdleState:onExit(nextState)
 		-- Cleanup if necessary (e.g., stop idle animation)
+		Logger:NPCLog("-- Exit Idle State")
 	end
 	function IdleState:getName()
 		return "Idle"

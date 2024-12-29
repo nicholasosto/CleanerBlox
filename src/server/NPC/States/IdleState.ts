@@ -1,35 +1,40 @@
-import { NPCController } from "../NPCController";
 import { IState } from "../Types/StateInterface";
-import { StateName } from "../Types/StateName";
 import { Logger } from "shared/Utility/Logger";
-
+import { NPCStateMachine } from "../Controllers/NPCStateMachine";
 
 export class IdleState implements IState {
+	private _stateMachine: NPCStateMachine;
+	public name: string = "Idle";
 
-	private NPCController: NPCController;
-	private idleTimer: number = 0;
-
-
-	constructor(NPCController: NPCController) {
-		this.NPCController = NPCController;
+	constructor(stateMachine: NPCStateMachine) {
+		Logger.NPCLog("Creating Idle State");
+		this._stateMachine = stateMachine;
+		return this;
 	}
 
 	onEnter(previousState: IState | undefined): void {
 		// Play idle animation, reset timers, etc.
-		Logger.NPCLog("Entering Idle state");
+		Logger.NPCLog("-- Enter Idle State");
+		this._stateMachine.highlight.Enabled = true;
+		this._stateMachine.highlight.FillColor = Color3.fromRGB(0, 0, 255);
+		this._stateMachine.highlight.OutlineColor = Color3.fromRGB(0, 0, 255);
+
+		task.wait(1);
 	}
 
 	onUpdate(dt: number): void {
-		// Check conditions to transition out of Idle
-		// For example: if a player is detected, we might transition to Attack
-		// If we have a waypoint set, we move to Walking
+		// Scan for players
+		Logger.NPCLog("Idle - Scanning for players");
+		task.wait(2);
+		this._stateMachine.changeState(this._stateMachine._states.get("Patrol") as IState);
 	}
 
 	onExit(nextState: IState): void {
 		// Cleanup if necessary (e.g., stop idle animation)
+		Logger.NPCLog("-- Exit Idle State");
 	}
 
 	getName(): string {
-		return StateName.Idle;
+		return "Idle";
 	}
 }
