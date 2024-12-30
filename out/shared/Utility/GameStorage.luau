@@ -17,6 +17,18 @@ do
 	end
 	function GameStorage:constructor()
 	end
+	function GameStorage:cloneHumanoidDescription(humanoidName)
+		-- Get the humanoid from the storage
+		local _humanoid = self._humanoidStorage:FindFirstChild(humanoidName, true)
+		-- Validate the humanoid
+		if _humanoid == nil then
+			Logger:Log("GameStorage", `Humanoid {humanoidName} not found in storage.`)
+			return nil
+		end
+		-- Clone the humanoid
+		local _clonedHumanoid = _humanoid:Clone()
+		return _clonedHumanoid
+	end
 	function GameStorage:cloneAccessory(accessoryName)
 		-- Get the accessory from the storage
 		local _accessory = self._accessoriesStorage:FindFirstChild(accessoryName, true)
@@ -173,6 +185,7 @@ do
 	end
 	GameStorage._storageModel = ReplicatedStorage:WaitForChild("SoulSteelStorage")
 	GameStorage._accessoriesStorage = GameStorage._storageModel:WaitForChild("ACCESSORIES")
+	GameStorage._humanoidStorage = GameStorage._storageModel:WaitForChild("HUMANOID")
 	GameStorage._animationsStorage = GameStorage._storageModel:WaitForChild("ANIMATIONS")
 	GameStorage._audioStorage = GameStorage._storageModel:WaitForChild("AUDIO")
 	GameStorage._configurationStorage = GameStorage._storageModel:WaitForChild("CONFIGURATIONS")

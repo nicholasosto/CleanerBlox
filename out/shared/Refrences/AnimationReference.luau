@@ -12,6 +12,10 @@ local EAnimationName = {
 	FLIGHT_Right = "rbxassetid://16467400519",
 	FLIGHT_Up = "rbxassetid://16466802431",
 	CHARACTER_Charging = "rbxassetid://16425019906",
+	NPC_Idle = "rbxassetid://16579917477",
+	NPC_Patrol = "rbxassetid://16579917495",
+	NPC_Chase = "rbxassetid://94119052222051",
+	NPC_Attack = "rbxassetid://16579917486",
 }
 return {
 	EAnimationName = EAnimationName,

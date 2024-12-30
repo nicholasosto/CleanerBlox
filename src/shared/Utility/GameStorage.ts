@@ -1,5 +1,6 @@
 import { ReplicatedStorage, AssetService } from "@rbxts/services";
 import { Logger } from "./Logger";
+import { EHumanoidDescription } from "shared/Refrences/Humanoids";
 import * as WCS from "@rbxts/wcs";
 
 export class GameStorage {
@@ -8,6 +9,7 @@ export class GameStorage {
 
 	// Sub Folders
 	private static _accessoriesStorage: Folder = this._storageModel.WaitForChild("ACCESSORIES") as Folder;
+	private static _humanoidStorage: Folder = this._storageModel.WaitForChild("HUMANOID") as Folder;
 	private static _animationsStorage: Folder = this._storageModel.WaitForChild("ANIMATIONS") as Folder;
 	private static _audioStorage: Folder = this._storageModel.WaitForChild("AUDIO") as Folder;
 	private static _configurationStorage: Folder = this._storageModel.WaitForChild("CONFIGURATIONS") as Folder;
@@ -15,6 +17,23 @@ export class GameStorage {
 	private static _modelsStorage: Folder = this._storageModel.WaitForChild("MODELS") as Folder;
 	private static _toolsStorage: Folder = this._storageModel.WaitForChild("TOOLS") as Folder;
 	private static _particlesStorage: Folder = this._storageModel.WaitForChild("PARTICLES") as Folder;
+
+	// HUMANOID STORAGE
+	public static cloneHumanoidDescription(humanoidName: EHumanoidDescription): HumanoidDescription | undefined {
+		// Get the humanoid from the storage
+		const _humanoid = this._humanoidStorage.FindFirstChild(humanoidName, true) as HumanoidDescription;
+
+		// Validate the humanoid
+		if (_humanoid === undefined) {
+			Logger.Log("GameStorage", `Humanoid ${humanoidName} not found in storage.`);
+			return;
+		}
+
+		// Clone the humanoid
+		const _clonedHumanoid = _humanoid.Clone();
+
+		return _clonedHumanoid;
+	}
 
 
 	// ACCESSORY STORAGE
