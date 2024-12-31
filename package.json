@@ -29,6 +29,7 @@
     "@rbxts/signal": "^1.1.1",
     "@rbxts/wcs": "^2.4.1",
     "flamework": "^4.2.1",
-    "node": "^23.5.0"
+    "node": "^23.5.0",
+    "openai": "^4.77.0"
   }
 }

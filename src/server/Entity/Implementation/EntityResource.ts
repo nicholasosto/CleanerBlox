@@ -20,6 +20,7 @@ export class EntityResource implements IResource {
 	_maxChangeConnection: RBXScriptConnection | undefined;
 
 	constructor(parent: Instance, name: string, maxValue: number, regenRate: number, regenAmount: number = 1) {
+		Logger.Log("EntityResource", "Constructing", name);
 		// Parent Entity
 		this.Entity = parent;
 
@@ -45,10 +46,12 @@ export class EntityResource implements IResource {
 		});
 
 		this._minChangeConnection = this.Entity.GetAttributeChangedSignal(this.Name + "Current").Connect(() => {
+			Logger.Log("EntityResource", this.Name, this.CurrentValue);
 			this.onResourceChange();
 		});
 
 		this._maxChangeConnection = this.Entity.GetAttributeChangedSignal(this.Name + "Max").Connect(() => {
+			Logger.Log("EntityResource", this.Name, this.MaxValue);
 			this.onResourceChange();
 		});
 
@@ -65,6 +68,22 @@ export class EntityResource implements IResource {
 		if (this.CurrentValue < this.MaxValue) {
 			this.CurrentValue += this.RegenAmount;
 		}
+	}
+
+	public setMaxValue(value: number) {
+		this.MaxValue = value;
+		this.Entity.SetAttribute(this.Name + "Max", value);
+	}
+
+	public setCurrentValue(value: number) {
+		this.CurrentValue = value;
+		this.Entity.SetAttribute(this.Name + "Current", value);
+	}
+
+	public adjustCurrentValue(value: number) {
+		Logger.Log("EntityResource - Adjusting Value by: " + value);
+		this.CurrentValue += value;
+		this.Entity.SetAttribute(this.Name + "Current", this.CurrentValue);
 	}
 
 	// Prints the current resource values

@@ -1,6 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local RunService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").RunService
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityResource
 do
 	EntityResource = setmetatable({}, {
@@ -18,6 +19,7 @@ do
 			regenAmount = 1
 		end
 		self._lastRegenTick = 0
+		Logger:Log("EntityResource", "Constructing", name)
 		-- Parent Entity
 		self.Entity = parent
 		-- Attribute Names and Values
@@ -38,9 +40,11 @@ do
 			self:_regenStep()
 		end)
 		self._minChangeConnection = self.Entity:GetAttributeChangedSignal(self.Name .. "Current"):Connect(function()
+			Logger:Log("EntityResource", self.Name, self.CurrentValue)
 			self:onResourceChange()
 		end)
 		self._maxChangeConnection = self.Entity:GetAttributeChangedSignal(self.Name .. "Max"):Connect(function()
+			Logger:Log("EntityResource", self.Name, self.MaxValue)
 			self:onResourceChange()
 		end)
 		return self
@@ -54,6 +58,19 @@ do
 		if self.CurrentValue < self.MaxValue then
 			self.CurrentValue += self.RegenAmount
 		end
+	end
+	function EntityResource:setMaxValue(value)
+		self.MaxValue = value
+		self.Entity:SetAttribute(self.Name .. "Max", value)
+	end
+	function EntityResource:setCurrentValue(value)
+		self.CurrentValue = value
+		self.Entity:SetAttribute(self.Name .. "Current", value)
+	end
+	function EntityResource:adjustCurrentValue(value)
+		Logger:Log("EntityResource - Adjusting Value by: " .. tostring(value))
+		self.CurrentValue += value
+		self.Entity:SetAttribute(self.Name .. "Current", self.CurrentValue)
 	end
 	function EntityResource:onResourceChange()
 		warn(self.Entity.Name .. " onResourceChange not implemented: " .. self.Name .. "\nCurrent: " .. tostring(self.CurrentValue))

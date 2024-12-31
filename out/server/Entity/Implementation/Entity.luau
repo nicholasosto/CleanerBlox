@@ -100,6 +100,7 @@ do
 			end
 			self:Destroy()
 		end)
+		self:initializeConnections()
 		return self
 	end
 	function BaseEntity:updateAttributes()
@@ -117,11 +118,82 @@ do
 	function BaseEntity:setTarget(target)
 		self.Target = target
 	end
+	function BaseEntity:initializeConnections()
+		self:destroyConnections()
+		self._connectionCharacterTakeDamage = self.WCS_Character.DamageTaken:Connect(function(damage)
+			self:handleCharacterTakeDamage(damage)
+		end)
+		self._connectionCharacterDealtDamage = self.WCS_Character.DamageDealt:Connect(function(enemy, damage)
+			self:handleCharacterDealtDamage(enemy, damage)
+		end)
+		self._connectionStatusEffectAdded = self.WCS_Character.StatusEffectAdded:Connect(function(statusEffect)
+			self:handleStatusEffectAdded(statusEffect)
+		end)
+		self._connectionStatusEffectRemoved = self.WCS_Character.StatusEffectRemoved:Connect(function(statusEffect)
+			self:handleStatusEffectRemoved(statusEffect)
+		end)
+		self._connectionStatusEffectStarted = self.WCS_Character.StatusEffectStarted:Connect(function(statusEffect)
+			self:handleStatusEffectStarted(statusEffect)
+		end)
+		self._connectionStatusEffectEnded = self.WCS_Character.StatusEffectEnded:Connect(function(statusEffect)
+			self:handleStatusEffectEnded(statusEffect)
+		end)
+	end
+	function BaseEntity:destroyConnections()
+		local _result = self._connectionCharacterTakeDamage
+		if _result ~= nil then
+			_result:Disconnect()
+		end
+		local _result_1 = self._connectionCharacterDealtDamage
+		if _result_1 ~= nil then
+			_result_1:Disconnect()
+		end
+		local _result_2 = self._connectionStatusEffectAdded
+		if _result_2 ~= nil then
+			_result_2:Disconnect()
+		end
+		local _result_3 = self._connectionStatusEffectRemoved
+		if _result_3 ~= nil then
+			_result_3:Disconnect()
+		end
+		local _result_4 = self._connectionStatusEffectStarted
+		if _result_4 ~= nil then
+			_result_4:Disconnect()
+		end
+		local _result_5 = self._connectionStatusEffectEnded
+		if _result_5 ~= nil then
+			_result_5:Disconnect()
+		end
+	end
+	function BaseEntity:handleCharacterTakeDamage(damageContainer)
+		Logger:Log("BaseEntity: Take Damage: " .. tostring(damageContainer.Damage))
+		local currentHealth = self.CharacterModel:GetAttribute("HealthCurrent")
+		local newHealth = currentHealth - damageContainer.Damage
+		warn("BaseEntity: Current Health: " .. tostring(currentHealth))
+		warn("BaseEntity: New Health: " .. tostring(newHealth))
+		self.Health:setCurrentValue(newHealth)
+	end
+	function BaseEntity:handleCharacterDealtDamage(enemy, damageContainer)
+		Logger:Log("BaseEntity: Dealt Damage: ", damageContainer.Damage)
+	end
+	function BaseEntity:handleStatusEffectAdded(statusEffect)
+		Logger:Log("BaseEntity: Status Effect Added: ", statusEffect.Name)
+	end
+	function BaseEntity:handleStatusEffectRemoved(statusEffect)
+		Logger:Log("BaseEntity: Status Effect Removed: ", statusEffect.Name)
+	end
+	function BaseEntity:handleStatusEffectStarted(statusEffect)
+		Logger:Log("BaseEntity: Status Effect Started: ", statusEffect.Name)
+	end
+	function BaseEntity:handleStatusEffectEnded(statusEffect)
+		Logger:Log("BaseEntity: Status Effect Ended: ", statusEffect.Name)
+	end
 	function BaseEntity:Destroy()
 		--Logger.Log("BaseEntity: Destroying: ", this?.CharacterModel);
 		self.Health:Destroy()
 		self.Mana:Destroy()
 		self.Stamina:Destroy()
+		self:destroyConnections()
 		self.WCS_Character:Destroy()
 	end
 end

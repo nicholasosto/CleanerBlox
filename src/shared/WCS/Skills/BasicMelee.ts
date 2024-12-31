@@ -14,7 +14,7 @@ export class BasicMelee extends Skill {
 		ActivationSoundId: "rbxassetid://511715134",
 		ActivationParticleGroup: "SwordHitEff2",
 		ActivationTime: 0.8,
-		DefaultHealthChange: 22,
+		DefaultHealthChange: 10,
 		DefaultHoldTime: 0,
 		DefaultCooldownTime: 0.5,
 		DefaultManaCost: 10,

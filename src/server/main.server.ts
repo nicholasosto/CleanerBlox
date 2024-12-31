@@ -1,6 +1,6 @@
 import { Logger } from "shared/Utility/Logger";
-import { Players } from "@rbxts/services";
-import { CreateServer } from "@rbxts/wcs";
+import { Players, RunService, HttpService } from "@rbxts/services";
+import { Character, CreateServer } from "@rbxts/wcs";
 import { DataManager } from "./Data/DataManager";
 import { InventoryService } from "./Services/InventoryService";
 import { WCSFolders } from "shared/WCS/Folders";
@@ -11,6 +11,8 @@ import { NotificationManager } from "./Notification/NotificationManager";
 import { TEventSuccessResponse } from "shared/SharedReference";
 import { NPCController } from "./NPC/NPCController";
 import { GameStorage } from "shared/Utility/GameStorage";
+import { BasicMelee } from "shared/WCS/Skills/BasicMelee";
+
 
 // Data and Data related services
 DataManager.Start();
@@ -64,7 +66,56 @@ function handleCharacterAdded(character: Model) {
 // Handle Player Added
 function handlePlayerAdded(player: Player) {
 	player.CharacterAdded.Connect(handleCharacterAdded);
+	reduceHealth();
 }
 
 // Connect Player Added
 Players.PlayerAdded.Connect(handlePlayerAdded);
+
+function reduceHealth() {
+	let characters = Character.GetCharacterMap();
+	while (characters.size() < 1) {
+		wait(1);
+		Logger.Log("Main", "Waiting for Characters, size: " + characters.size());
+		characters = Character.GetCharacterMap();
+	}
+
+	characters.forEach((character) => {
+		character.DamageTaken.Connect((damage) => {
+			Logger.Log("Main", "XDamage Taken: " + damage.Damage);
+		});
+	});
+
+	do {
+		characters.forEach((character) => {
+			const MeleeSkill = character.GetSkillFromConstructor(BasicMelee);
+			const DamageContainer = MeleeSkill?.DamageContainer;
+			if (DamageContainer === undefined) {
+				Logger.Log("Main", "No Damage Container Found");
+				return;
+			}
+
+			const damage = character.TakeDamage(DamageContainer);
+			Logger.Log("Main", "Damage Taken: " + damage.Damage);
+		});
+
+		wait(1);
+	} while (characters.size() > 0);
+}
+
+function getAIResponse(prompt: string) {
+	const apiKey = "sk-...";
+	const response = HttpService.RequestAsync({
+		Url: "https://api.openai.com/v1/chat/completions",
+		Method: "POST",
+		Headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${apiKey}`,
+		},
+		Body: HttpService.JSONEncode({
+			model: "gpt-3.5-turbo",
+			messages: [{ role: "user", content: prompt }],
+		}),
+	});
+	return HttpService.JSONDecode(response.Body);
+}

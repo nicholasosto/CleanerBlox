@@ -15,7 +15,7 @@ export class ProgressBar {
 
 	// Constructor
 	// eslint-disable-next-line prettier/prettier
-	constructor( targetInstance: Instance, minAttributeName: string,	maxAttributeName: string, parent: Instance, displayName: string, colorSequence: ColorSequence) {
+	constructor( targetInstance: Instance, minAttributeName: string, maxAttributeName: string, parent: Instance, displayName: string, colorSequence: ColorSequence) {
 		// Clone the template
 		this._instance = Template.Clone();
 

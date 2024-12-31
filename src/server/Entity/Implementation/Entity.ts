@@ -8,6 +8,7 @@ import * as Calculator from "./EntityCalculator";
 import { Logger } from "shared/Utility/Logger";
 import { HttpService, ReplicatedStorage } from "@rbxts/services";
 import { ProgressBar } from "shared/UI/ProgressBar";
+import { DamageContainer, StatusEffect, UnknownStatus } from "@rbxts/wcs";
 
 export class AbilityButton {
 	private _imageId: string | undefined;
@@ -59,6 +60,14 @@ export class BaseEntity {
 		"ENTITY_Destroyed",
 	) as RemoteEvent;
 
+	// Connections
+	private _connectionCharacterTakeDamage: RBXScriptConnection | undefined;
+	private _connectionCharacterDealtDamage: RBXScriptConnection | undefined;
+	private _connectionStatusEffectAdded: RBXScriptConnection | undefined;
+	private _connectionStatusEffectRemoved: RBXScriptConnection | undefined;
+	private _connectionStatusEffectStarted: RBXScriptConnection | undefined;
+	private _connectionStatusEffectEnded: RBXScriptConnection | undefined;
+
 	constructor(rig: Model) {
 		// Set the CharacterModel
 		this.CharacterModel = rig;
@@ -102,6 +111,8 @@ export class BaseEntity {
 			this.Destroy();
 		});
 
+		this.initializeConnections();
+
 		return this;
 	}
 
@@ -123,11 +134,80 @@ export class BaseEntity {
 		this.Target = target;
 	}
 
+	private initializeConnections() {
+		this.destroyConnections();
+		this._connectionCharacterTakeDamage = this.WCS_Character.DamageTaken.Connect((damage) => {
+			this.handleCharacterTakeDamage(damage);
+		});
+
+		this._connectionCharacterDealtDamage = this.WCS_Character.DamageDealt.Connect((enemy, damage) => {
+			this.handleCharacterDealtDamage(enemy, damage);
+		});
+
+		this._connectionStatusEffectAdded = this.WCS_Character.StatusEffectAdded.Connect((statusEffect) => {
+			this.handleStatusEffectAdded(statusEffect);
+		});
+
+		this._connectionStatusEffectRemoved = this.WCS_Character.StatusEffectRemoved.Connect((statusEffect) => {
+			this.handleStatusEffectRemoved(statusEffect);
+		});
+
+		this._connectionStatusEffectStarted = this.WCS_Character.StatusEffectStarted.Connect((statusEffect) => {
+			this.handleStatusEffectStarted(statusEffect);
+		});
+
+		this._connectionStatusEffectEnded = this.WCS_Character.StatusEffectEnded.Connect((statusEffect) => {
+			this.handleStatusEffectEnded(statusEffect);
+		});
+	}
+
+	private destroyConnections() {
+		this._connectionCharacterTakeDamage?.Disconnect();
+		this._connectionCharacterDealtDamage?.Disconnect();
+		this._connectionStatusEffectAdded?.Disconnect();
+		this._connectionStatusEffectRemoved?.Disconnect();
+		this._connectionStatusEffectStarted?.Disconnect();
+		this._connectionStatusEffectEnded?.Disconnect();
+	}
+
+	// Connection Handlers
+	private handleCharacterTakeDamage(damageContainer: DamageContainer) {
+		Logger.Log("BaseEntity: Take Damage: " + damageContainer.Damage);
+		const currentHealth = this.CharacterModel.GetAttribute("HealthCurrent") as number;
+		const newHealth = currentHealth - damageContainer.Damage;
+
+		warn("BaseEntity: Current Health: " + currentHealth);
+		warn("BaseEntity: New Health: " + newHealth);
+
+		this.Health.setCurrentValue(newHealth);
+	}
+
+	private handleCharacterDealtDamage(enemy: Character | undefined, damageContainer: DamageContainer) {
+		Logger.Log("BaseEntity: Dealt Damage: ", damageContainer.Damage);
+	}
+
+	private handleStatusEffectAdded(statusEffect: UnknownStatus) {
+		Logger.Log("BaseEntity: Status Effect Added: ", statusEffect.Name);
+	}
+
+	private handleStatusEffectRemoved(statusEffect: UnknownStatus) {
+		Logger.Log("BaseEntity: Status Effect Removed: ", statusEffect.Name);
+	}
+
+	private handleStatusEffectStarted(statusEffect: UnknownStatus) {
+		Logger.Log("BaseEntity: Status Effect Started: ", statusEffect.Name);
+	}
+
+	private handleStatusEffectEnded(statusEffect: UnknownStatus) {
+		Logger.Log("BaseEntity: Status Effect Ended: ", statusEffect.Name);
+	}
+
 	public Destroy() {
 		//Logger.Log("BaseEntity: Destroying: ", this?.CharacterModel);
 		this.Health.Destroy();
 		this.Mana.Destroy();
 		this.Stamina.Destroy();
+		this.destroyConnections();
 		this.WCS_Character.Destroy();
 	}
 }
