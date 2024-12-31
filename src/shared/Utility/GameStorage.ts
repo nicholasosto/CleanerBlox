@@ -31,7 +31,7 @@ export class GameStorage {
 
 		// Clone the humanoid
 		const _clonedHumanoid = _humanoid.Clone();
-
+		Logger.Log("XXX Found",_clonedHumanoid)
 		return _clonedHumanoid;
 	}
 

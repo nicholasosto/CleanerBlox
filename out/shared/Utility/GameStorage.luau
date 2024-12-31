@@ -27,6 +27,7 @@ do
 		end
 		-- Clone the humanoid
 		local _clonedHumanoid = _humanoid:Clone()
+		Logger:Log("XXX Found", _clonedHumanoid)
 		return _clonedHumanoid
 	end
 	function GameStorage:cloneAccessory(accessoryName)

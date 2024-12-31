@@ -22,22 +22,12 @@ export class EntityAttachments implements IAttachments {
 		this.Halo = character.FindFirstChild("HaloAttachment") as Attachment;
 		this.Body = character.FindFirstChild("BodyAttachment") as Attachment;
 
-		const testFire = new Instance("Fire");
-		testFire.Parent = game.Workspace;
-		testFire.Size = 3;
-		testFire.Heat = 2;
-		testFire.Enabled = true;
-
-		const testClone = testFire.Clone();
-
 		// Halo Attachment
 		if (this.Halo === undefined) {
 			this.Halo = new Instance("Attachment");
 			this.Halo.Name = "HaloAttachment";
 			this.Halo.Parent = characterHead;
 			this.Halo.Position = new Vector3(0, 1, 0);
-			testClone.Parent = this.Halo;
-			//Logger.Log("Halo", " - Constructed\n");
 		}
 
 		// Body Attachment
@@ -47,7 +37,5 @@ export class EntityAttachments implements IAttachments {
 			this.Floor.Parent = this.Body;
 			this.Floor.Position = new Vector3(0, -2, 0);
 		}
-
-		//Logger.Log("EntityAttachments", " - Constructed\n");
 	}
 }

@@ -1,3 +1,6 @@
+// Roblox Services
+import { CollectionService, RunService } from "@rbxts/services";
+
 import { GameStorage } from "shared/Utility/GameStorage";
 import { Logger } from "shared/Utility/Logger";
 
@@ -8,10 +11,12 @@ export enum EHumanoidDescription {
 	HumanBase = "HumanBase",
 	AngelBase = "AngelBase",
 	OccultistBase = "OccultistBase",
+	WolfForm = "WolfForm",
 }
 
 export class HumanoidDescriptionFactory {
 	private static _instance: HumanoidDescriptionFactory;
+
 	private static _humanoidDescriptions: Map<EHumanoidDescription, HumanoidDescription> = new Map<
 		EHumanoidDescription,
 		HumanoidDescription
@@ -19,6 +24,36 @@ export class HumanoidDescriptionFactory {
 
 	private constructor() {
 		// Private constructor to prevent instantiation
+		CollectionService.GetInstanceAddedSignal("HDROBOT").Connect((instance) => {
+			Logger.Log("HumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
+			const humanoid = instance.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				Logger.Log("HumanoidDescriptionFactory", `Humanoid not found in instance.`);
+				return;
+			}
+			const humanoidDescription = humanoid.GetAppliedDescription();
+			if (humanoidDescription === undefined) {
+				Logger.Log("HumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
+				return;
+			}
+			HumanoidDescriptionFactory.ApplyHumanoidDescription(humanoid, EHumanoidDescription.RobotBase);
+		});
+
+
+        CollectionService.GetInstanceAddedSignal("WolfForm").Connect((instance) => {
+			Logger.Log("XXXHumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
+			const humanoid = instance.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				Logger.Log("XXXHumanoidDescriptionFactory", `Humanoid not found in instance.`);
+				return;
+			}
+			const humanoidDescription = humanoid.GetAppliedDescription();
+			if (humanoidDescription === undefined) {
+				Logger.Log("XXXHumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
+				return;
+			}
+			HumanoidDescriptionFactory.ApplyHumanoidDescription(humanoid, EHumanoidDescription.WolfForm);
+		});
 		this.LoadBaseHumanoidDescriptions();
 		return this;
 	}
@@ -38,6 +73,7 @@ export class HumanoidDescriptionFactory {
 		HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.HumanBase);
 		HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.AngelBase);
 		HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.OccultistBase);
+        HumanoidDescriptionFactory.setHumanoidDescription(EHumanoidDescription.WolfForm);
 	}
 
 	public static getHumanoidDescription(humanoidDescription: EHumanoidDescription): HumanoidDescription {
