@@ -1,14 +1,23 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- Roblox Services
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local Players = _services.Players
+local Workspace = _services.Workspace
 -- WCS System
-local CreateServer = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").CreateServer
+local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
+local Character = _wcs.Character
+local CreateServer = _wcs.CreateServer
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 -- Custom Imports
 local DataManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataManager").DataManager
 local InventoryService = TS.import(script, game:GetService("ServerScriptService"), "TS", "Services", "InventoryService").InventoryService
 local EntityManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "EntityManager").EntityManager
 local NotificationManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Notification", "NotificationManager").NotificationManager
+local _PackageManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "PackageManager")
+local PackageManager = _PackageManager.PackageManager
+local EPackageIDs = _PackageManager.EPackageIDs
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 --Services Needing to Start
 DataManager:Start()
 -- Inventory Service
@@ -23,25 +32,44 @@ WCSServer:RegisterDirectory(WCSFolders.Skills)
 WCSServer:RegisterDirectory(WCSFolders.Movesets)
 WCSServer:RegisterDirectory(WCSFolders.StatusEffects)
 WCSServer:Start()
+-- Handle Character Added
+local function handleCharacterAdded(character)
+	Logger:Log(script.Name, "Character Added: ", character)
+end
+-- Handle Player Added
+local function handlePlayerAdded(player)
+	player.CharacterAdded:Connect(handleCharacterAdded)
+end
+-- Connect Player Added
+Players.PlayerAdded:Connect(handlePlayerAdded)
+Character.CharacterCreated:Connect(function(character)
+	Logger:Log(script.Name, "WCS Character Created")
+	local _contents = PackageManager:LoadPackage(EPackageIDs.NPC)
+	if _contents ~= nil then
+		_contents = _contents:GetChildren()
+	end
+	local contents = _contents
+	local _contentChild = contents
+	if _contentChild ~= nil then
+		_contentChild = _contentChild[1]
+		if _contentChild ~= nil then
+			_contentChild = _contentChild:GetChildren()
+		end
+	end
+	local contentChild = _contentChild
+	local _result = contentChild
+	if _result ~= nil then
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback = function(child)
+			child.Parent = Workspace
+		end
+		for _k, _v in _result do
+			_callback(_v, _k - 1, _result)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
+	end
+end)
 --[[
-	
-	// Handle Character Added
-	function handleCharacterAdded(character: Model) {
-		Logger.Log("Character Added", character.Name);
-	}
-	
-	// Handle Player Added
-	function handlePlayerAdded(player: Player) {
-		player.CharacterAdded.Connect(handleCharacterAdded);
-	}
-	
-	// Connect Player Added
-	Players.PlayerAdded.Connect(handlePlayerAdded);
-	
-	Character.CharacterCreated.Connect((character) => {
-		warn("WCS Character Created", character);
-	});
-	
 	
 	// Test Functions
 	function getAIResponse(prompt: string) {

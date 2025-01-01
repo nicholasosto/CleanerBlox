@@ -1,5 +1,5 @@
 // Roblox Services
-import { Players, HttpService } from "@rbxts/services";
+import { Players, HttpService, Workspace } from "@rbxts/services";
 
 // WCS System
 import { Character, CreateServer } from "@rbxts/wcs";
@@ -10,6 +10,7 @@ import { DataManager } from "./Data/DataManager";
 import { InventoryService } from "./Services/InventoryService";
 import { EntityManager } from "./GameCharacter/EntityManager";
 import { NotificationManager } from "./Notification/NotificationManager";
+import { PackageManager, EPackageIDs } from "shared/PackageManager";
 import { Logger } from "shared/Utility/Logger";
 
 //Services Needing to Start
@@ -30,10 +31,10 @@ WCSServer.RegisterDirectory(WCSFolders.Skills);
 WCSServer.RegisterDirectory(WCSFolders.Movesets);
 WCSServer.RegisterDirectory(WCSFolders.StatusEffects);
 WCSServer.Start();
-/*
+
 // Handle Character Added
 function handleCharacterAdded(character: Model) {
-	Logger.Log("Character Added", character.Name);
+	Logger.Log(script.Name, "Character Added: ", character);
 }
 
 // Handle Player Added
@@ -45,10 +46,15 @@ function handlePlayerAdded(player: Player) {
 Players.PlayerAdded.Connect(handlePlayerAdded);
 
 Character.CharacterCreated.Connect((character) => {
-	warn("WCS Character Created", character);
+	Logger.Log(script.Name, "WCS Character Created");
+	const contents = PackageManager.LoadPackage(EPackageIDs.NPC)?.GetChildren();
+	const contentChild = contents?.[0]?.GetChildren();
+	contentChild?.forEach((child) => {
+		child.Parent = Workspace;
+	});
 });
 
-
+/*
 // Test Functions
 function getAIResponse(prompt: string) {
 	const apiKey = "sk-...";
