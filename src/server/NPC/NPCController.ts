@@ -84,10 +84,8 @@ export class NPCController {
 
 	// Connect to heartbeat
 	private _connectHeartbeat(): void {
-
 		// Connect to heartbeat: Runs update once per cycle time this._cycleTime (in seconds)
 		this._connectionHeartbeat = RunService.Heartbeat.Connect((dt: number) => {
-
 			// Calculate time since last update
 			this._timeSinceLastUpdate += dt;
 

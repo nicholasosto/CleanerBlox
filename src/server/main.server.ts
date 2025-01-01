@@ -1,4 +1,3 @@
-
 // Roblox Services
 import { Players, HttpService } from "@rbxts/services";
 
@@ -12,7 +11,6 @@ import { InventoryService } from "./Services/InventoryService";
 import { EntityManager } from "./Entity/EntityManager";
 import { NotificationManager } from "./Notification/NotificationManager";
 import { Logger } from "shared/Utility/Logger";
-
 
 //Services Needing to Start
 DataManager.Start();

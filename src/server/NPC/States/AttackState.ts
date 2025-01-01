@@ -8,7 +8,6 @@ export class AttackState implements IState {
 	private _npcController: NPCController;
 
 	constructor(npc: NPCController) {
-
 		this._npcController = npc;
 
 		return this;
@@ -30,6 +29,5 @@ export class AttackState implements IState {
 	onExit(nextState: IState): void {
 		// Cleanup if necessary (e.g., stop idle animation)
 		this._npcController.animationController.stopAnimation(EAnimationName.NPC_Attack);
-
 	}
 }

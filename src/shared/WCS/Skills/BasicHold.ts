@@ -15,9 +15,8 @@ export class BasicHold extends HoldableSkill {
 		DefaultStaminaCost: 10,
 	};
 
-	// 00. CONSTRUCT 
+	// 00. CONSTRUCT
 	public OnConstruct() {
-
 		this.SetMaxHoldTime(BasicHold.SkillConfiguration.DefaultHoldTime);
 	}
 

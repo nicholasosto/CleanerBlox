@@ -29,6 +29,5 @@ export class PatrolState implements IState {
 	onExit(nextState: IState): void {
 		// Cleanup if necessary (e.g., stop idle animation)
 		this._npcController.animationController.stopAnimation(EAnimationName.NPC_Patrol);
-
 	}
 }

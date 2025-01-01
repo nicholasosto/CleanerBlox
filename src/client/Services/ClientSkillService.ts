@@ -43,8 +43,7 @@ export class ClientSkillService {
 			},
 		);
 
-
-        return this;
+		return this;
 	}
 
 	// Start

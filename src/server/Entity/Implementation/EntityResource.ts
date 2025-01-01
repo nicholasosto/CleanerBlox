@@ -3,10 +3,7 @@ import { IResource } from "../Interfaces/IResource";
 import { GameStorage } from "shared/Utility/GameStorage";
 import { Logger } from "shared/Utility/Logger";
 
-
-
 export class EntityResourceBar {
-
 	Bar: Frame;
 	BarName: string;
 
@@ -24,7 +21,6 @@ export class EntityResourceBar {
 		this.Bar.SetAttribute("BarPercent", percentage);
 	}
 }
-
 
 export class EntityResource implements IResource {
 	Entity: Instance;
@@ -48,11 +44,10 @@ export class EntityResource implements IResource {
 		const player = Players.GetPlayerFromCharacter(parent);
 		if (player) {
 			const playerGUI = player.WaitForChild("PlayerGui") as PlayerGui;
-			if(playerGUI !== undefined) {
+			if (playerGUI !== undefined) {
 				const HUD: ScreenGui = playerGUI.WaitForChild("HUD") as ScreenGui;
 				this._resourceBar = new EntityResourceBar(HUD, name);
 			}
-			
 		}
 		// Parent Entity
 		this.Entity = parent;

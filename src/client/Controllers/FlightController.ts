@@ -67,7 +67,6 @@ export class FlightController {
 	}
 
 	private onCharacterAdded(character: Model) {
-
 		this.character = character;
 		this.humanoid = character.WaitForChild("Humanoid") as Humanoid;
 		this.rootPart = character.WaitForChild("HumanoidRootPart") as BasePart;
@@ -99,7 +98,6 @@ export class FlightController {
 		if (this.isFlyingKeyDown) {
 			// Disable physics state if flight key is down
 			this.humanoid.SetStateEnabled(Enum.HumanoidStateType.Physics, false);
-
 		} else {
 			// Re-enable physics if not flying
 			this.humanoid.SetStateEnabled(Enum.HumanoidStateType.Physics, true);

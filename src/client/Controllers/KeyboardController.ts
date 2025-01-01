@@ -58,13 +58,13 @@ export class KeyboardController {
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.Body,"Plate_Legendary_RB", true);
-						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet,"Demon Lord Halo", true);
+						this.InventoryToggle(InventoryReference.EInventorySlot.Body, "Plate_Legendary_RB", true);
+						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet, "Demon Lord Halo", true);
 						break;
 					case Enum.KeyCode.J:
 						print("J Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand,"Scythe_Epic_Black", true);
-						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand,"Scythe_Epic_Black", true);
+						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand, "Scythe_Epic_Black", true);
+						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand, "Scythe_Epic_Black", true);
 						break;
 					default:
 						KeyboardController.InputBegan(input, isProcessed);
@@ -86,18 +86,18 @@ export class KeyboardController {
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.Body,"Plate_Legendary_RB", false);
-						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet,"Demon Lord Halo", false);
+						this.InventoryToggle(InventoryReference.EInventorySlot.Body, "Plate_Legendary_RB", false);
+						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet, "Demon Lord Halo", false);
 						break;
 					case Enum.KeyCode.J:
 						print("J Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand,"Scythe_Epic_Black", false);
-						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand,"Scythe_Epic_Black", false);
+						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand, "Scythe_Epic_Black", false);
+						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand, "Scythe_Epic_Black", false);
 						break;
 					default:
 						KeyboardController.InputEnded(input, isProcessed);
 						break;
-			}
+				}
 			},
 		);
 	}
@@ -110,8 +110,12 @@ export class KeyboardController {
 		KeyboardController.onKeyPress(input.KeyCode, false);
 	}
 
-	private static InventoryToggle(equipmentSlot: InventoryReference.EInventorySlot, weaponName: string, begin: boolean) {
-		if(begin) {
+	private static InventoryToggle(
+		equipmentSlot: InventoryReference.EInventorySlot,
+		weaponName: string,
+		begin: boolean,
+	) {
+		if (begin) {
 			ClientInventoryService.SendEquipRequest(equipmentSlot, weaponName);
 		} else {
 			ClientInventoryService.SendUnequipRequest(equipmentSlot);

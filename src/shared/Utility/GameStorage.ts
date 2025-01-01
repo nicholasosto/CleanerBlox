@@ -31,10 +31,9 @@ export class GameStorage {
 
 		// Clone the humanoid
 		const _clonedHumanoid = _humanoid.Clone();
-		Logger.Log("XXX Found",_clonedHumanoid)
+		Logger.Log("XXX Found", _clonedHumanoid);
 		return _clonedHumanoid;
 	}
-
 
 	// ACCESSORY STORAGE
 	public static cloneAccessory(accessoryName: string): Accessory | undefined {

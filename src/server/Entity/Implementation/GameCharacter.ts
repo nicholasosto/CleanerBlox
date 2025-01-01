@@ -236,4 +236,3 @@ export class PlayerGameCharacter extends BaseGameCharacter {
 		super.Destroy();
 	}
 }
-
