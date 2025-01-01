@@ -8,7 +8,7 @@ export class AttackState implements IState {
 	private _npcController: NPCController;
 
 	constructor(npc: NPCController) {
-		Logger.NPCLog("Creating: " + this.name);
+
 		this._npcController = npc;
 
 		return this;
@@ -16,13 +16,13 @@ export class AttackState implements IState {
 
 	onEnter(previousState: IState | undefined): void {
 		// Play idle animation, reset timers, etc.
-		Logger.NPCLog("Previous: " + previousState?.name + " new: " + this.name);
+
 		this._npcController.animationController.playAnimation(EAnimationName.NPC_Attack);
 	}
 
 	onUpdate(dt: number): void {
 		// Scan for players
-		Logger.NPCLog(this.name + " - Update");
+
 		this._npcController.animationController.playAnimation(EAnimationName.NPC_Attack);
 		task.wait(1);
 	}
@@ -30,6 +30,6 @@ export class AttackState implements IState {
 	onExit(nextState: IState): void {
 		// Cleanup if necessary (e.g., stop idle animation)
 		this._npcController.animationController.stopAnimation(EAnimationName.NPC_Attack);
-		Logger.NPCLog(this.name + " - Exit to " + nextState.name);
+
 	}
 }

@@ -13,3 +13,5 @@ export function calculateMaxStamina(level: number, Speed: number): number {
 export function calculateExperienceToNextLevel(level: number): number {
     return level * 100;
 }
+
+

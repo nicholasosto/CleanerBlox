@@ -25,7 +25,7 @@ export class ClientSkillService {
 		// Equip Response
 		ClientSkillService._connectionSkillSlotsResponse = SKILLS_SkillSlotResponse.OnClientEvent.Connect(
 			(response: string) => {
-				print("Equip Response", response);
+				//print("Equip Response", response);
 			},
 		);
 

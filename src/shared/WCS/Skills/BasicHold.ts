@@ -23,7 +23,7 @@ export class BasicHold extends HoldableSkill {
 
 	// 01. CONSTRUCT CLIENT
 	public OnConstructClient(): void {
-		Logger.Log("BasicHold", "OnConstructClinet");
+		//Logger.Log("BasicHold-Client");
 	}
 
 	// MOVE START
@@ -32,7 +32,7 @@ export class BasicHold extends HoldableSkill {
 
 		// Cooldown Timer
 		this.CooldownTimer.secondReached.Connect((seconds) => {
-			Logger.Log(this.GetName(), `Cooldown: ${seconds}\n`);
+			//Logger.Log(this.GetName(), `Cooldown: ${seconds}\n`);
 		});
 
 		// Hold Timer
@@ -41,7 +41,7 @@ export class BasicHold extends HoldableSkill {
 
 	// Stages
 	private _holdTimerReached(seconds: number) {
-		Logger.Log("BasicHold", `Hold: ${seconds}\n`);
+		//Logger.Log("BasicHold", `Hold: ${seconds}\n`);
 
 		//const devilBeamTool = GameStorage.cloneTool("DevilBeam");
 		switch (seconds) {

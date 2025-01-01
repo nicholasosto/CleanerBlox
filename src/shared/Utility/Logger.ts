@@ -1,8 +1,7 @@
 import { HttpService } from "@rbxts/services";
 import { Skill } from "@rbxts/wcs";
 
-// Note: Utility class for logging
-type Printable = string | object | CFrame | Vector3 | AttributeValue | Instance;
+export type Printable = string | number | boolean | undefined | Vector3 | CFrame | Instance;
 
 // LogLevel: Enum for logging levels
 export enum LogLevel {
@@ -21,37 +20,10 @@ export class Logger {
 
 	// Log: Log messages to the console
 	public static Log(logTag: string, ...messages: Array<Printable>) {
-		// Check if logging is enabled
-		if (!this._enabled) return;
-
-		if (this._filterTag !== "" && logTag !== this._filterTag) return;
-
-		// Log message
-
-		let logMessage = `=________________=\n`;
-		warn(logTag);
-		// Iterate through messages and log them
-		messages.forEach((message) => {
-			switch (typeOf(message)) {
-				case "CFrame":
-					logMessage += this.StringifyCFrame(message as CFrame);
-					break;
-				case "Vector3":
-					logMessage += this.StringifyVector3(message as Vector3);
-					break;
-				default:
-					logMessage += tostring(message);
-			}
-			//logMessage += tostring(message);
-		});
-
-		// Log the message to the console
-		if (this._logLevel === LogLevel.Error) {
-			warn(logMessage);
-		} else {
-			print(logMessage);
-			print(`\n=\t End \t=\n\n`);
+		if (!this._enabled) {
+			return;
 		}
+		warn(logTag, ...messages);
 	}
 
 	// CFrame: Convert CFrame to string with rounded values
@@ -92,29 +64,9 @@ export class Logger {
 		this._enabled = enable;
 	}
 
-	// Log Encoded JSON to ScreenUI ScrollFrame
-	public static LogJSONToScreenUI(player: Player, scriptName: string, json: string) {
-		// Log the JSON to the console
-
-		warn(json);
-		const message = HttpService.JSONEncode(json);
-		const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
-		const Developer = playerGui.WaitForChild("Developer") as ScreenGui;
-		const ScrollingTextFrame = Developer.FindFirstChild("UIConsoleScroller", true) as Frame;
-
-		const ScriptNameLabel = ScrollingTextFrame.WaitForChild("ScriptName") as TextLabel;
-		ScriptNameLabel.Text = scriptName;
-
-		const TextItem = ScrollingTextFrame.WaitForChild("TextItem") as TextLabel;
-		TextItem.Text = message;
-	}
 	// GetInstance: Get the instance of the logger
 	public static GetInstance(): Logger {
 		return this._logger;
-	}
-
-	public static NPCLog(logmessage: string, optionalInstance?: Instance | undefined) {
-		warn("NPCLog: ", logmessage, optionalInstance);
 	}
 
 	public static PrintSkillInfo(skill: Skill) {
@@ -123,5 +75,9 @@ export class Logger {
 		print("Character: ", skill.Character);
 		print("Type: ", skill.GetSkillType());
 		print("Cooldown Time: ", skill.MetadataChanged);
+	}
+
+	public static ErrorLog(logmessage: string) {
+		warn("Error_Log: ", logmessage);
 	}
 }

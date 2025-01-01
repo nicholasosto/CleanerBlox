@@ -10,7 +10,7 @@ export class IdleState implements IState {
 
 
 	constructor(npc: NPCController) {
-		Logger.NPCLog(this.name + " - Creating");
+
 		this._npcController = npc;
 
 		return this;
@@ -23,7 +23,7 @@ export class IdleState implements IState {
 
 	onUpdate(dt: number): void {
 		// Scan for players
-		Logger.NPCLog(this.name + " - Update");
+
 		this._npcController.animationController.playAnimation(EAnimationName.NPC_Idle);
 		task.wait(2);
 	}
@@ -31,6 +31,6 @@ export class IdleState implements IState {
 	onExit(nextState: IState): void {
 		// Cleanup if necessary (e.g., stop idle animation)
 		this._npcController.animationController.stopAnimation(EAnimationName.NPC_Idle);
-		Logger.NPCLog(this.name + " - Exit to " + nextState.name);
+
 	}
 }

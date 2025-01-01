@@ -35,10 +35,9 @@ export class BasicMelee extends Skill {
 	}
 
 	public OnConstructServer(): void {
-		Logger.Log("BasicMelee", "OnConstructServer");
 		const character = this.Character.Instance;
 		if (character === undefined) {
-			Logger.Log("BasicMelee", "No Character Found");
+			Logger.Log("BasicMelee no character found");
 			return;
 		}
 		this.DamageContainer = this.CreateDamageContainer(BasicMelee.SkillConfiguration.DefaultHealthChange);
@@ -67,31 +66,31 @@ export class BasicMelee extends Skill {
 		}
 		this.HitPartConnection?.Disconnect();
 		this.HitPartConnection = this.SkillHitPart.Touched.Connect((hit) => {
-			Logger.Log("BasicMelee", `Hit: ${hit.Parent?.Name}`);
+			//Logger.Log("BasicMelee", `Hit: ${hit.Parent?.Name}`);
 
 			if (hit.Parent === this.Character.Instance) {
-				Logger.Log("BasicMelee", "Hit Self");
+				//Logger.Log("BasicMelee", "Hit Self");
 				return;
 			}
 			if (hit.Parent?.FindFirstChild("Humanoid") === undefined) {
-				Logger.Log("BasicMelee", "No Humanoid Found");
+				//Logger.Log("BasicMelee", "No Humanoid Found");
 				return;
 			}
 			let targetCharacter = Character.GetCharacterFromInstance(hit.Parent as Instance);
 			if (targetCharacter === undefined) {
 				targetCharacter = Character.GetCharacterFromInstance(hit.Parent?.Parent as Instance);
-				Logger.Log("BasicMelee", "No Target Character Found");
+				//Logger.Log("BasicMelee", "No Target Character Found");
 				targetCharacter?.TakeDamage(this.DamageContainer as DamageContainer);
 			}
 			//hit.Parent = undefined;
 		});
 		//ParticleGroupManager.DisableParticleEmitters(this.ActivationParticles as [ParticleEmitter]);
-		Logger.Log("BasicMelee", "Animation, Sound, and Particles Loaded");
+		//Logger.Log("BasicMelee", "Animation, Sound, and Particles Loaded");
 	}
 
 	// 01. CONSTRUCT CLIENT
 	public OnConstructClient(): void {
-		Logger.Log("BasicMelee", "OnConstructClinet");
+		//Logger.Log("BasicMelee Client");
 	}
 
 	// MOVE START
@@ -109,13 +108,13 @@ export class BasicMelee extends Skill {
 
 		// Cooldown Timer
 		this.CooldownTimer.secondReached.Connect((seconds) => {
-			Logger.Log("BasicMelee", `PE Cooldown: ${seconds}`);
+			//Logger.Log("BasicMelee", `PE Cooldown: ${seconds}`);
 		});
 	}
 
 	// END SERVER
 	public OnEndServer() {
-		Logger.Log("BasicMelee", "OnEndServer");
+		//Logger.Log("BasicMelee", "OnEndServer");
 		task.delay(BasicMelee.SkillConfiguration.ActivationTime, () => {
 			ParticleGroupManager.DisableParticleEmitters(this.ActivationParticles as [ParticleEmitter]);
 			WeaponManager.UnEquipWCSCharacterWeapon(this.Character.Player as Player, this.SkillWeapon as Accessory);

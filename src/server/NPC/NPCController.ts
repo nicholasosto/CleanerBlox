@@ -105,7 +105,6 @@ export class NPCController {
 
 	// Update loop
 	public update(dt: number): void {
-		Logger.NPCLog("NPC Update: " + this.rigModel.Name + " - " + this._currentState?.name);
 		this._currentState?.onUpdate(dt);
 	}
 

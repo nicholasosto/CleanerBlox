@@ -14,7 +14,6 @@ local AnimationController = TS.import(script, game:GetService("ServerScriptServi
 -- States
 local IdleState = TS.import(script, game:GetService("ServerScriptService"), "TS", "NPC", "States", "IdleState").IdleState
 local PatrolState = TS.import(script, game:GetService("ServerScriptService"), "TS", "NPC", "States", "PatrolState").PatrolState
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local AttackState = TS.import(script, game:GetService("ServerScriptService"), "TS", "NPC", "States", "AttackState").AttackState
 local NPCController
 do
@@ -84,15 +83,9 @@ do
 		end)
 	end
 	function NPCController:update(dt)
-		local _exp = "NPC Update: " .. self.rigModel.Name .. " - "
 		local _result = self._currentState
 		if _result ~= nil then
-			_result = _result.name
-		end
-		Logger:NPCLog(_exp .. tostring(_result))
-		local _result_1 = self._currentState
-		if _result_1 ~= nil then
-			_result_1:onUpdate(dt)
+			_result:onUpdate(dt)
 		end
 	end
 	function NPCController:setState(newState)

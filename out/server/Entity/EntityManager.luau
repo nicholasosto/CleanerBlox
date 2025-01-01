@@ -2,8 +2,11 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- eslint-disable prettier/prettier 
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local BaseEntity = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "Entity").BaseEntity
+local _GameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "GameCharacter")
+local PlayerGameCharacter = _GameCharacter.PlayerGameCharacter
+local BaseGameCharacter = _GameCharacter.BaseGameCharacter
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityManager
 do
 	EntityManager = setmetatable({}, {
@@ -17,12 +20,16 @@ do
 		return self:constructor(...) or self
 	end
 	function EntityManager:constructor()
+		-- Handle Character Added
 		EntityManager._connectionCharacterAdded = Players.PlayerAdded:Connect(function(player)
 			player.CharacterAdded:Connect(function(character)
-				local entity = BaseEntity.new(character)
-				local __entities = EntityManager._entities
-				local _name = character.Name
-				__entities[_name] = entity
+				local playerGameCharacter = PlayerGameCharacter.new(player)
+				Logger:ErrorLog("EntityManager - PlayerGameCharacter Created" .. player.Name)
+			end)
+			player.CharacterAdded:Connect(function(character)
+				--const entity = new BaseEntity(character);
+				warn("EntityManager - Player Added", player.Name, "entityCreation triggered")
+				--EntityManager._entities.set(character.Name, entity);
 			end)
 		end)
 	end
@@ -36,7 +43,7 @@ do
 		return EntityManager._instance
 	end
 	function EntityManager:CreateEntity(rig)
-		local entity = BaseEntity.new(rig)
+		local entity = BaseGameCharacter.new(rig)
 		local __entities = EntityManager._entities
 		local _name = rig.Name
 		__entities[_name] = entity

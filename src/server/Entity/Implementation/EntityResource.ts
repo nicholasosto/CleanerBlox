@@ -1,6 +1,30 @@
-import { RunService } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { IResource } from "../Interfaces/IResource";
+import { GameStorage } from "shared/Utility/GameStorage";
 import { Logger } from "shared/Utility/Logger";
+
+
+
+export class EntityResourceBar {
+
+	Bar: Frame;
+	BarName: string;
+
+	constructor(parent: Frame | ScreenGui, name: string) {
+		this.Bar = GameStorage.cloneGUIComponent("Progress Bar Template") as Frame;
+
+		this.BarName = name;
+
+		this.Bar.Parent = parent;
+		this.Bar.Name = name + "Bar";
+		this.Bar.SetAttribute("TextValue", name);
+	}
+
+	public setBarValue(percentage: number) {
+		this.Bar.SetAttribute("BarPercent", percentage);
+	}
+}
+
 
 export class EntityResource implements IResource {
 	Entity: Instance;
@@ -14,13 +38,22 @@ export class EntityResource implements IResource {
 	AttributeNameMax: string;
 
 	private _lastRegenTick: number = 0;
+	private _resourceBar: EntityResourceBar | undefined;
 
 	_regenConnection: RBXScriptConnection | undefined;
 	_minChangeConnection: RBXScriptConnection | undefined;
 	_maxChangeConnection: RBXScriptConnection | undefined;
 
 	constructor(parent: Instance, name: string, maxValue: number, regenRate: number, regenAmount: number = 1) {
-		Logger.Log("EntityResource", "Constructing", name);
+		const player = Players.GetPlayerFromCharacter(parent);
+		if (player) {
+			const playerGUI = player.WaitForChild("PlayerGui") as PlayerGui;
+			if(playerGUI !== undefined) {
+				const HUD: ScreenGui = playerGUI.WaitForChild("HUD") as ScreenGui;
+				this._resourceBar = new EntityResourceBar(HUD, name);
+			}
+			
+		}
 		// Parent Entity
 		this.Entity = parent;
 
@@ -34,40 +67,40 @@ export class EntityResource implements IResource {
 		// Regen Values
 		this.RegenRate = regenRate;
 		this.RegenAmount = regenAmount;
-		this.RegenActive = false;
+		this.RegenActive = true;
 
 		// Create Attributes on the Entity
 		this.Entity.SetAttribute(this.AttributeNameMax, this.MaxValue);
 		this.Entity.SetAttribute(this.AttributeNameCurrent, this.CurrentValue);
 
 		// Connections
-		this._regenConnection = RunService.Heartbeat.Connect(() => {
-			this._regenStep();
+		this._regenConnection = RunService.Heartbeat.Connect((dt) => {
+			const timeSinceLastTick = tick() - this._lastRegenTick;
+			//warn("time: ", timeSinceLastTick, "rate: ", this.RegenRate);
+			if (this.RegenActive && timeSinceLastTick >= this.RegenRate) {
+				//warn("EntityResource - Regen Step");
+				this._lastRegenTick = tick();
+				this._regenStep();
+			}
 		});
 
 		this._minChangeConnection = this.Entity.GetAttributeChangedSignal(this.Name + "Current").Connect(() => {
-			Logger.Log("EntityResource", this.Name, this.CurrentValue);
+			//Logger.Log("EntityResource", this.Name, this.CurrentValue);
 			this.onResourceChange();
 		});
 
 		this._maxChangeConnection = this.Entity.GetAttributeChangedSignal(this.Name + "Max").Connect(() => {
-			Logger.Log("EntityResource", this.Name, this.MaxValue);
+			//Logger.Log("EntityResource", this.Name, this.MaxValue);
 			this.onResourceChange();
 		});
-
+		this.onResourceChange();
+		this.setCurrentValue(10);
 		return this;
 	}
 
 	// Regen Step: Called updates once per configured RegenRate for the amount of RegenAmount
 	private _regenStep() {
-		const timeSinceLastTick = tick() - this._lastRegenTick;
-		if (timeSinceLastTick >= this.RegenRate && this.CurrentValue < this.MaxValue) {
-			this.CurrentValue += this.RegenAmount;
-			//Logger.Log("EntityResource", this.Name, this.CurrentValue);
-		}
-		if (this.CurrentValue < this.MaxValue) {
-			this.CurrentValue += this.RegenAmount;
-		}
+		this.setCurrentValue(this.CurrentValue + this.RegenAmount);
 	}
 
 	public setMaxValue(value: number) {
@@ -76,19 +109,21 @@ export class EntityResource implements IResource {
 	}
 
 	public setCurrentValue(value: number) {
+		//warn("EntityResource - Setting Value: " + value);
 		this.CurrentValue = value;
 		this.Entity.SetAttribute(this.Name + "Current", value);
 	}
 
 	public adjustCurrentValue(value: number) {
-		Logger.Log("EntityResource - Adjusting Value by: " + value);
+		//Logger.Log("EntityResource - Adjusting Value by: " + value);
 		this.CurrentValue += value;
 		this.Entity.SetAttribute(this.Name + "Current", this.CurrentValue);
 	}
 
 	// Prints the current resource values
 	public onResourceChange() {
-		warn(this.Entity.Name + " onResourceChange not implemented: " + this.Name + "\nCurrent: " + this.CurrentValue);
+		//warn(this.Entity.Name + " onResourceChange not implemented: " + this.Name + "\nCurrent: " + this.CurrentValue);
+		this._resourceBar?.setBarValue((this.CurrentValue / this.MaxValue) * 100);
 	}
 
 	public assignOnMinChange(callback: (value: number) => void) {

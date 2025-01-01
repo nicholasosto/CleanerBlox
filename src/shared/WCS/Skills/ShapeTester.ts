@@ -20,7 +20,7 @@ export class ShapeTester extends Skill {
 
 	// MOVE START
 	public OnStartServer() {
-		Logger.Log("ShapeTester", "OnStartServer");
+		//Logger.Log("ShapeTester", "OnStartServer");
 		const fire = new Instance("Fire");
 		fire.Size = 3;
 		fire.Parent = this.Character.Instance as Model;

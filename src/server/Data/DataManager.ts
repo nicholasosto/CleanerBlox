@@ -97,7 +97,7 @@ export class DataManager {
 		const userId = tostring(player.UserId);
 		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerData;
 		const dataCache = new DataCache(userId, DataManager.GameDataStore);
-		Logger.Log("DM", "Player Registered: ", userId);
+		//Logger.Log("DM", "Player Registered: ", userId);
 		this.PlayerCache.push(dataCache);
 	}
 

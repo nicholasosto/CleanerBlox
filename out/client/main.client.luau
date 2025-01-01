@@ -13,7 +13,6 @@ local FlightController = TS.import(script, script.Parent, "Controllers", "Flight
 local GUIController = TS.import(script, script.Parent, "Controllers", "GUIController").GUIController
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
 -- Start Services
 ClientInventoryService:Start()
@@ -32,11 +31,11 @@ GUIController:Start()
 CommunicationGod:Summon()
 -- Handle Character Added
 local function handleCharacterAdded(character)
-	Logger:Log("Client", "Character Added: ", character)
+	--Logger.Log("Client", "Character Added: ", character);
 end
 -- Handle Character Removing
 local function handleCharacterRemoving(character)
-	Logger:Log("Client", "Character Removed: ", character)
+	--Logger.Log("Client", "Character Removed: ", character);
 end
 -- Check if character exists and perform Character Added event actions
 if Players.LocalPlayer.Character then

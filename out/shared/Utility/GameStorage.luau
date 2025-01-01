@@ -102,7 +102,7 @@ do
 			self:printAvailableItems(self._guiStorage)
 			error(`GUI {guiName} not found in storage.`)
 		end
-		return _gui
+		return _gui:Clone()
 	end
 	function GameStorage:cloneModel(modelName)
 		-- Get the model from the storage

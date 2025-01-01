@@ -95,7 +95,7 @@ do
 		local userId = tostring(player.UserId)
 		local storedData = (DataManager.GameDataStore:GetAsync(userId))
 		local dataCache = DataCache.new(userId, DataManager.GameDataStore)
-		Logger:Log("DM", "Player Registered: ", userId)
+		--Logger.Log("DM", "Player Registered: ", userId);
 		local _exp = self.PlayerCache
 		table.insert(_exp, dataCache)
 	end

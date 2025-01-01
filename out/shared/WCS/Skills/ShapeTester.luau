@@ -31,7 +31,7 @@ do
 	function ShapeTester:OnConstructClient()
 	end
 	function ShapeTester:OnStartServer()
-		Logger:Log("ShapeTester", "OnStartServer")
+		--Logger.Log("ShapeTester", "OnStartServer");
 		local fire = Instance.new("Fire")
 		fire.Size = 3
 		fire.Parent = self.Character.Instance

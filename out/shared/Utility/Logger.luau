@@ -1,7 +1,4 @@
 -- Compiled with roblox-ts v3.0.0
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local HttpService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").HttpService
--- Note: Utility class for logging
 -- LogLevel: Enum for logging levels
 local LogLevel = {
 	Info = "[Inf]",
@@ -25,45 +22,10 @@ do
 	end
 	function Logger:Log(logTag, ...)
 		local messages = { ... }
-		-- Check if logging is enabled
 		if not self._enabled then
 			return nil
 		end
-		if self._filterTag ~= "" and logTag ~= self._filterTag then
-			return nil
-		end
-		-- Log message
-		local logMessage = `=________________=\n`
-		warn(logTag)
-		-- Iterate through messages and log them
-		-- ▼ ReadonlyArray.forEach ▼
-		local _callback = function(message)
-			local _message = message
-			local _exp = typeof(_message)
-			repeat
-				if _exp == "CFrame" then
-					logMessage ..= self:StringifyCFrame(message)
-					break
-				end
-				if _exp == "Vector3" then
-					logMessage ..= self:StringifyVector3(message)
-					break
-				end
-				logMessage ..= tostring(message)
-			until true
-			--logMessage += tostring(message);
-		end
-		for _k, _v in messages do
-			_callback(_v, _k - 1, messages)
-		end
-		-- ▲ ReadonlyArray.forEach ▲
-		-- Log the message to the console
-		if self._logLevel == LogLevel.Error then
-			warn(logMessage)
-		else
-			print(logMessage)
-			print(`\n=\t End \t=\n\n`)
-		end
+		warn(logTag, unpack(messages))
 	end
 	function Logger:StringifyCFrame(cf)
 		-- Position
@@ -92,23 +54,8 @@ do
 	function Logger:EnableLogging(enable)
 		self._enabled = enable
 	end
-	function Logger:LogJSONToScreenUI(player, scriptName, json)
-		-- Log the JSON to the console
-		warn(json)
-		local message = HttpService:JSONEncode(json)
-		local playerGui = player:WaitForChild("PlayerGui")
-		local Developer = playerGui:WaitForChild("Developer")
-		local ScrollingTextFrame = Developer:FindFirstChild("UIConsoleScroller", true)
-		local ScriptNameLabel = ScrollingTextFrame:WaitForChild("ScriptName")
-		ScriptNameLabel.Text = scriptName
-		local TextItem = ScrollingTextFrame:WaitForChild("TextItem")
-		TextItem.Text = message
-	end
 	function Logger:GetInstance()
 		return self._logger
-	end
-	function Logger:NPCLog(logmessage, optionalInstance)
-		warn("NPCLog: ", logmessage, optionalInstance)
 	end
 	function Logger:PrintSkillInfo(skill)
 		warn(`Skill: {skill:GetName()}\n`)
@@ -116,6 +63,9 @@ do
 		print("Character: ", skill.Character)
 		print("Type: ", skill:GetSkillType())
 		print("Cooldown Time: ", skill.MetadataChanged)
+	end
+	function Logger:ErrorLog(logmessage)
+		warn("Error_Log: ", logmessage)
 	end
 	Logger._logger = Logger.new()
 	Logger._logLevel = LogLevel.Info

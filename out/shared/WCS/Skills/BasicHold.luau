@@ -25,13 +25,13 @@ do
 		self:SetMaxHoldTime(BasicHold.SkillConfiguration.DefaultHoldTime)
 	end
 	function BasicHold:OnConstructClient()
-		Logger:Log("BasicHold", "OnConstructClinet")
+		--Logger.Log("BasicHold-Client");
 	end
 	function BasicHold:OnStartServer()
 		self:ApplyCooldown(BasicHold.SkillConfiguration.DefaultCooldownTime)
 		-- Cooldown Timer
 		self.CooldownTimer.secondReached:Connect(function(seconds)
-			Logger:Log(self:GetName(), `Cooldown: {seconds}\n`)
+			--Logger.Log(this.GetName(), `Cooldown: ${seconds}\n`);
 		end)
 		-- Hold Timer
 		self.HoldTimer.secondReached:Connect(function(seconds)
@@ -39,7 +39,7 @@ do
 		end)
 	end
 	function BasicHold:_holdTimerReached(seconds)
-		Logger:Log("BasicHold", `Hold: {seconds}\n`)
+		--Logger.Log("BasicHold", `Hold: ${seconds}\n`);
 		--const devilBeamTool = GameStorage.cloneTool("DevilBeam");
 		repeat
 			if seconds == 1 then

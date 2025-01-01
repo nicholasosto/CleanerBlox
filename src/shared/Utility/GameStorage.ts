@@ -132,7 +132,7 @@ export class GameStorage {
 			error(`GUI ${guiName} not found in storage.`);
 		}
 
-		return _gui;
+		return _gui.Clone();
 	}
 	// MODEL STORAGE
 	public static cloneModel(modelName: string): Model {

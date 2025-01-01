@@ -31,10 +31,9 @@ do
 		--Logger.Log("BasicMelee", "OnConstruct");
 	end
 	function BasicMelee:OnConstructServer()
-		Logger:Log("BasicMelee", "OnConstructServer")
 		local character = self.Character.Instance
 		if character == nil then
-			Logger:Log("BasicMelee", "No Character Found")
+			Logger:Log("BasicMelee no character found")
 			return nil
 		end
 		self.DamageContainer = self:CreateDamageContainer(BasicMelee.SkillConfiguration.DefaultHealthChange)
@@ -65,43 +64,39 @@ do
 			_result_1:Disconnect()
 		end
 		self.HitPartConnection = self.SkillHitPart.Touched:Connect(function(hit)
-			local _result_2 = hit.Parent
-			if _result_2 ~= nil then
-				_result_2 = _result_2.Name
-			end
-			Logger:Log("BasicMelee", `Hit: {_result_2}`)
+			--Logger.Log("BasicMelee", `Hit: ${hit.Parent?.Name}`);
 			if hit.Parent == self.Character.Instance then
-				Logger:Log("BasicMelee", "Hit Self")
+				--Logger.Log("BasicMelee", "Hit Self");
 				return nil
 			end
-			local _result_3 = hit.Parent
-			if _result_3 ~= nil then
-				_result_3 = _result_3:FindFirstChild("Humanoid")
+			local _result_2 = hit.Parent
+			if _result_2 ~= nil then
+				_result_2 = _result_2:FindFirstChild("Humanoid")
 			end
-			if _result_3 == nil then
-				Logger:Log("BasicMelee", "No Humanoid Found")
+			if _result_2 == nil then
+				--Logger.Log("BasicMelee", "No Humanoid Found");
 				return nil
 			end
 			local targetCharacter = Character.GetCharacterFromInstance(hit.Parent)
 			if targetCharacter == nil then
-				local _result_4 = hit.Parent
-				if _result_4 ~= nil then
-					_result_4 = _result_4.Parent
+				local _result_3 = hit.Parent
+				if _result_3 ~= nil then
+					_result_3 = _result_3.Parent
 				end
-				targetCharacter = Character.GetCharacterFromInstance(_result_4)
-				Logger:Log("BasicMelee", "No Target Character Found")
-				local _result_5 = targetCharacter
-				if _result_5 ~= nil then
-					_result_5:TakeDamage(self.DamageContainer)
+				targetCharacter = Character.GetCharacterFromInstance(_result_3)
+				--Logger.Log("BasicMelee", "No Target Character Found");
+				local _result_4 = targetCharacter
+				if _result_4 ~= nil then
+					_result_4:TakeDamage(self.DamageContainer)
 				end
 			end
 			--hit.Parent = undefined;
 		end)
 		--ParticleGroupManager.DisableParticleEmitters(this.ActivationParticles as [ParticleEmitter]);
-		Logger:Log("BasicMelee", "Animation, Sound, and Particles Loaded")
+		--Logger.Log("BasicMelee", "Animation, Sound, and Particles Loaded");
 	end
 	function BasicMelee:OnConstructClient()
-		Logger:Log("BasicMelee", "OnConstructClinet")
+		--Logger.Log("BasicMelee Client");
 	end
 	function BasicMelee:OnStartServer()
 		self:ApplyCooldown(BasicMelee.SkillConfiguration.DefaultCooldownTime)
@@ -116,11 +111,11 @@ do
 		WeaponManager:EquipWCSCharacterWeapon(self.Character, "Scythe_Epic_Black")
 		-- Cooldown Timer
 		self.CooldownTimer.secondReached:Connect(function(seconds)
-			Logger:Log("BasicMelee", `PE Cooldown: {seconds}`)
+			--Logger.Log("BasicMelee", `PE Cooldown: ${seconds}`);
 		end)
 	end
 	function BasicMelee:OnEndServer()
-		Logger:Log("BasicMelee", "OnEndServer")
+		--Logger.Log("BasicMelee", "OnEndServer");
 		task.delay(BasicMelee.SkillConfiguration.ActivationTime, function()
 			ParticleGroupManager:DisableParticleEmitters(self.ActivationParticles)
 			WeaponManager:UnEquipWCSCharacterWeapon(self.Character.Player, self.SkillWeapon)

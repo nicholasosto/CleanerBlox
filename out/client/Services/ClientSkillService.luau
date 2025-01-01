@@ -25,7 +25,7 @@ do
 	function ClientSkillService:constructor()
 		-- Equip Response
 		ClientSkillService._connectionSkillSlotsResponse = SKILLS_SkillSlotResponse.OnClientEvent:Connect(function(response)
-			print("Equip Response", response)
+			--print("Equip Response", response);
 		end)
 		-- Unequip Response
 		ClientSkillService._connectionClearSlotResponse = SKILLS_ClearSlotResponse.OnClientEvent:Connect(function(response)

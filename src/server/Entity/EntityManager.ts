@@ -1,24 +1,33 @@
 /* eslint-disable prettier/prettier */
 import { Players } from "@rbxts/services";
-import { BaseEntity } from "./Implementation/Entity";
+import { PlayerGameCharacter, BaseGameCharacter } from "./Implementation/GameCharacter";
 import { CommunicationGod } from "shared/Experimental/CommunicationGod";
+import { Logger } from "shared/Utility/Logger";
 import Signal from "@rbxts/signal";
 
 export class EntityManager {
 	private static _instance: EntityManager;
-	private static _entities: Map<string, BaseEntity> = new Map<string, BaseEntity>();
+	private static _entities: Map<string, BaseGameCharacter> = new Map<string, BaseGameCharacter>();
 	private static _connectionCharacterAdded: RBXScriptConnection;
 	private static _entityCreatedEvent = CommunicationGod.ServerSignals.get("Entity_Created");
 	
 	private constructor() {
+		// Handle Character Added
 		EntityManager._connectionCharacterAdded = Players.PlayerAdded.Connect((player) => {
-
-			
 			player.CharacterAdded.Connect((character) => {
 
-				const entity = new BaseEntity(character);
+				const playerGameCharacter = new PlayerGameCharacter(player);
 
-				EntityManager._entities.set(character.Name, entity);
+				Logger.ErrorLog("EntityManager - PlayerGameCharacter Created" + player.Name);
+
+				
+			});
+			player.CharacterAdded.Connect((character) => {
+
+				//const entity = new BaseEntity(character);
+				warn("EntityManager - Player Added", player.Name, "entityCreation triggered");
+
+				//EntityManager._entities.set(character.Name, entity);
 			});
 		});
 	}
@@ -38,13 +47,13 @@ export class EntityManager {
 
 	// CreateEntity: Create a new entity and add it to the EntityManager
 	public static CreateEntity(rig: Model) {
-		const entity = new BaseEntity(rig);
+		const entity = new BaseGameCharacter(rig);
 		EntityManager._entities.set(rig.Name, entity);
 	}
 
 	// GetEntity: Get an entity by name
-	public static GetEntity(name: string): BaseEntity {
-		return EntityManager._entities.get(name) as BaseEntity;
+	public static GetEntity(name: string): BaseGameCharacter {
+		return EntityManager._entities.get(name) as BaseGameCharacter;
 	}
 
 	// RemoveEntity: Remove an entity by name
