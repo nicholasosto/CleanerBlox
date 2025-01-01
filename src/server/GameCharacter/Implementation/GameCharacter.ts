@@ -5,17 +5,14 @@
 import { HttpService, ReplicatedStorage } from "@rbxts/services";
 import { Character, DamageContainer, StatusEffect, UnknownStatus } from "@rbxts/wcs";
 
-// Entity Related Imports
-import { IAttachments } from "../Interfaces/IAttachments";
-import { EntityAttachments } from "./EntityAttachment";
-import { EntityResource } from "./EntityResource";
+import { CharacterResource } from "./CharacterResource";
 
 // Data Related Imports
 import { TCoreStats } from "shared/SharedReference";
-import { DataTemplate } from "server/Data/DataTemplate";
+//import { DataTemplate } from "server/Data/DataTemplate";
 
 // Utility Imports
-import * as Calculator from "./EntityCalculator";
+import { ResourceCalculator } from "./Calculators";
 import { Logger } from "shared/Utility/Logger";
 
 // BaseGameCharacter (NPCs and Players inherit from this)
@@ -41,9 +38,9 @@ export class BaseGameCharacter {
 	};
 
 	// Resources
-	public Health: EntityResource;
-	public Mana: EntityResource;
-	public Stamina: EntityResource;
+	public Health: CharacterResource;
+	public Mana: CharacterResource;
+	public Stamina: CharacterResource;
 
 	// Protected Properties
 	protected _State: string = "Idle";
@@ -72,9 +69,9 @@ export class BaseGameCharacter {
 		this.WCS_Character = new Character(characterModel);
 
 		// Create Resources: Health, Mana, Stamina
-		this.Health = new EntityResource(this.CharacterModel, "Health", 100, 1, 10);
-		this.Mana = new EntityResource(this.CharacterModel, "Mana", 100, 1, 10);
-		this.Stamina = new EntityResource(this.CharacterModel, "Stamina", 100, 1, 10);
+		this.Health = new CharacterResource(this, "Health");
+		this.Mana = new CharacterResource(this, "Mana");
+		this.Stamina = new CharacterResource(this, "Stamina");
 
 		// Apply Default Moveset
 		this.WCS_Character.ApplyMoveset(this._MovesetName);
@@ -139,7 +136,7 @@ export class BaseGameCharacter {
 		warn("BaseEntity: Current Health: " + currentHealth);
 		warn("BaseEntity: New Health: " + newHealth);
 
-		this.Health.setCurrentValue(newHealth);
+		this.Health.SetCurrent(newHealth);
 	}
 
 	// Dealt Damage
@@ -170,9 +167,9 @@ export class BaseGameCharacter {
 	// Update Attributes
 	public updateAttributes() {
 		// Set the Max Values
-		const MaxStamina = Calculator.calculateMaxStamina(this.StatsData.Speed, 11);
-		const MaxMana = Calculator.calculateMaxMana(this.StatsData.Intelligence, 11);
-		const MaxHealth = Calculator.calculateMaxHealth(this.StatsData.Constitution, 11);
+		const MaxStamina = ResourceCalculator.calculateMaxStamina(this.StatsData.Speed, this.StatsData.Level);
+		const MaxMana = ResourceCalculator.calculateMaxMana(this.StatsData.Intelligence, this.StatsData.Level);
+		const MaxHealth = ResourceCalculator.calculateMaxHealth(this.StatsData.Constitution, this.StatsData.Level);
 
 		// Set the Stats Attributes
 		this.CharacterModel.SetAttribute("Strength", this.StatsData.Strength);

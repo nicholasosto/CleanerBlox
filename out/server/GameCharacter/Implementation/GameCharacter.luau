@@ -4,11 +4,11 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- BaseGameCharacter: Base Class for Game Characters
 -- PlayerGameCharacter: Player Character
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
--- Entity Related Imports
-local EntityResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityResource").EntityResource
+local CharacterResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Implementation", "CharacterResource").CharacterResource
 -- Data Related Imports
+--import { DataTemplate } from "server/Data/DataTemplate";
 -- Utility Imports
-local Calculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "Entity", "Implementation", "EntityCalculator")
+local ResourceCalculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Implementation", "Calculators").ResourceCalculator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 -- BaseGameCharacter (NPCs and Players inherit from this)
 local BaseGameCharacter
@@ -50,9 +50,9 @@ do
 		-- Create WCS Character
 		self.WCS_Character = Character.new(characterModel)
 		-- Create Resources: Health, Mana, Stamina
-		self.Health = EntityResource.new(self.CharacterModel, "Health", 100, 1, 10)
-		self.Mana = EntityResource.new(self.CharacterModel, "Mana", 100, 1, 10)
-		self.Stamina = EntityResource.new(self.CharacterModel, "Stamina", 100, 1, 10)
+		self.Health = CharacterResource.new(self, "Health")
+		self.Mana = CharacterResource.new(self, "Mana")
+		self.Stamina = CharacterResource.new(self, "Stamina")
 		-- Apply Default Moveset
 		self.WCS_Character:ApplyMoveset(self._MovesetName)
 		-- Initialize Connections
@@ -100,7 +100,7 @@ do
 		local newHealth = currentHealth - damageContainer.Damage
 		warn("BaseEntity: Current Health: " .. tostring(currentHealth))
 		warn("BaseEntity: New Health: " .. tostring(newHealth))
-		self.Health:setCurrentValue(newHealth)
+		self.Health:SetCurrent(newHealth)
 	end
 	function BaseGameCharacter:handleCharacterDealtDamage(enemy, damageContainer)
 		Logger:Log("BaseEntity: Dealt Damage: ", damageContainer.Damage)
@@ -119,9 +119,9 @@ do
 	end
 	function BaseGameCharacter:updateAttributes()
 		-- Set the Max Values
-		local MaxStamina = Calculator.calculateMaxStamina(self.StatsData.Speed, 11)
-		local MaxMana = Calculator.calculateMaxMana(self.StatsData.Intelligence, 11)
-		local MaxHealth = Calculator.calculateMaxHealth(self.StatsData.Constitution, 11)
+		local MaxStamina = ResourceCalculator:calculateMaxStamina(self.StatsData.Speed, self.StatsData.Level)
+		local MaxMana = ResourceCalculator:calculateMaxMana(self.StatsData.Intelligence, self.StatsData.Level)
+		local MaxHealth = ResourceCalculator:calculateMaxHealth(self.StatsData.Constitution, self.StatsData.Level)
 		-- Set the Stats Attributes
 		self.CharacterModel:SetAttribute("Strength", self.StatsData.Strength)
 		self.CharacterModel:SetAttribute("Dexterity", self.StatsData.Dexterity)

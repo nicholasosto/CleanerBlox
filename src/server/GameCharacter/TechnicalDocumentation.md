@@ -9,7 +9,7 @@ This document provides an overview of the entity system implemented in the provi
   - [IAttachments](#iattachments)
   - [IEntity](#ientity)
 - [Implementations](#implementations)
-  - [EntityResource](#entityresource)
+  - [CharacterResource](#CharacterResource)
   - [EntityAttachments](#entityattachments)
   - [BaseEntity](#baseentity)
 - [Utilities](#utilities)
@@ -64,9 +64,9 @@ Describes the structure and behavior of an entity:
 
 ## Implementations
 
-### EntityResource
+### CharacterResource
 
-**File:** `Implementation/EntityResource.ts`
+**File:** `Implementation/CharacterResource.ts`
 
 Manages a specific resource for an entity (e.g., Health, Mana, Stamina).
 
@@ -114,7 +114,7 @@ Represents a base class for all entities, providing common properties and behavi
 - **WCS_Character:** The character instance from the Weapon Combat System (WCS).
 - **EntityAttachments:** Manages the entity's attachments.
 - **StatsData:** Core stats including Level, Strength, Dexterity, Intelligence, Constitution, Speed.
-- **Resources:** Health, Mana, Stamina as instances of `EntityResource`.
+- **Resources:** Health, Mana, Stamina as instances of `CharacterResource`.
 - **MaxHealth, MaxMana, MaxStamina:** Calculated maximum values for resources.
 - **Target:** The current target of the entity.
 

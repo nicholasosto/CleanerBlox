@@ -8,7 +8,7 @@ import { WCSFolders } from "shared/WCS/Folders";
 // Custom Imports
 import { DataManager } from "./Data/DataManager";
 import { InventoryService } from "./Services/InventoryService";
-import { EntityManager } from "./Entity/EntityManager";
+import { EntityManager } from "./GameCharacter/EntityManager";
 import { NotificationManager } from "./Notification/NotificationManager";
 import { Logger } from "shared/Utility/Logger";
 
