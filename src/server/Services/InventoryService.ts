@@ -69,7 +69,7 @@ export class InventoryService {
 		if (InventoryService._instance === undefined) {
 			InventoryService._instance = new InventoryService();
 		} else {
-			Logger.Log("InventoryService", "Already started");
+			Logger.Log(script,"InventoryService", "Already started");
 		}
 	}
 

@@ -3,10 +3,16 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- GameCharacter.ts: Game Character Classes
 -- BaseGameCharacter: Base Class for Game Characters
 -- PlayerGameCharacter: Player Character
+local DataManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataManager").DataManager
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
+local _GameAssetManagers = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameAssetManagers")
+local GuiReferenceHandler = _GameAssetManagers.GuiReferenceHandler
+local EGUIElements = _GameAssetManagers.EGUIElements
+local EScreenGuis = _GameAssetManagers.EScreenGuis
 local CharacterResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Implementation", "CharacterResource").CharacterResource
 -- Data Related Imports
---import { DataTemplate } from "server/Data/DataTemplate";
+local ESkillNames = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").ESkillNames
+local AbilityButton = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "UI", "AbilityButton").AbilityButton
 -- Utility Imports
 local ResourceCalculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Implementation", "Calculators").ResourceCalculator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
@@ -55,47 +61,48 @@ do
 		self.Stamina = CharacterResource.new(self, "Stamina")
 		-- Apply Default Moveset
 		self.WCS_Character:ApplyMoveset(self._MovesetName)
+		-- TODO: Add skill buttons to action bar in player gui
 		-- Initialize Connections
 		self:initializeConnections()
 		return self
 	end
 	function BaseGameCharacter:onStateChange(newState)
-		Logger:Log("SuperClass-OnStateChange(): " .. newState)
+		Logger:Log(script, "SuperClass-OnStateChange(): " .. newState)
 	end
 	function BaseGameCharacter:SetState(state)
-		Logger:Log("SuperClass-SetState(): " .. state)
+		Logger:Log(script, "SuperClass-SetState(): " .. state)
 		self.CharacterModel:SetAttribute("State", state)
 		self._State = self.CharacterModel:GetAttribute("State")
 	end
 	function BaseGameCharacter:initializeConnections()
 		self:destroyConnections()
 		self._connectionCharacterTakeDamage = self.WCS_Character.DamageTaken:Connect(function(damage)
-			Logger:Log("SuperClass-TakeDamage(): " .. tostring(damage))
+			Logger:Log(script, "SuperClass-TakeDamage(): " .. tostring(damage))
 			self:handleCharacterTakeDamage(damage)
 		end)
 		self._connectionCharacterDealtDamage = self.WCS_Character.DamageDealt:Connect(function(enemy, damage)
-			Logger:Log("SuperClass-DealDamage(): " .. tostring(damage))
+			Logger:Log(script, "SuperClass-DealDamage(): " .. tostring(damage))
 			self:handleCharacterDealtDamage(enemy, damage)
 		end)
 		self._connectionStatusEffectAdded = self.WCS_Character.StatusEffectAdded:Connect(function(statusEffect)
-			Logger:Log("SuperClass-StatusEffectAdded(): " .. tostring(statusEffect))
+			Logger:Log(script, "SuperClass-StatusEffectAdded(): " .. tostring(statusEffect))
 			self:handleStatusEffectAdded(statusEffect)
 		end)
 		self._connectionStatusEffectRemoved = self.WCS_Character.StatusEffectRemoved:Connect(function(statusEffect)
-			Logger:Log("SuperClass-StatusEffectRemoved(): " .. tostring(statusEffect))
+			Logger:Log(script, "SuperClass-StatusEffectRemoved(): " .. tostring(statusEffect))
 			self:handleStatusEffectRemoved(statusEffect)
 		end)
 		self._connectionStatusEffectStarted = self.WCS_Character.StatusEffectStarted:Connect(function(statusEffect)
-			Logger:Log("SuperClass-StatusEffectStarted(): " .. tostring(statusEffect))
+			Logger:Log(script, "SuperClass-StatusEffectStarted(): " .. tostring(statusEffect))
 			self:handleStatusEffectStarted(statusEffect)
 		end)
 		self._connectionStatusEffectEnded = self.WCS_Character.StatusEffectEnded:Connect(function(statusEffect)
-			Logger:Log("SuperClass-StatusEffectEnded(): " .. tostring(statusEffect))
+			Logger:Log(script, "SuperClass-StatusEffectEnded(): " .. tostring(statusEffect))
 			self:handleStatusEffectEnded(statusEffect)
 		end)
 	end
 	function BaseGameCharacter:handleCharacterTakeDamage(damageContainer)
-		Logger:Log("BaseEntity: Take Damage: " .. tostring(damageContainer.Damage))
+		Logger:Log(script, "BaseEntity: Take Damage: " .. tostring(damageContainer.Damage))
 		local currentHealth = self.CharacterModel:GetAttribute("HealthCurrent")
 		local newHealth = currentHealth - damageContainer.Damage
 		warn("BaseEntity: Current Health: " .. tostring(currentHealth))
@@ -103,19 +110,19 @@ do
 		self.Health:SetCurrent(newHealth)
 	end
 	function BaseGameCharacter:handleCharacterDealtDamage(enemy, damageContainer)
-		Logger:Log("BaseEntity: Dealt Damage: ", damageContainer.Damage)
+		Logger:Log(script, "BaseEntity: Dealt Damage: ", damageContainer.Damage)
 	end
 	function BaseGameCharacter:handleStatusEffectAdded(statusEffect)
-		Logger:Log("BaseEntity: Status Effect Added: ", statusEffect.Name)
+		Logger:Log(script, "BaseEntity: Status Effect Added: ", statusEffect.Name)
 	end
 	function BaseGameCharacter:handleStatusEffectRemoved(statusEffect)
-		Logger:Log("BaseEntity: Status Effect Removed: ", statusEffect.Name)
+		Logger:Log(script, "BaseEntity: Status Effect Removed: ", statusEffect.Name)
 	end
 	function BaseGameCharacter:handleStatusEffectStarted(statusEffect)
-		Logger:Log("BaseEntity: Status Effect Started: ", statusEffect.Name)
+		Logger:Log(script, "BaseEntity: Status Effect Started: ", statusEffect.Name)
 	end
 	function BaseGameCharacter:handleStatusEffectEnded(statusEffect)
-		Logger:Log("BaseEntity: Status Effect Ended: ", statusEffect.Name)
+		Logger:Log(script, "BaseEntity: Status Effect Ended: ", statusEffect.Name)
 	end
 	function BaseGameCharacter:updateAttributes()
 		-- Set the Max Values
@@ -182,17 +189,47 @@ do
 		-- Get Character
 		local character = player.Character or (player.CharacterAdded:Wait())
 		if character == nil then
-			Logger:ErrorLog("PlayerGameCharacter: Character Model not found")
+			Logger:Log(script, "PlayerGameCharacter: Character not found")
 			error("PlayerGameCharacter: Character Model not found")
 		end
-		-- Super Constructor
+		-- Super Constructor: BaseGameCharacter
 		super.constructor(self, character)
+		self._abilityButtons = {}
 		-- Assign Player
 		self._player = player
-		-- Assign PlayerGui
+		-- DataCache
+		self._dataCache = DataManager:GetDataCache(tostring(player.UserId))
+		-- Assign GUI
 		self._playerGui = player:WaitForChild("PlayerGui")
-		Logger:Log(script.Name, "PlayerGameCharacter Created: " .. player.Name)
+		-- HUD GUI
+		self._hudGui = GuiReferenceHandler:getScreenGui(player, EScreenGuis.HUD)
+		-- Action Bar
+		self._actionBar = GuiReferenceHandler:getUIElement(player, EScreenGuis.HUD, EGUIElements.ActionBar)
+		-- Character Frame
+		self._characterFrame = GuiReferenceHandler:getUIElement(player, EScreenGuis.HUD, EGUIElements.CharacterFrame)
+		-- Create Ability Buttons
+		self:createAbilityButton(ESkillNames.BasicMelee, 1)
+		Logger:Log(script, "PlayerGameCharacter Created: \n", self._characterFrame, " ", self._actionBar, " ", self._hudGui)
+		local _exp = self.WCS_Character:GetSkills()
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback = function(skill)
+			print(" - ", skill:GetName())
+		end
+		for _k, _v in _exp do
+			_callback(_v, _k - 1, _exp)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
 		return self
+	end
+	function PlayerGameCharacter:createAbilityButton(skillName, slot)
+		local skill = self.WCS_Character:GetSkillFromString(skillName)
+		if skill == nil then
+			Logger:Log(script.Name, "Skill not found")
+		end
+		local abilityButton = AbilityButton.new(self._actionBar, skill, slot)
+		local __abilityButtons = self._abilityButtons
+		local _skillName = skillName
+		__abilityButtons[_skillName] = abilityButton
 	end
 	function PlayerGameCharacter:Destroy()
 		super.Destroy(self)

@@ -20,7 +20,7 @@ do
 		self._instanceAddedConnection = CollectionService:GetInstanceAddedSignal("TweenAttachment"):Connect(function(instance)
 			local attachment = instance
 			if attachment == nil then
-				Logger:Log("BasicMelee", "Instance is not an attachment")
+				Logger:Log(script, "BasicMelee", "Instance is not an attachment")
 				return nil
 			end
 			local duration = 1

@@ -29,7 +29,7 @@ do
 			local characterPosition = characterModel:GetPivot().Position
 			local distance = (characterPosition - modelPosition).Magnitude
 			if distance < closestDistance and distance <= maxRange then
-				Logger:Log("CharacterUtility", `Distance: {distance}`)
+				Logger:Log(script, "CharacterUtility", `Distance: {distance}`)
 				closestDistance = distance
 				closestCharacter = wcsCharacter
 			end

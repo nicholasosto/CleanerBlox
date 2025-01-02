@@ -32,7 +32,7 @@ do
 		self._primaryPart = model.PrimaryPart
 		self._hitPart = model:FindFirstChild("HitPart")
 		if not self._hitPart or not self._primaryPart then
-			--Logger.Log("SkillPart", "HitPart not found", model.Name);
+			--Logger.Log(script,"SkillPart", "HitPart not found", model.Name);
 			error("HitPart not found in SkillPart")
 		end
 		-- Set the Initial State
@@ -74,7 +74,7 @@ do
 	end
 	function SkillPartClass:onSpawn()
 		self._hitPart.Color = Color3.fromRGB(255, 222, 220)
-		--Logger.Log("SkillPart", "Spawn!", this.State);
+		--Logger.Log(script,"SkillPart", "Spawn!", this.State);
 		-- Add any initialization or setup logic here
 		task.wait(2)
 		self:transitionTo(SkillPartState.Active)
@@ -110,18 +110,18 @@ do
 		}
 		local tween = TweenService:Create(self._primaryPart, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), goal)
 		tween:Play()
-		--Logger.Log("SkillPart", "onEnd", this.State);
+		--Logger.Log(script,"SkillPart", "onEnd", this.State);
 		-- Add logic for when the skill becomes active
 	end
 	function SkillPartClass:onTrigger()
-		--Logger.Log("SkillPart", "onEnd", this.State);
+		--Logger.Log(script,"SkillPart", "onEnd", this.State);
 		self._hitPart.Color = Color3.fromRGB(255, 0, 0)
 		task.wait(2)
 		self:transitionTo(SkillPartState.Active)
 		-- Add logic for triggered behavior (like firing a projectile or applying an effect)
 	end
 	function SkillPartClass:onEnd()
-		--Logger.Log("SkillPart", "onEnd", this.State);
+		--Logger.Log(script,"SkillPart", "onEnd", this.State);
 		-- Add cleanup logic here
 	end
 end

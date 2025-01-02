@@ -1,5 +1,11 @@
 -- Compiled with roblox-ts v3.0.0
---import { DevilBeam } from "../Skills/DevilBeam";
+local ESkillNames = {
+	DevilBeam = "DevilBeam",
+	BigRed = "BigRed",
+	Spotlights = "Spotlights",
+	BasicMelee = "BasicMelee",
+	BasicHold = "BasicHold",
+}
 local SkillConfigurations = {
 	DevilBeam = {
 		imageId = "rbxassetid://0",
@@ -31,5 +37,6 @@ local SkillConfigurations = {
 	},
 }
 return {
+	ESkillNames = ESkillNames,
 	SkillConfigurations = SkillConfigurations,
 }

@@ -50,7 +50,7 @@ do
 		if player == nil or weapon == nil then
 			return nil
 		end
-		Logger:Log("BasicMelee", "UnEquipping Weapon")
+		Logger:Log(script, "BasicMelee", "UnEquipping Weapon")
 		weapon.Parent = player:FindFirstChildOfClass("Backpack")
 	end
 	function WeaponManager:UnloadWCSCharacterWeapon(character, weaponName)

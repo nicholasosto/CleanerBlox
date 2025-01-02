@@ -15,6 +15,6 @@ export class Dash extends Skill {
 		this.ApplyCooldown(5);
 		stun.Start(1);
 		this.updateCooldown();
-		// Logger.Log("Hi, dash just started!");
+		// Logger.Log(script,"Hi, dash just started!");
 	}
 }

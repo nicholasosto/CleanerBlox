@@ -33,7 +33,7 @@ do
 			self._playerData = DataTemplate
 			self:Save()
 		else
-			Logger:Log("DM", "\n Data Loaded")
+			Logger:Log(script, "Data Loaded")
 		end
 	end
 	function DataCache:Save()
@@ -41,7 +41,7 @@ do
 		local timeSinceLastSave = os.time() - self._lastSaveTimestamp
 		if timeSinceLastSave <= self._minSaveInterval then
 			-- Do not save if the last save was less than 2 seconds ago
-			Logger:Log("SaveSkipped", timeSinceLastSave)
+			Logger:Log(script, "Skipped Save", timeSinceLastSave)
 			return "Save Skipped"
 		end
 		local success = self._dataStore:SetAsync(self._userId, self._playerData)
@@ -95,7 +95,7 @@ do
 		local userId = tostring(player.UserId)
 		local storedData = (DataManager.GameDataStore:GetAsync(userId))
 		local dataCache = DataCache.new(userId, DataManager.GameDataStore)
-		--Logger.Log("DM", "Player Registered: ", userId);
+		--Logger.Log(script,"DM", "Player Registered: ", userId);
 		local _exp = self.PlayerCache
 		table.insert(_exp, dataCache)
 	end

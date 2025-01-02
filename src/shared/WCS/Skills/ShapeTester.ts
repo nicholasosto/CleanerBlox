@@ -10,7 +10,7 @@ import { Logger } from "shared/Utility/Logger";
 export class ShapeTester extends Skill {
 	// 00. CONSTRUCT
 	public OnConstruct() {
-		Logger.Log("ShapeTester", "OnConstruct");
+		Logger.Log(script,"ShapeTester", "OnConstruct");
 	}
 
 	public OnConstructServer(): void {}
@@ -20,7 +20,7 @@ export class ShapeTester extends Skill {
 
 	// MOVE START
 	public OnStartServer() {
-		//Logger.Log("ShapeTester", "OnStartServer");
+		//Logger.Log(script,"ShapeTester", "OnStartServer");
 		const fire = new Instance("Fire");
 		fire.Size = 3;
 		fire.Parent = this.Character.Instance as Model;
@@ -32,7 +32,7 @@ export class ShapeTester extends Skill {
 
 		const character = this.Character.Instance as Model;
 		if (character === undefined) {
-			Logger.Log("ShapeTester", "No Character Found");
+			Logger.Log(script,"ShapeTester", "No Character Found");
 			return;
 		}
 		const spiral = PositionGenerator.CreateSpiral(character.GetPivot(), math.pi, 100, 1);

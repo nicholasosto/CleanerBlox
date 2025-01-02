@@ -30,7 +30,7 @@ do
 		self.Spotlights = {}
 	end
 	function Spotlights:createSpotlight(cFrame)
-		Logger:Log("Spotlights", "Creating Spotlight")
+		Logger:Log(script, "Spotlights", "Creating Spotlight")
 		local spotlightModel = GameStorage:cloneModel("Spotlight"):Clone()
 		spotlightModel.Parent = Workspace
 		spotlightModel:PivotTo(cFrame)
@@ -48,7 +48,7 @@ do
 		self:ApplyCooldown(10)
 	end
 	function Spotlights:stageActivated(stage)
-		--Logger.Log("Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
+		--Logger.Log(script,"Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
 		repeat
 			if stage == 1 then
 				self:Stage3()
@@ -68,16 +68,16 @@ do
 	function Spotlights:Stage1()
 		local spotlightPosition = PositionGenerator:GenerateDefaultTargetPosition(self.Character.Instance, 10)
 		self:createSpotlight(CFrame.new(spotlightPosition))
-		Logger:Log("Spotlights", "Stage 1", spotlightPosition)
+		Logger:Log(script, "Spotlights", "Stage 1", spotlightPosition)
 	end
 	function Spotlights:Stage2()
-		Logger:Log("Spotlights", "Stage 2")
+		Logger:Log(script, "Spotlights", "Stage 2")
 	end
 	function Spotlights:Stage3()
-		Logger:Log("Spotlights", "Stage 3")
+		Logger:Log(script, "Spotlights", "Stage 3")
 	end
 	function Spotlights:OnEndServer()
-		Logger:Log("Spotlights", "End")
+		Logger:Log(script, "Spotlights", "End")
 	end
 	Spotlights = SkillDecorator(Spotlights) or Spotlights
 end

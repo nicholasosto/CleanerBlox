@@ -25,7 +25,7 @@ do
 		self:SetMaxHoldTime(BasicHold.SkillConfiguration.DefaultHoldTime)
 	end
 	function BasicHold:OnConstructClient()
-		--Logger.Log("BasicHold-Client");
+		--Logger.Log(script,"BasicHold-Client");
 	end
 	function BasicHold:OnStartServer()
 		self:ApplyCooldown(BasicHold.SkillConfiguration.DefaultCooldownTime)
@@ -39,7 +39,7 @@ do
 		end)
 	end
 	function BasicHold:_holdTimerReached(seconds)
-		--Logger.Log("BasicHold", `Hold: ${seconds}\n`);
+		--Logger.Log(script,"BasicHold", `Hold: ${seconds}\n`);
 		--const devilBeamTool = GameStorage.cloneTool("DevilBeam");
 		repeat
 			if seconds == 1 then
@@ -58,7 +58,7 @@ do
 		until true
 	end
 	function BasicHold:ActivationStage()
-		Logger:Log("BasicHold", "Activation Stage\n")
+		Logger:Log(script, "BasicHold", "Activation Stage\n")
 	end
 	function BasicHold:Stage1()
 		Logger:Log(self:GetName(), "Stage 01 called\n")

@@ -3,13 +3,23 @@
 // PlayerGameCharacter: Player Character
 
 import { HttpService, ReplicatedStorage } from "@rbxts/services";
-import { Character, DamageContainer, StatusEffect, UnknownStatus } from "@rbxts/wcs";
+import { DataCache, DataManager } from "server/Data/DataManager";
+import { Character, DamageContainer, Skill, StatusEffect, UnknownStatus } from "@rbxts/wcs";
+import {
+	GuiReferenceHandler,
+	PackageManager,
+	EGuiTemplates,
+	EPackageIDs,
+	EGUIElements,
+	EScreenGuis,
+} from "shared/GameAssetManagers";
 
 import { CharacterResource } from "./CharacterResource";
 
 // Data Related Imports
 import { TCoreStats } from "shared/SharedReference";
-//import { DataTemplate } from "server/Data/DataTemplate";
+import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
+import { AbilityButton } from "shared/UI/AbilityButton";
 
 // Utility Imports
 import { ResourceCalculator } from "./Calculators";
@@ -76,6 +86,8 @@ export class BaseGameCharacter {
 		// Apply Default Moveset
 		this.WCS_Character.ApplyMoveset(this._MovesetName);
 
+		// TODO: Add skill buttons to action bar in player gui
+
 		// Initialize Connections
 		this.initializeConnections();
 
@@ -83,12 +95,12 @@ export class BaseGameCharacter {
 	}
 
 	protected onStateChange(newState: string) {
-		Logger.Log("SuperClass-OnStateChange(): " + newState);
+		Logger.Log(script, "SuperClass-OnStateChange(): " + newState);
 	}
 
 	// Set State
 	public SetState(state: string) {
-		Logger.Log("SuperClass-SetState(): " + state);
+		Logger.Log(script, "SuperClass-SetState(): " + state);
 		this.CharacterModel.SetAttribute("State", state);
 		this._State = this.CharacterModel.GetAttribute("State") as string;
 	}
@@ -97,39 +109,39 @@ export class BaseGameCharacter {
 	private initializeConnections() {
 		this.destroyConnections();
 		this._connectionCharacterTakeDamage = this.WCS_Character.DamageTaken.Connect((damage) => {
-			Logger.Log("SuperClass-TakeDamage(): " + damage);
+			Logger.Log(script, "SuperClass-TakeDamage(): " + damage);
 			this.handleCharacterTakeDamage(damage);
 		});
 
 		this._connectionCharacterDealtDamage = this.WCS_Character.DamageDealt.Connect((enemy, damage) => {
-			Logger.Log("SuperClass-DealDamage(): " + damage);
+			Logger.Log(script, "SuperClass-DealDamage(): " + damage);
 			this.handleCharacterDealtDamage(enemy, damage);
 		});
 
 		this._connectionStatusEffectAdded = this.WCS_Character.StatusEffectAdded.Connect((statusEffect) => {
-			Logger.Log("SuperClass-StatusEffectAdded(): " + statusEffect);
+			Logger.Log(script, "SuperClass-StatusEffectAdded(): " + statusEffect);
 			this.handleStatusEffectAdded(statusEffect);
 		});
 
 		this._connectionStatusEffectRemoved = this.WCS_Character.StatusEffectRemoved.Connect((statusEffect) => {
-			Logger.Log("SuperClass-StatusEffectRemoved(): " + statusEffect);
+			Logger.Log(script, "SuperClass-StatusEffectRemoved(): " + statusEffect);
 			this.handleStatusEffectRemoved(statusEffect);
 		});
 
 		this._connectionStatusEffectStarted = this.WCS_Character.StatusEffectStarted.Connect((statusEffect) => {
-			Logger.Log("SuperClass-StatusEffectStarted(): " + statusEffect);
+			Logger.Log(script, "SuperClass-StatusEffectStarted(): " + statusEffect);
 			this.handleStatusEffectStarted(statusEffect);
 		});
 
 		this._connectionStatusEffectEnded = this.WCS_Character.StatusEffectEnded.Connect((statusEffect) => {
-			Logger.Log("SuperClass-StatusEffectEnded(): " + statusEffect);
+			Logger.Log(script, "SuperClass-StatusEffectEnded(): " + statusEffect);
 			this.handleStatusEffectEnded(statusEffect);
 		});
 	}
 
 	// Connection Handlers
 	private handleCharacterTakeDamage(damageContainer: DamageContainer) {
-		Logger.Log("BaseEntity: Take Damage: " + damageContainer.Damage);
+		Logger.Log(script, "BaseEntity: Take Damage: " + damageContainer.Damage);
 		const currentHealth = this.CharacterModel.GetAttribute("HealthCurrent") as number;
 		const newHealth = currentHealth - damageContainer.Damage;
 
@@ -141,27 +153,27 @@ export class BaseGameCharacter {
 
 	// Dealt Damage
 	private handleCharacterDealtDamage(enemy: Character | undefined, damageContainer: DamageContainer) {
-		Logger.Log("BaseEntity: Dealt Damage: ", damageContainer.Damage);
+		Logger.Log(script, "BaseEntity: Dealt Damage: ", damageContainer.Damage);
 	}
 
 	// Status Effects - Added
 	private handleStatusEffectAdded(statusEffect: UnknownStatus) {
-		Logger.Log("BaseEntity: Status Effect Added: ", statusEffect.Name);
+		Logger.Log(script, "BaseEntity: Status Effect Added: ", statusEffect.Name);
 	}
 
 	// Status Effects - Removed
 	private handleStatusEffectRemoved(statusEffect: UnknownStatus) {
-		Logger.Log("BaseEntity: Status Effect Removed: ", statusEffect.Name);
+		Logger.Log(script, "BaseEntity: Status Effect Removed: ", statusEffect.Name);
 	}
 
 	// Status Effects - Started
 	private handleStatusEffectStarted(statusEffect: UnknownStatus) {
-		Logger.Log("BaseEntity: Status Effect Started: ", statusEffect.Name);
+		Logger.Log(script, "BaseEntity: Status Effect Started: ", statusEffect.Name);
 	}
 
 	// Status Effects - Ended
 	private handleStatusEffectEnded(statusEffect: UnknownStatus) {
-		Logger.Log("BaseEntity: Status Effect Ended: ", statusEffect.Name);
+		Logger.Log(script, "BaseEntity: Status Effect Ended: ", statusEffect.Name);
 	}
 
 	// Update Attributes
@@ -203,29 +215,77 @@ export class BaseGameCharacter {
 export class PlayerGameCharacter extends BaseGameCharacter {
 	// Private
 	private _player: Player;
+	private _dataCache: DataCache;
 	private _playerGui: PlayerGui;
+	private _hudGui: ScreenGui;
+	private _abilityButtons: Map<string, AbilityButton> = new Map<string, AbilityButton>();
+	private _actionBar: Frame;
+	private _characterFrame: Frame;
 
 	// Constructor
 	constructor(player: Player) {
 		// Get Character
 		const character = player.Character || player.CharacterAdded.Wait()[0];
 		if (character === undefined) {
-			Logger.ErrorLog("PlayerGameCharacter: Character Model not found");
+			Logger.Log(script, "PlayerGameCharacter: Character not found");
 			throw "PlayerGameCharacter: Character Model not found";
 		}
 
-		// Super Constructor
+		// Super Constructor: BaseGameCharacter
 		super(character);
 
 		// Assign Player
 		this._player = player;
 
-		// Assign PlayerGui
+		// DataCache
+		this._dataCache = DataManager.GetDataCache(tostring(player.UserId));
+
+		// Assign GUI
 		this._playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 
-		Logger.Log(script.Name, "PlayerGameCharacter Created: " + player.Name);
+		// HUD GUI
+		this._hudGui = GuiReferenceHandler.getScreenGui(player, EScreenGuis.HUD);
 
+		// Action Bar
+		this._actionBar = GuiReferenceHandler.getUIElement(player, EScreenGuis.HUD, EGUIElements.ActionBar) as Frame;
+
+		// Character Frame
+		this._characterFrame = GuiReferenceHandler.getUIElement(
+			player,
+			EScreenGuis.HUD,
+			EGUIElements.CharacterFrame,
+		) as Frame;
+
+		// Create Ability Buttons
+		this.createAbilityButton(ESkillNames.BasicMelee, 1);
+
+		Logger.Log(
+			script,
+			"PlayerGameCharacter Created: \n",
+			this._characterFrame,
+			" ",
+			this._actionBar,
+			" ",
+			this._hudGui,
+		);
+
+		this.WCS_Character.GetSkills().forEach((skill) => {
+			print(" - ", skill.GetName());
+		});
 		return this;
+	}
+
+	// Create Ability Button
+	protected createAbilityButton(skillName: ESkillNames, slot: number) {
+		const skill: Skill = this.WCS_Character.GetSkillFromString(skillName) as Skill;
+		if (skill === undefined) {
+			Logger.Log(script.Name, "Skill not found");
+		}
+
+		const abilityButton = new AbilityButton(this._actionBar, skill, slot);
+
+		this._abilityButtons.set(skillName, abilityButton);
+		
 	}
 
 	// Destroy

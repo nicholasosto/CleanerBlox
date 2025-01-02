@@ -6,7 +6,6 @@ local _GameCharacter = TS.import(script, game:GetService("ServerScriptService"),
 local PlayerGameCharacter = _GameCharacter.PlayerGameCharacter
 local BaseGameCharacter = _GameCharacter.BaseGameCharacter
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
-local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local EntityManager
 do
 	EntityManager = setmetatable({}, {
@@ -24,11 +23,11 @@ do
 		EntityManager._connectionCharacterAdded = Players.PlayerAdded:Connect(function(player)
 			player.CharacterAdded:Connect(function(character)
 				local playerGameCharacter = PlayerGameCharacter.new(player)
-				Logger:ErrorLog("EntityManager - PlayerGameCharacter Created" .. player.Name)
+				--Logger.Log(script, HttpService.JSONEncode(playerGameCharacter).find("CharacterFrame"));
 			end)
 			player.CharacterAdded:Connect(function(character)
 				--const entity = new BaseEntity(character);
-				warn("EntityManager - Player Added", player.Name, "entityCreation triggered")
+				--warn("EntityManager - Player Added", player.Name, "entityCreation triggered");
 				--EntityManager._entities.set(character.Name, entity);
 			end)
 		end)

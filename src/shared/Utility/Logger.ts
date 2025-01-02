@@ -19,11 +19,13 @@ export class Logger {
 	private static _filterTag: string = "";
 
 	// Log: Log messages to the console
-	public static Log(logTag: string, ...messages: Array<Printable>) {
+	public static Log(logTag: string | Instance, ...messages: Array<Printable>) {
 		if (!this._enabled) {
 			return;
 		}
-		warn(logTag, ...messages);
+		warn(logTag);
+		print(...messages);
+		//warn(logTag, ...messages);
 	}
 
 	// CFrame: Convert CFrame to string with rounded values
@@ -75,9 +77,5 @@ export class Logger {
 		print("Character: ", skill.Character);
 		print("Type: ", skill.GetSkillType());
 		print("Cooldown Time: ", skill.MetadataChanged);
-	}
-
-	public static ErrorLog(logmessage: string) {
-		warn("Error_Log: ", logmessage);
 	}
 }

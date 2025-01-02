@@ -21,7 +21,7 @@ export class AnimationManager {
 		// Get the animator
 		const animator = AnimationManager.getAnimator(character.Instance);
 		if (animator === undefined) {
-			Logger.Log("AnimationManager", "Animator not found");
+			Logger.Log(script,"AnimationManager", "Animator not found");
 			return undefined;
 		}
         // Create the animation

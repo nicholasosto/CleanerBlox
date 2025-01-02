@@ -25,7 +25,9 @@ do
 		if not self._enabled then
 			return nil
 		end
-		warn(logTag, unpack(messages))
+		warn(logTag)
+		print(unpack(messages))
+		--warn(logTag, ...messages);
 	end
 	function Logger:StringifyCFrame(cf)
 		-- Position
@@ -63,9 +65,6 @@ do
 		print("Character: ", skill.Character)
 		print("Type: ", skill:GetSkillType())
 		print("Cooldown Time: ", skill.MetadataChanged)
-	end
-	function Logger:ErrorLog(logmessage)
-		warn("Error_Log: ", logmessage)
 	end
 	Logger._logger = Logger.new()
 	Logger._logLevel = LogLevel.Info

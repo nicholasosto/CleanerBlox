@@ -31,7 +31,7 @@ export class SkillService {
 
 		// Skill Slot Request Listener
 		SkillService._connectionSkillSlotsRequest = SKILLS_SkillSlotRequest.OnServerEvent.Connect((player: Player) => {
-			Logger.Log("SkillService", "Skill Slot Requested");
+			Logger.Log(script,"SkillService", "Skill Slot Requested");
 			const userId = tostring(player.UserId);
 			const playerData = DataManager.GetDataCache(userId)._playerData;
 			SKILLS_SkillSlotResponse.FireClient(player, playerData.SkillSlots);
@@ -59,7 +59,7 @@ export class SkillService {
 		if (SkillService._instance === undefined) {
 			SkillService._instance = new SkillService();
 		} else {
-			Logger.Log("SkillService", "Already started");
+			Logger.Log(script,"SkillService", "Already started");
 		}
 	}
 
@@ -69,7 +69,7 @@ export class SkillService {
 		const playerSkills = playerData.SkillSlots;
 
 		playerSkills.forEach((skillSlot) => {
-			Logger.Log("SkillService", "Assigning Skill: " + skillSlot.SkillId);
+			Logger.Log(script,"SkillService", "Assigning Skill: " + skillSlot.SkillId);
 		});
 	}
 

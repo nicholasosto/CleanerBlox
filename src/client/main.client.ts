@@ -39,12 +39,12 @@ CommunicationGod.Summon();
 
 // Handle Character Added
 function handleCharacterAdded(character: Model) {
-	//Logger.Log("Client", "Character Added: ", character);
+	//Logger.Log(script,"Client", "Character Added: ", character);
 }
 
 // Handle Character Removing
 function handleCharacterRemoving(character: Model) {
-	//Logger.Log("Client", "Character Removed: ", character);
+	//Logger.Log(script,"Client", "Character Removed: ", character);
 }
 
 // Check if character exists and perform Character Added event actions

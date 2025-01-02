@@ -35,7 +35,7 @@ export class BigRed extends HoldableSkill {
 		const particleParent = this.Character.Instance?.FindFirstChild("Head") as BasePart;
 
 		this.ChargingEffectAttachment.Parent = particleParent;
-		Logger.Log("BigRed", "Stage Activated: ", tostring(seconds), tostring(this.CooldownTimer.getTimeLeft()));
+		Logger.Log(script,"BigRed", "Stage Activated: ", tostring(seconds), tostring(this.CooldownTimer.getTimeLeft()));
 
 		switch (seconds) {
 			case 1:

@@ -25,15 +25,15 @@ export class HumanoidDescriptionFactory {
 	private constructor() {
 		// Private constructor to prevent instantiation
 		CollectionService.GetInstanceAddedSignal("HDROBOT").Connect((instance) => {
-			Logger.Log("HumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
+			Logger.Log(script,"HumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
 			const humanoid = instance.FindFirstChildOfClass("Humanoid");
 			if (humanoid === undefined) {
-				Logger.Log("HumanoidDescriptionFactory", `Humanoid not found in instance.`);
+				Logger.Log(script,"HumanoidDescriptionFactory", `Humanoid not found in instance.`);
 				return;
 			}
 			const humanoidDescription = humanoid.GetAppliedDescription();
 			if (humanoidDescription === undefined) {
-				Logger.Log("HumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
+				Logger.Log(script,"HumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
 				return;
 			}
 			HumanoidDescriptionFactory.ApplyHumanoidDescription(humanoid, EHumanoidDescription.RobotBase);
@@ -41,15 +41,15 @@ export class HumanoidDescriptionFactory {
 
 
         CollectionService.GetInstanceAddedSignal("WolfForm").Connect((instance) => {
-			Logger.Log("XXXHumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
+			Logger.Log(script,"XXXHumanoidDescriptionFactory", `Instance added: ${instance.Name}`);
 			const humanoid = instance.FindFirstChildOfClass("Humanoid");
 			if (humanoid === undefined) {
-				Logger.Log("XXXHumanoidDescriptionFactory", `Humanoid not found in instance.`);
+				Logger.Log(script,"XXXHumanoidDescriptionFactory", `Humanoid not found in instance.`);
 				return;
 			}
 			const humanoidDescription = humanoid.GetAppliedDescription();
 			if (humanoidDescription === undefined) {
-				Logger.Log("XXXHumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
+				Logger.Log(script,"XXXHumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
 				return;
 			}
 			HumanoidDescriptionFactory.ApplyHumanoidDescription(humanoid, EHumanoidDescription.WolfForm);
@@ -83,7 +83,7 @@ export class HumanoidDescriptionFactory {
 	public static setHumanoidDescription(hdName: EHumanoidDescription): void {
 		const humanoidDescription = GameStorage.cloneHumanoidDescription(hdName);
 		if (humanoidDescription === undefined) {
-			Logger.Log("HumanoidDescriptionFactory", `Humanoid ${hdName} not found in storage.`);
+			Logger.Log(script,"HumanoidDescriptionFactory", `Humanoid ${hdName} not found in storage.`);
 			return;
 		}
 
@@ -94,10 +94,10 @@ export class HumanoidDescriptionFactory {
 		const humanoidDescription = HumanoidDescriptionFactory.getHumanoidDescription(hdName);
 		const currenctDescription = humanoid.GetAppliedDescription();
 		if (currenctDescription === undefined) {
-			Logger.Log("HumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
+			Logger.Log(script,"HumanoidDescriptionFactory", `Humanoid cache not found in storage.`);
 		}
 		if (humanoidDescription === undefined) {
-			Logger.Log("HumanoidDescriptionFactory", `Humanoid ${hdName} not found in storage.`);
+			Logger.Log(script,"HumanoidDescriptionFactory", `Humanoid ${hdName} not found in storage.`);
 			return;
 		}
 

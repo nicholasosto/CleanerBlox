@@ -45,7 +45,7 @@ do
 		end
 		local particleParent = _result
 		self.ChargingEffectAttachment.Parent = particleParent
-		Logger:Log("BigRed", "Stage Activated: ", tostring(seconds), tostring(self.CooldownTimer:getTimeLeft()))
+		Logger:Log(script, "BigRed", "Stage Activated: ", tostring(seconds), tostring(self.CooldownTimer:getTimeLeft()))
 		repeat
 			if seconds == 1 then
 				self:Stage3()

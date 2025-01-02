@@ -1,55 +1,66 @@
 // AbilityButton Class
-
-// GameStorage
-import { GameStorage } from "shared/Utility/GameStorage";
-import { SignalButton } from "./SignalButton";
-import { Character } from "@rbxts/wcs";
-
-// Template
-const Template = GameStorage.cloneGUIComponent("Ability Button Template") as Frame;
-
-export class CooldownBar {
-	constructor() {
-	}
-}
+import { PackageManager, EGuiTemplates } from "shared/GameAssetManagers";
+import { Skill } from "@rbxts/wcs";
+import { Logger } from "shared/Utility/Logger";
 
 // Attribute Label Class
 export class AbilityButton {
 	// Private Variables
-	private _instance: Frame = Template.Clone();
-	private _imageButton: ImageButton = this._instance.FindFirstChild("ActivationButton", true) as ImageButton;
-	private _progressBarFrame: Frame = this._instance.FindFirstChild("CooldownBar", true) as Frame;
-	private _wcsSkillName: string;
-	public signalButton: SignalButton = new SignalButton(this._imageButton, { name:"DUMMY", holdable: true });
+	private _abilityButtonFrame: Frame;
+	private _imageButton: ImageButton;
+	private _cooldownBar: Frame;
+	private _wcsSkill: Skill;
 
-	// Uninitialized Variables
-	private _parent: Instance | undefined;
-	private _wcsCharacter: Character | undefined;
 	private _connection: RBXScriptConnection | undefined;
 
 	// Constructor
-	constructor(displayName: string, wcsSkillName: string) {
+	constructor(actionBar: Frame, wcsSkill: Skill, slot: number) {
+		// Action Bar Slot Configuration
 
+		// Ability Button GUI Element
+		this._abilityButtonFrame = PackageManager.LoadGuiTemplate(EGuiTemplates.AbilityButton) as Frame;
+		this._abilityButtonFrame.Name = wcsSkill.GetName()+"_ButtonFrame";
 
-		this._instance.Name = displayName;
-		this._wcsSkillName = wcsSkillName;
-		
-	}
+		// Action Bar Slot Reference
+		let actionBarSlot = actionBar.FindFirstChild("Slot" + slot) as Frame;
+		actionBarSlot = actionBarSlot.FindFirstChild("Content") as Frame;
 
-	// Called from UIService to create the Attribute Label
-	public create(parent: Instance) {
-		this._instance.Parent = parent;
-		// Set the connections
+		// Parent Ability Button to Action Bar Slot
+		this._abilityButtonFrame.Parent = actionBarSlot;
+
+		// Image Button
+		this._imageButton = this._abilityButtonFrame.FindFirstChild("ImageButton") as ImageButton;
+
+		// Cooldown Bar
+		this._cooldownBar = this._abilityButtonFrame.FindFirstChild("CooldownBar") as Frame;
+
+		//Skill Configuration
+		this._wcsSkill = wcsSkill;
+
 		this.setConnections();
+
+		Logger.Log(script, "Skill Name: ", this._wcsSkill.GetName());
+		Logger.Log(script, "Skill Frame: ", this._abilityButtonFrame);
+		return this;
 	}
 
 	// Set Connections
 	private setConnections() {
 		// Set the connections
 		this._connection = this._imageButton.Activated.Connect(() => {
-			const player = game.GetService("Players").LocalPlayer;
-			const character = player.Character;
+			this._wcsSkill.Start();
 			print("Ability Button Activated");
 		});
+	}
+
+	public SetCooldown(percentRemaining: number) {
+		this._cooldownBar.SetAttribute("BarPercent", percentRemaining);
+	}
+
+	public Destroy() {
+		if (this._connection) {
+			this._connection.Disconnect();
+		}
+		this._imageButton.Destroy();
 	}
 }

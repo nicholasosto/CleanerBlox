@@ -19,7 +19,7 @@ do
 		self.isPressed = false
 		self.Activated = Signal.new()
 		self.Released = Signal.new()
-		Logger:Log("SignalButton", "<Constructor>", buttonInstance)
+		Logger:Log(script, "SignalButton", "<Constructor>", buttonInstance)
 		self.buttonInstance = buttonInstance
 		local _condition = config.holdable
 		if _condition == nil then
@@ -53,16 +53,16 @@ do
 		if not self.isPressed then
 			self.isPressed = true
 			self.Activated:fire()
-			Logger:Log("SignalButton", "Button Pressed: ", self.buttonInstance)
+			Logger:Log(script, "SignalButton", "Button Pressed: ", self.buttonInstance)
 		end
 	end
 	function SignalButton:handleRelease()
 		if self.isPressed then
 			self.isPressed = false
-			Logger:Log("SignalButton", "Rel1 ", self.buttonInstance)
+			Logger:Log(script, "SignalButton", "Rel1 ", self.buttonInstance)
 			if self.holdable then
 				self.Released:fire()
-				Logger:Log("SignalButton", "Rel2", self.buttonInstance)
+				Logger:Log(script, "SignalButton", "Rel2", self.buttonInstance)
 			end
 		end
 	end

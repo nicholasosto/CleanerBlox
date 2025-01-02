@@ -121,7 +121,7 @@ do
 		local scriptBlock = game:GetService("Workspace"):FindFirstChild("ScriptBlock", true)
 		if not start then
 			scriptBlock:ClearAllChildren()
-			Logger:Log("PositionGeneratorTests", "Cleared Children")
+			Logger:Log(script, "PositionGeneratorTests", "Cleared Children")
 			return nil
 		end
 		local scriptBlockAttachment = Instance.new("Attachment")

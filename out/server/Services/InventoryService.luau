@@ -59,7 +59,7 @@ do
 		if InventoryService._instance == nil then
 			InventoryService._instance = InventoryService.new()
 		else
-			Logger:Log("InventoryService", "Already started")
+			Logger:Log(script, "InventoryService", "Already started")
 		end
 	end
 	function InventoryService:_handleEquipRequest(player, category, equipmentId)

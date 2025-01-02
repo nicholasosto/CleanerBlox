@@ -41,7 +41,7 @@ export class SkillPartClass implements SkillPart {
 		this._hitPart = model.FindFirstChild("HitPart") as BasePart;
 
 		if (!this._hitPart || !this._primaryPart) {
-			//Logger.Log("SkillPart", "HitPart not found", model.Name);
+			//Logger.Log(script,"SkillPart", "HitPart not found", model.Name);
 
 			error("HitPart not found in SkillPart");
 		}
@@ -88,7 +88,7 @@ export class SkillPartClass implements SkillPart {
 
 	public onSpawn(): void {
 		this._hitPart.Color = Color3.fromRGB(255, 222, 220);
-		//Logger.Log("SkillPart", "Spawn!", this.State);
+		//Logger.Log(script,"SkillPart", "Spawn!", this.State);
 		// Add any initialization or setup logic here
 		task.wait(2);
 		this.transitionTo(SkillPartState.Active);
@@ -138,12 +138,12 @@ export class SkillPartClass implements SkillPart {
 
 		tween.Play();
 
-		//Logger.Log("SkillPart", "onEnd", this.State);
+		//Logger.Log(script,"SkillPart", "onEnd", this.State);
 		// Add logic for when the skill becomes active
 	}
 
 	public onTrigger(): void {
-		//Logger.Log("SkillPart", "onEnd", this.State);
+		//Logger.Log(script,"SkillPart", "onEnd", this.State);
 		this._hitPart.Color = Color3.fromRGB(255, 0, 0);
 		task.wait(2);
 		this.transitionTo(SkillPartState.Active);
@@ -151,7 +151,7 @@ export class SkillPartClass implements SkillPart {
 	}
 
 	public onEnd(): void {
-		//Logger.Log("SkillPart", "onEnd", this.State);
+		//Logger.Log(script,"SkillPart", "onEnd", this.State);
 		// Add cleanup logic here
 	}
 }

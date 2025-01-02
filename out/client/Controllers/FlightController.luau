@@ -46,7 +46,7 @@ do
 	end
 	function FlightController:setEnabled(value)
 		self.enabled = value
-		Logger:Log("Flight", `Flight enabled: {value}`)
+		Logger:Log(script, `Flight enabled: {value}`)
 	end
 	function FlightController:toggleEnabled()
 		self:setEnabled(not self.enabled)

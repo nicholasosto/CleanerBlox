@@ -33,7 +33,7 @@ export class Spotlight {
 
 	// Handle Part Touched
 	protected handlePartTouched(hit: BasePart) {
-		Logger.Log("Spotlight", "Toucher", hit, hit?.Parent as Model);
+		Logger.Log(script,"Spotlight", "Toucher", hit, hit?.Parent as Model);
 	}
 
 	// State Changed
@@ -62,10 +62,10 @@ export class Spotlight {
 
 	// State: Active
 	protected OnActive() {
-		Logger.Log("Spotlight", "[State]", this.instance.GetAttribute("State") as string);
+		Logger.Log(script,"Spotlight", "[State]", this.instance.GetAttribute("State") as string);
 
 		const primaryPart = this.instance.PrimaryPart as Part;
-		Logger.Log("Spotlight", "PrimaryPart", primaryPart);
+		Logger.Log(script,"Spotlight", "PrimaryPart", primaryPart);
 		//const tween = TTweener.tweenPartCFrame(this.instance.PrimaryPart as Part, new CFrame(0, 0, 0), 22);
 
 		//tween.Play();
@@ -73,17 +73,17 @@ export class Spotlight {
 
 	// State: Triggered
 	protected OnTriggered() {
-		Logger.Log("Spotlight", "[State]", this.instance.GetAttribute("State") as string);
+		Logger.Log(script,"Spotlight", "[State]", this.instance.GetAttribute("State") as string);
 	}
 
 	// State: Homing
 	protected OnHoming() {
-		Logger.Log("Spotlight", "[State]", this.instance.GetAttribute("State") as string);
+		Logger.Log(script,"Spotlight", "[State]", this.instance.GetAttribute("State") as string);
 	}
 
 	// State: Exploding
 	protected OnExploding() {
-		Logger.Log("Spotlight", "[State]", this.instance.GetAttribute("State") as string);
+		Logger.Log(script,"Spotlight", "[State]", this.instance.GetAttribute("State") as string);
 	}
 
 	// Destroy

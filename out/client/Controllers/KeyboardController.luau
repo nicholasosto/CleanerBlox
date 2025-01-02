@@ -36,7 +36,7 @@ do
 		KeyboardController:OnCharacterAdded(character)
 		-- CHARACTER ADDED
 		KeyboardController.characterAddedConnection = Player.CharacterAdded:Connect(function(character)
-			--Logger.Log("KeyboardController", "Character Added");
+			--Logger.Log(script,"KeyboardController", "Character Added");
 			KeyboardController:OnCharacterAdded(character)
 		end)
 	end

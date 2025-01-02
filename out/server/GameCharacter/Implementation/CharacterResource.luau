@@ -81,12 +81,12 @@ do
 		end)
 		-- Min Change Connection
 		self._minChangeConnection = self.GameCharacter:GetAttributeChangedSignal(self.Name .. "Current"):Connect(function()
-			--Logger.Log("CharacterResource", this.Name, this._currentValue);
+			--Logger.Log(script,"CharacterResource", this.Name, this._currentValue);
 			self:_onResourceChange()
 		end)
 		-- Max Change Connection
 		self._maxChangeConnection = self.GameCharacter:GetAttributeChangedSignal(self.Name .. "Max"):Connect(function()
-			--Logger.Log("CharacterResource", this.Name, this._maxValue);
+			--Logger.Log(script,"CharacterResource", this.Name, this._maxValue);
 			self:_onResourceChange()
 		end)
 	end

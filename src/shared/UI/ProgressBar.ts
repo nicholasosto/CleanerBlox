@@ -41,7 +41,7 @@ export class ProgressBar {
 			this.updateProgressBar(minAttributeName, maxAttributeName);
 		});
 
-		//Logger.Log("** Connections Set **");
+		//Logger.Log(script,"** Connections Set **");
 
 		// Set the parent
 		this._instance.Parent = this._parent;
@@ -60,7 +60,7 @@ export class ProgressBar {
 
 		// Check if the attributes are undefined
 		if (currentAttribute === undefined || maxAttribute === undefined) {
-			Logger.Log("Current or Max Attribute is undefined");
+			Logger.Log(script,"Current or Max Attribute is undefined");
 			return;
 		}
 

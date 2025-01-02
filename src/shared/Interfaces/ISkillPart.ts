@@ -65,22 +65,22 @@ export class TestPart implements ISkillPart {
 		}
 
 		// Log the creation of the skill part instance
-		Logger.Log("SkillPart", this.SkillPartModel.Name, "Created");
+		Logger.Log(script,"SkillPart", this.SkillPartModel.Name, "Created");
 		return this;
 	}
 
 	// Started
 	OnStart(): void {
-		Logger.Log("SkillPart", this.SkillPartModel.Name, "OnStart");
+		Logger.Log(script,"SkillPart", this.SkillPartModel.Name, "OnStart");
 	}
 
 	// Active
 	WhileActive(): void {
-		Logger.Log("SkillPart", this.SkillPartModel.Name, "WhileActive");
+		Logger.Log(script,"SkillPart", this.SkillPartModel.Name, "WhileActive");
 	}
 
 	// Ended
 	OnEnd(): void {
-		Logger.Log("SkillPart", this.SkillPartModel.Name, "OnEnd");
+		Logger.Log(script,"SkillPart", this.SkillPartModel.Name, "OnEnd");
 	}
 }

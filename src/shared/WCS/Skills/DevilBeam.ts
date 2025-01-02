@@ -3,7 +3,7 @@ import { Logger } from "shared/Utility/Logger";
 import { AbilityModel } from "shared/Experimental/AbilityModel";
 import { GameStorage } from "shared/Utility/GameStorage";
 import { ParticleGroupManager } from "shared/Utility/ParticleGroupManager";
-import { SkillConfigurations } from "../Interfaces/SkillConfigurations";
+import { SkillConfigurations } from "../Interfaces/RSkills";
 import { HttpService, TweenService } from "@rbxts/services";
 import { logError } from "@rbxts/wcs/out/source/utility";
 
@@ -32,7 +32,7 @@ export class DevilBeam extends HoldableSkill {
 	// 00. CONSTRUCT SERVER
 	public OnConstructServer() {
 		// Load Animations and Particles
-		//Logger.Log("DevilBeam", " - Constructed\n");
+		//Logger.Log(script,"DevilBeam", " - Constructed\n");
 
 		const humanoid = this.Character.Humanoid;
 		const animator = humanoid?.FindFirstChildOfClass("Animator");
@@ -41,15 +41,15 @@ export class DevilBeam extends HoldableSkill {
 
 		warn(animation.AnimationId, " loaded");
 		if (animation) {
-			Logger.Log("DevilBeam", "Animation Found\n");
+			Logger.Log(script,"DevilBeam", "Animation Found\n");
 			return;
 		} else {
-			Logger.Log("DevilBeam", "Animation Not Found\n");
+			Logger.Log(script,"DevilBeam", "Animation Not Found\n");
 		}
 	}
 
 	public OnConstructClient(): void {
-		//Logger.Log("DevilBeam", " - Constructed\n");
+		//Logger.Log(script,"DevilBeam", " - Constructed\n");
 		Logger.Log(HttpService.JSONEncode(this.Name));
 	}
 
@@ -139,10 +139,10 @@ export class DevilBeam extends HoldableSkill {
 	private _loadAnimation() {
 		const animation = GameStorage.cloneAnimation("DevilBeam Fired");
 		if (animation) {
-			Logger.Log("DevilBeam", "Animation Found\n");
+			Logger.Log(script,"DevilBeam", "Animation Found\n");
 			return;
 		} else {
-			Logger.Log("DevilBeam", "Animation Not Found\n");
+			Logger.Log(script,"DevilBeam", "Animation Not Found\n");
 		}
 	}
 }

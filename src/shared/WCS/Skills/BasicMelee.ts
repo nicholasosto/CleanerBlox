@@ -31,13 +31,13 @@ export class BasicMelee extends Skill {
 
 	// 00. CONSTRUCT
 	public OnConstruct() {
-		//Logger.Log("BasicMelee", "OnConstruct");
+		//Logger.Log(script,"BasicMelee", "OnConstruct");
 	}
 
 	public OnConstructServer(): void {
 		const character = this.Character.Instance;
 		if (character === undefined) {
-			Logger.Log("BasicMelee no character found");
+			Logger.Log(script,"BasicMelee no character found");
 			return;
 		}
 		this.DamageContainer = this.CreateDamageContainer(BasicMelee.SkillConfiguration.DefaultHealthChange);
@@ -61,36 +61,36 @@ export class BasicMelee extends Skill {
 		this.SkillWeapon = WeaponManager.LoadWCSCharacterWeapon(this.Character, "Scythe_Epic_Black");
 		this.SkillHitPart = this.SkillWeapon?.FindFirstChild("Handle") as BasePart;
 		if (this.SkillHitPart === undefined) {
-			//Logger.Log("BasicMelee", "No Hit Part Found");
+			//Logger.Log(script,"BasicMelee", "No Hit Part Found");
 			return;
 		}
 		this.HitPartConnection?.Disconnect();
 		this.HitPartConnection = this.SkillHitPart.Touched.Connect((hit) => {
-			//Logger.Log("BasicMelee", `Hit: ${hit.Parent?.Name}`);
+			//Logger.Log(script,"BasicMelee", `Hit: ${hit.Parent?.Name}`);
 
 			if (hit.Parent === this.Character.Instance) {
-				//Logger.Log("BasicMelee", "Hit Self");
+				//Logger.Log(script,"BasicMelee", "Hit Self");
 				return;
 			}
 			if (hit.Parent?.FindFirstChild("Humanoid") === undefined) {
-				//Logger.Log("BasicMelee", "No Humanoid Found");
+				//Logger.Log(script,"BasicMelee", "No Humanoid Found");
 				return;
 			}
 			let targetCharacter = Character.GetCharacterFromInstance(hit.Parent as Instance);
 			if (targetCharacter === undefined) {
 				targetCharacter = Character.GetCharacterFromInstance(hit.Parent?.Parent as Instance);
-				//Logger.Log("BasicMelee", "No Target Character Found");
+				//Logger.Log(script,"BasicMelee", "No Target Character Found");
 				targetCharacter?.TakeDamage(this.DamageContainer as DamageContainer);
 			}
 			//hit.Parent = undefined;
 		});
 		//ParticleGroupManager.DisableParticleEmitters(this.ActivationParticles as [ParticleEmitter]);
-		//Logger.Log("BasicMelee", "Animation, Sound, and Particles Loaded");
+		//Logger.Log(script,"BasicMelee", "Animation, Sound, and Particles Loaded");
 	}
 
 	// 01. CONSTRUCT CLIENT
 	public OnConstructClient(): void {
-		//Logger.Log("BasicMelee Client");
+		//Logger.Log(script,"BasicMelee Client");
 	}
 
 	// MOVE START
@@ -108,13 +108,13 @@ export class BasicMelee extends Skill {
 
 		// Cooldown Timer
 		this.CooldownTimer.secondReached.Connect((seconds) => {
-			//Logger.Log("BasicMelee", `PE Cooldown: ${seconds}`);
+			//Logger.Log(script,"BasicMelee", `PE Cooldown: ${seconds}`);
 		});
 	}
 
 	// END SERVER
 	public OnEndServer() {
-		//Logger.Log("BasicMelee", "OnEndServer");
+		//Logger.Log(script,"BasicMelee", "OnEndServer");
 		task.delay(BasicMelee.SkillConfiguration.ActivationTime, () => {
 			ParticleGroupManager.DisableParticleEmitters(this.ActivationParticles as [ParticleEmitter]);
 			WeaponManager.UnEquipWCSCharacterWeapon(this.Character.Player as Player, this.SkillWeapon as Accessory);

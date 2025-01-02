@@ -1,12 +1,19 @@
-//import { DevilBeam } from "../Skills/DevilBeam";
+export enum ESkillNames {
+	DevilBeam = "DevilBeam",
+	BigRed = "BigRed",
+	Spotlights = "Spotlights",
+	BasicMelee = "BasicMelee",
+	BasicHold = "BasicHold",
+}
+
 type TSkillConfiguration = {
-    [key: string]: {
-        imageId: string;
-        cooldownTime: number;
-        manaCost: number;
-        staminaCost: number;
-        maxHoldTime: number;
-    };
+	[key: string]: {
+		imageId: string;
+		cooldownTime: number;
+		manaCost: number;
+		staminaCost: number;
+		maxHoldTime: number;
+	};
 };
 
 export const SkillConfigurations: TSkillConfiguration = {

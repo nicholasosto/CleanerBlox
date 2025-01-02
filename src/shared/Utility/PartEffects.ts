@@ -16,7 +16,7 @@ export function rotatePart(part: BasePart, duration: number) {
 }
 
 export function rotateModel(model: Model, duration: number) {
-	//Logger.Log("Rotating model: ", model.Name, " for ", duration, " seconds");
+	//Logger.Log(script,"Rotating model: ", model.Name, " for ", duration, " seconds");
 	const primaryPart = model.PrimaryPart;
 	if (!primaryPart) {
 		warn("Model does not have a PrimaryPart set.");

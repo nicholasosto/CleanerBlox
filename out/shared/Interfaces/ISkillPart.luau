@@ -43,17 +43,17 @@ do
 			self.Owner = GameStorage:cloneModel("TestOwner")
 		end
 		-- Log the creation of the skill part instance
-		Logger:Log("SkillPart", self.SkillPartModel.Name, "Created")
+		Logger:Log(script, "SkillPart", self.SkillPartModel.Name, "Created")
 		return self
 	end
 	function TestPart:OnStart()
-		Logger:Log("SkillPart", self.SkillPartModel.Name, "OnStart")
+		Logger:Log(script, "SkillPart", self.SkillPartModel.Name, "OnStart")
 	end
 	function TestPart:WhileActive()
-		Logger:Log("SkillPart", self.SkillPartModel.Name, "WhileActive")
+		Logger:Log(script, "SkillPart", self.SkillPartModel.Name, "WhileActive")
 	end
 	function TestPart:OnEnd()
-		Logger:Log("SkillPart", self.SkillPartModel.Name, "OnEnd")
+		Logger:Log(script, "SkillPart", self.SkillPartModel.Name, "OnEnd")
 	end
 end
 return {

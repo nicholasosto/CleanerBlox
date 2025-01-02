@@ -15,7 +15,7 @@ export class AbilityModel {
 	HitConnection: RBXScriptConnection;
 
 	constructor(wcsCharacter: Character, templateModel: Model) {
-		//Logger.Log("AbilityModel", " - Ability Model Constructed\n");
+		//Logger.Log(script,"AbilityModel", " - Ability Model Constructed\n");
 		this.Model = templateModel.Clone();
 		this.HitPart = this.Model.FindFirstChild("HitPart") as BasePart;
 		this.WCSCharacterReference = wcsCharacter;
@@ -29,7 +29,7 @@ export class AbilityModel {
 		this._UniversalConstraint = this.Model.FindFirstChild("UniversalConstraint", true) as UniversalConstraint;
 		this.HitConnection = this.HitPart.Touched.Connect((hit) => {
 			if (hit.Parent === this.WCSCharacterReference.Instance) {
-				Logger.Log("AbilityModel", " - Hit Self\n");
+				Logger.Log(script,"AbilityModel", " - Hit Self\n");
 				return;
 			}
 			this.OnHit();
@@ -53,13 +53,13 @@ export class AbilityModel {
 			case 1:
 				this.Model.Parent = this.WCSCharacterReference.Instance;
 				this._attachModelToCharacter();
-				Logger.Log("AbilityModel", "\t Phase 1 \n");
+				Logger.Log(script,"AbilityModel", "\t Phase 1 \n");
 				break;
 			case 2:
-				Logger.Log("AbilityModel", "\t Phase 2 \n");
+				Logger.Log(script,"AbilityModel", "\t Phase 2 \n");
 				break;
 			case 3:
-				Logger.Log("AbilityModel", "\t Phase 3 \n");
+				Logger.Log(script,"AbilityModel", "\t Phase 3 \n");
 				break;
 			default:
 				break;
@@ -67,18 +67,18 @@ export class AbilityModel {
 	}
 
 	public Cancel() {
-		Logger.Log("AbilityModel", " - Ability Cancelled\n");
+		Logger.Log(script,"AbilityModel", " - Ability Cancelled\n");
 	}
 
 	public OnEnded() {
 		// Do something when the ability ends
-		Logger.Log("AbilityModel", " - Ability Ended\n");
+		Logger.Log(script,"AbilityModel", " - Ability Ended\n");
 		this._detachModelFromCharacter();
 
 	}
 
 	public OnHit() {
-		Logger.Log("AbilityModel", " - Ability Hit\n");
+		Logger.Log(script,"AbilityModel", " - Ability Hit\n");
 		// Do something when the ability hits
 	}
 }

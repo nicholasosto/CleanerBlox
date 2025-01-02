@@ -29,7 +29,7 @@ do
 		SkillService:ClearConnections()
 		-- Skill Slot Request Listener
 		SkillService._connectionSkillSlotsRequest = SKILLS_SkillSlotRequest.OnServerEvent:Connect(function(player)
-			Logger:Log("SkillService", "Skill Slot Requested")
+			Logger:Log(script, "SkillService", "Skill Slot Requested")
 			local userId = tostring(player.UserId)
 			local playerData = DataManager:GetDataCache(userId)._playerData
 			SKILLS_SkillSlotResponse:FireClient(player, playerData.SkillSlots)
@@ -60,7 +60,7 @@ do
 		if SkillService._instance == nil then
 			SkillService._instance = SkillService.new()
 		else
-			Logger:Log("SkillService", "Already started")
+			Logger:Log(script, "SkillService", "Already started")
 		end
 	end
 	function SkillService:AssignSkills(player, skills)
@@ -69,7 +69,7 @@ do
 		local playerSkills = playerData.SkillSlots
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback = function(skillSlot)
-			Logger:Log("SkillService", "Assigning Skill: " .. skillSlot.SkillId)
+			Logger:Log(script, "SkillService", "Assigning Skill: " .. skillSlot.SkillId)
 		end
 		for _k, _v in playerSkills do
 			_callback(_v, _k - 1, playerSkills)

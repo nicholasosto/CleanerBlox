@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Players } from "@rbxts/services";
+import { HttpService, Players } from "@rbxts/services";
 import { PlayerGameCharacter, BaseGameCharacter } from "./Implementation/GameCharacter";
 import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 import { Logger } from "shared/Utility/Logger";
@@ -17,15 +17,12 @@ export class EntityManager {
 			player.CharacterAdded.Connect((character) => {
 
 				const playerGameCharacter = new PlayerGameCharacter(player);
-
-				Logger.ErrorLog("EntityManager - PlayerGameCharacter Created" + player.Name);
-
-				
+				//Logger.Log(script, HttpService.JSONEncode(playerGameCharacter).find("CharacterFrame"));
 			});
 			player.CharacterAdded.Connect((character) => {
 
 				//const entity = new BaseEntity(character);
-				warn("EntityManager - Player Added", player.Name, "entityCreation triggered");
+				//warn("EntityManager - Player Added", player.Name, "entityCreation triggered");
 
 				//EntityManager._entities.set(character.Name, entity);
 			});

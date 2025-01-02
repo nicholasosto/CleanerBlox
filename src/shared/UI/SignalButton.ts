@@ -24,7 +24,7 @@ export class SignalButton {
 
 	constructor(buttonInstance: Instance, config: SignalButtonConfig) {
 
-		Logger.Log("SignalButton", "<Constructor>", buttonInstance);
+		Logger.Log(script,"SignalButton", "<Constructor>", buttonInstance);
 		this.buttonInstance = buttonInstance;
 		this.holdable = config.holdable ?? false;
 
@@ -48,17 +48,17 @@ export class SignalButton {
 		if (!this.isPressed) {
 			this.isPressed = true;
 			this.Activated.fire();
-			Logger.Log("SignalButton", "Button Pressed: ", this.buttonInstance);
+			Logger.Log(script,"SignalButton", "Button Pressed: ", this.buttonInstance);
 		}
 	}
 
 	private handleRelease() {
 		if (this.isPressed) {
 			this.isPressed = false;
-			Logger.Log("SignalButton", "Rel1 ", this.buttonInstance);
+			Logger.Log(script,"SignalButton", "Rel1 ", this.buttonInstance);
 			if (this.holdable) {
 				this.Released.fire();
-				Logger.Log("SignalButton", "Rel2", this.buttonInstance);
+				Logger.Log(script,"SignalButton", "Rel2", this.buttonInstance);
 			}
 		}
 	}

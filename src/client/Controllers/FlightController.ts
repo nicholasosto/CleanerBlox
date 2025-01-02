@@ -44,7 +44,7 @@ export class FlightController {
 
 	public setEnabled(value: boolean) {
 		this.enabled = value;
-		Logger.Log("Flight", `Flight enabled: ${value}`);
+		Logger.Log(script, `Flight enabled: ${value}`);
 	}
 
 	public toggleEnabled() {

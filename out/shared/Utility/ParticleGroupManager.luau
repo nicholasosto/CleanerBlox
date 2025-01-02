@@ -51,7 +51,7 @@ do
 		-- ▲ ReadonlyArray.filter ▲
 		local particleGroup = _newValue
 		if particleGroup == nil then
-			Logger:Log("ParticleGroupManager", "Particle Group not found", name)
+			Logger:Log(script, "ParticleGroupManager", "Particle Group not found", name)
 		end
 		return particleGroup
 	end
@@ -82,7 +82,7 @@ do
 		-- ▲ ReadonlyArray.filter ▲
 		local particleGroup = _newValue
 		if particleGroup == nil then
-			Logger:Log("ParticleGroupManager", "Particle Group not found", name)
+			Logger:Log(script, "ParticleGroupManager", "Particle Group not found", name)
 		end
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback_1 = function(particle)
@@ -97,7 +97,7 @@ do
 		-- ▼ ReadonlyArray.forEach ▼
 		local _callback = function(particle)
 			particle.Enabled = true
-			Logger:Log("BasicMelee", "Enabling Particle Emitter", particle.Name)
+			Logger:Log(script, "BasicMelee", "Enabling Particle Emitter", particle.Name)
 		end
 		for _k, _v in particleEmitter do
 			_callback(_v, _k - 1, particleEmitter)

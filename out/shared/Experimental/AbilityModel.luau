@@ -16,7 +16,7 @@ do
 	function AbilityModel:constructor(wcsCharacter, templateModel)
 		self.AnimationTracks = {}
 		self.AudioTracks = {}
-		--Logger.Log("AbilityModel", " - Ability Model Constructed\n");
+		--Logger.Log(script,"AbilityModel", " - Ability Model Constructed\n");
 		self.Model = templateModel:Clone()
 		self.HitPart = self.Model:FindFirstChild("HitPart")
 		self.WCSCharacterReference = wcsCharacter
@@ -29,7 +29,7 @@ do
 		self._UniversalConstraint = self.Model:FindFirstChild("UniversalConstraint", true)
 		self.HitConnection = self.HitPart.Touched:Connect(function(hit)
 			if hit.Parent == self.WCSCharacterReference.Instance then
-				Logger:Log("AbilityModel", " - Hit Self\n")
+				Logger:Log(script, "AbilityModel", " - Hit Self\n")
 				return nil
 			end
 			self:OnHit()
@@ -49,30 +49,30 @@ do
 			if phase == 1 then
 				self.Model.Parent = self.WCSCharacterReference.Instance
 				self:_attachModelToCharacter()
-				Logger:Log("AbilityModel", "\t Phase 1 \n")
+				Logger:Log(script, "AbilityModel", "\t Phase 1 \n")
 				break
 			end
 			if phase == 2 then
-				Logger:Log("AbilityModel", "\t Phase 2 \n")
+				Logger:Log(script, "AbilityModel", "\t Phase 2 \n")
 				break
 			end
 			if phase == 3 then
-				Logger:Log("AbilityModel", "\t Phase 3 \n")
+				Logger:Log(script, "AbilityModel", "\t Phase 3 \n")
 				break
 			end
 			break
 		until true
 	end
 	function AbilityModel:Cancel()
-		Logger:Log("AbilityModel", " - Ability Cancelled\n")
+		Logger:Log(script, "AbilityModel", " - Ability Cancelled\n")
 	end
 	function AbilityModel:OnEnded()
 		-- Do something when the ability ends
-		Logger:Log("AbilityModel", " - Ability Ended\n")
+		Logger:Log(script, "AbilityModel", " - Ability Ended\n")
 		self:_detachModelFromCharacter()
 	end
 	function AbilityModel:OnHit()
-		Logger:Log("AbilityModel", " - Ability Hit\n")
+		Logger:Log(script, "AbilityModel", " - Ability Hit\n")
 		-- Do something when the ability hits
 	end
 end

@@ -16,7 +16,7 @@ export class Spotlights extends HoldableSkill {
 	private Spotlights: Array<Spotlight> = new Array<Spotlight>();
 
 	private createSpotlight(cFrame: CFrame) {
-		Logger.Log("Spotlights", "Creating Spotlight");
+		Logger.Log(script,"Spotlights", "Creating Spotlight");
 		const spotlightModel = GameStorage.cloneModel("Spotlight").Clone();
 		spotlightModel.Parent = Workspace;
 		spotlightModel.PivotTo(cFrame);
@@ -39,7 +39,7 @@ export class Spotlights extends HoldableSkill {
 
 	// Stages
 	private stageActivated(stage: number) {
-		//Logger.Log("Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
+		//Logger.Log(script,"Stage Activated: ", stage, this.CooldownTimer.getTimeLeft());
 		switch (stage) {
 			case 1:
 				this.Stage3();
@@ -59,21 +59,21 @@ export class Spotlights extends HoldableSkill {
 	private Stage1() {
 		const spotlightPosition = PositionGenerator.GenerateDefaultTargetPosition(this.Character.Instance as Model, 10);
 		this.createSpotlight(new CFrame(spotlightPosition));
-		Logger.Log("Spotlights", "Stage 1", spotlightPosition);
+		Logger.Log(script,"Spotlights", "Stage 1", spotlightPosition);
 	}
 
 	// STAGE 2
 	private Stage2() {
-		Logger.Log("Spotlights", "Stage 2");
+		Logger.Log(script,"Spotlights", "Stage 2");
 	}
 
 	// STAGE 3
 	private Stage3() {
-		Logger.Log("Spotlights", "Stage 3");
+		Logger.Log(script,"Spotlights", "Stage 3");
 	}
 
 	// END SERVER
 	public OnEndServer() {
-		Logger.Log("Spotlights", "End");
+		Logger.Log(script,"Spotlights", "End");
 	}
 }

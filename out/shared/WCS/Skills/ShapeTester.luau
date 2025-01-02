@@ -24,14 +24,14 @@ do
 		super.constructor(self, ...)
 	end
 	function ShapeTester:OnConstruct()
-		Logger:Log("ShapeTester", "OnConstruct")
+		Logger:Log(script, "ShapeTester", "OnConstruct")
 	end
 	function ShapeTester:OnConstructServer()
 	end
 	function ShapeTester:OnConstructClient()
 	end
 	function ShapeTester:OnStartServer()
-		--Logger.Log("ShapeTester", "OnStartServer");
+		--Logger.Log(script,"ShapeTester", "OnStartServer");
 		local fire = Instance.new("Fire")
 		fire.Size = 3
 		fire.Parent = self.Character.Instance
@@ -42,7 +42,7 @@ do
 		firePart.Anchored = true
 		local character = self.Character.Instance
 		if character == nil then
-			Logger:Log("ShapeTester", "No Character Found")
+			Logger:Log(script, "ShapeTester", "No Character Found")
 			return nil
 		end
 		local spiral = PositionGenerator:CreateSpiral(character:GetPivot(), math.pi, 100, 1)

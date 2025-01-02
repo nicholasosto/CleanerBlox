@@ -15,7 +15,7 @@ export class CharacterUtility {
 			const characterPosition = characterModel.GetPivot().Position;
 			const distance = characterPosition.sub(modelPosition).Magnitude;
 			if (distance < closestDistance && distance <= maxRange) {
-				Logger.Log("CharacterUtility", `Distance: ${distance}`);
+				Logger.Log(script,"CharacterUtility", `Distance: ${distance}`);
 				closestDistance = distance;
 				closestCharacter = wcsCharacter;
 			}

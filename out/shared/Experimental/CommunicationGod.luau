@@ -45,12 +45,12 @@ do
 		local _serverSignals = self.ServerSignals
 		local _eventName = eventName
 		if _serverSignals[_eventName] ~= nil then
-			--Logger.Log("CommunicationGod", "Signal already registered: ", eventName);
+			--Logger.Log(script,"CommunicationGod", "Signal already registered: ", eventName);
 			return nil
 		end
 		local remoteEvent = Instance.new("RemoteEvent", game:GetService("ReplicatedStorage"))
 		remoteEvent.Name = eventName
-		--Logger.Log("CommunicationGod", "Signal registered: ", eventName);
+		--Logger.Log(script,"CommunicationGod", "Signal registered: ", eventName);
 		local _serverSignals_1 = CommunicationGod.ServerSignals
 		local _eventName_1 = eventName
 		_serverSignals_1[_eventName_1] = remoteEvent

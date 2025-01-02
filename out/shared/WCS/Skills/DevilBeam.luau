@@ -5,7 +5,7 @@ local HoldableSkill = _wcs.HoldableSkill
 local SkillDecorator = _wcs.SkillDecorator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
-local SkillConfigurations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "SkillConfigurations").SkillConfigurations
+local SkillConfigurations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").SkillConfigurations
 local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
 local HttpService = _services.HttpService
 local TweenService = _services.TweenService
@@ -37,7 +37,7 @@ do
 	end
 	function DevilBeam:OnConstructServer()
 		-- Load Animations and Particles
-		--Logger.Log("DevilBeam", " - Constructed\n");
+		--Logger.Log(script,"DevilBeam", " - Constructed\n");
 		local humanoid = self.Character.Humanoid
 		local _animator = humanoid
 		if _animator ~= nil then
@@ -52,14 +52,14 @@ do
 		self._animationTrack = _result
 		warn(animation.AnimationId, " loaded")
 		if animation then
-			Logger:Log("DevilBeam", "Animation Found\n")
+			Logger:Log(script, "DevilBeam", "Animation Found\n")
 			return nil
 		else
-			Logger:Log("DevilBeam", "Animation Not Found\n")
+			Logger:Log(script, "DevilBeam", "Animation Not Found\n")
 		end
 	end
 	function DevilBeam:OnConstructClient()
-		--Logger.Log("DevilBeam", " - Constructed\n");
+		--Logger.Log(script,"DevilBeam", " - Constructed\n");
 		Logger:Log(HttpService:JSONEncode(self.Name))
 	end
 	function DevilBeam:OnStartServer()
@@ -133,10 +133,10 @@ do
 	function DevilBeam:_loadAnimation()
 		local animation = GameStorage:cloneAnimation("DevilBeam Fired")
 		if animation then
-			Logger:Log("DevilBeam", "Animation Found\n")
+			Logger:Log(script, "DevilBeam", "Animation Found\n")
 			return nil
 		else
-			Logger:Log("DevilBeam", "Animation Not Found\n")
+			Logger:Log(script, "DevilBeam", "Animation Not Found\n")
 		end
 	end
 	DevilBeam = SkillDecorator(DevilBeam) or DevilBeam

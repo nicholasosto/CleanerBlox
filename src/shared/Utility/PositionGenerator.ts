@@ -90,7 +90,7 @@ export class PositionGenerator {
 		const scriptBlock = game.GetService("Workspace").FindFirstChild("ScriptBlock", true) as BasePart;
 		if (!start) {
 			scriptBlock.ClearAllChildren();
-			Logger.Log("PositionGeneratorTests", "Cleared Children");
+			Logger.Log(script,"PositionGeneratorTests", "Cleared Children");
 			return;
 		}
 		const scriptBlockAttachment = new Instance("Attachment");

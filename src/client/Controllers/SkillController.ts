@@ -18,7 +18,7 @@
 // 			const character = Character.GetLocalCharacter();
 // 			const wcsSkill = character?.GetSkills().find((skill) => skill.GetName() === this._skillId);
 // 			if (wcsSkill === undefined) {
-// 				//Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
+// 				//Logger.Log(script,"AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
 // 				return;
 // 			}
 // 			wcsSkill.Start();
@@ -28,7 +28,7 @@
 // 			const character = Character.GetLocalCharacter();
 // 			const wcsSkill = character?.GetSkills().find((skill) => skill.GetName() === this._skillId);
 // 			if (wcsSkill === undefined) {
-// 				//Logger.Log("AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
+// 				//Logger.Log(script,"AbilityButton", "wcsSkill: ", this._skillId, " is undefined");
 // 				return;
 // 			}
 // 			wcsSkill.Stop();
@@ -51,7 +51,7 @@
 // 	private constructor() {}
 
 // 	public static Start() {
-// 		Logger.Log("C_SkillManager", "Started");
+// 		Logger.Log(script,"C_SkillManager", "Started");
 // 	}
 
 // 	public static LoadSlot(slotName: string, skillId: string) {

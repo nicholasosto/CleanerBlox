@@ -44,7 +44,7 @@ export class WeaponManager {
         if(player === undefined || weapon === undefined){
             return;
         }
-        Logger.Log("BasicMelee", "UnEquipping Weapon");
+        Logger.Log(script,"BasicMelee", "UnEquipping Weapon");
         weapon.Parent = player.FindFirstChildOfClass("Backpack") as Backpack;
     }
 

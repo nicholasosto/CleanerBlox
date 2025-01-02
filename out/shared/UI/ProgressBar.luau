@@ -38,7 +38,7 @@ do
 		self._targetInstance:GetAttributeChangedSignal(maxAttributeName):Connect(function()
 			self:updateProgressBar(minAttributeName, maxAttributeName)
 		end)
-		--Logger.Log("** Connections Set **");
+		--Logger.Log(script,"** Connections Set **");
 		-- Set the parent
 		self._instance.Parent = self._parent
 		self._instance:SetAttribute("TextValue", displayName)
@@ -51,7 +51,7 @@ do
 		local maxAttribute = self._targetInstance:GetAttribute(maxName)
 		-- Check if the attributes are undefined
 		if currentAttribute == nil or maxAttribute == nil then
-			Logger:Log("Current or Max Attribute is undefined")
+			Logger:Log(script, "Current or Max Attribute is undefined")
 			return nil
 		end
 		-- Calculate the percentage

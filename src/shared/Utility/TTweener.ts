@@ -11,7 +11,7 @@ export class TagTweener {
 		this._instanceAddedConnection = CollectionService.GetInstanceAddedSignal("TweenAttachment").Connect((instance) => {
 			const attachment = instance as Attachment;
 			if (attachment === undefined) {
-				Logger.Log("BasicMelee", "Instance is not an attachment");
+				Logger.Log(script,"BasicMelee", "Instance is not an attachment");
 				return;
 			}
 

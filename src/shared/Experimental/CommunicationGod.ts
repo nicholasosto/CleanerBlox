@@ -40,13 +40,13 @@ export class CommunicationGod {
 
 	public static _registerSignal(eventName: string): void {
 		if (this.ServerSignals.has(eventName)) {
-			//Logger.Log("CommunicationGod", "Signal already registered: ", eventName);
+			//Logger.Log(script,"CommunicationGod", "Signal already registered: ", eventName);
 			return;
 		}
 		const remoteEvent = new Instance("RemoteEvent", game.GetService("ReplicatedStorage"));
 		remoteEvent.Name = eventName;
 
-		//Logger.Log("CommunicationGod", "Signal registered: ", eventName);
+		//Logger.Log(script,"CommunicationGod", "Signal registered: ", eventName);
 		CommunicationGod.ServerSignals.set(eventName, remoteEvent);
 	}
 

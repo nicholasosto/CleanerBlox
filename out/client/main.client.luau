@@ -31,11 +31,11 @@ GUIController:Start()
 CommunicationGod:Summon()
 -- Handle Character Added
 local function handleCharacterAdded(character)
-	--Logger.Log("Client", "Character Added: ", character);
+	--Logger.Log(script,"Client", "Character Added: ", character);
 end
 -- Handle Character Removing
 local function handleCharacterRemoving(character)
-	--Logger.Log("Client", "Character Removed: ", character);
+	--Logger.Log(script,"Client", "Character Removed: ", character);
 end
 -- Check if character exists and perform Character Added event actions
 if Players.LocalPlayer.Character then

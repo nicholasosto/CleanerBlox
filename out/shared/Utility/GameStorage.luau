@@ -22,12 +22,12 @@ do
 		local _humanoid = self._humanoidStorage:FindFirstChild(humanoidName, true)
 		-- Validate the humanoid
 		if _humanoid == nil then
-			Logger:Log("GameStorage", `Humanoid {humanoidName} not found in storage.`)
+			Logger:Log(script, "GameStorage", `Humanoid {humanoidName} not found in storage.`)
 			return nil
 		end
 		-- Clone the humanoid
 		local _clonedHumanoid = _humanoid:Clone()
-		Logger:Log("XXX Found", _clonedHumanoid)
+		Logger:Log(script, "XXX Found", _clonedHumanoid)
 		return _clonedHumanoid
 	end
 	function GameStorage:cloneAccessory(accessoryName)
@@ -35,7 +35,7 @@ do
 		local _accessory = self._accessoriesStorage:FindFirstChild(accessoryName, true)
 		-- Validate the accessory
 		if _accessory == nil then
-			Logger:Log("GameStorage", `Accessory {accessoryName} not found in storage.`)
+			Logger:Log(script, "GameStorage", `Accessory {accessoryName} not found in storage.`)
 			return nil
 		end
 		-- Clone the accessory
@@ -75,7 +75,7 @@ do
 		-- Get the sound from the storage
 		local _sound = self._audioStorage:FindFirstChild(instanceName, true)
 		if _sound == nil then
-			Logger:Log("GameStorage", `Sound {instanceName} not found in storage.`)
+			Logger:Log(script, "GameStorage", `Sound {instanceName} not found in storage.`)
 			return nil
 		end
 		local _clonedSound = _sound:Clone()

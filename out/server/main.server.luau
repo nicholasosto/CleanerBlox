@@ -14,9 +14,9 @@ local DataManager = TS.import(script, game:GetService("ServerScriptService"), "T
 local InventoryService = TS.import(script, game:GetService("ServerScriptService"), "TS", "Services", "InventoryService").InventoryService
 local EntityManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "EntityManager").EntityManager
 local NotificationManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Notification", "NotificationManager").NotificationManager
-local _PackageManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "PackageManager")
-local PackageManager = _PackageManager.PackageManager
-local EPackageIDs = _PackageManager.EPackageIDs
+local _GameAssetManagers = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameAssetManagers")
+local PackageManager = _GameAssetManagers.PackageManager
+local EPackageIDs = _GameAssetManagers.EPackageIDs
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 --Services Needing to Start
 DataManager:Start()

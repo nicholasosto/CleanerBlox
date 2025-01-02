@@ -90,13 +90,13 @@ export class CharacterResource {
 
 		// Min Change Connection
 		this._minChangeConnection = this.GameCharacter.GetAttributeChangedSignal(this.Name + "Current").Connect(() => {
-			//Logger.Log("CharacterResource", this.Name, this._currentValue);
+			//Logger.Log(script,"CharacterResource", this.Name, this._currentValue);
 			this._onResourceChange();
 		});
 
 		// Max Change Connection
 		this._maxChangeConnection = this.GameCharacter.GetAttributeChangedSignal(this.Name + "Max").Connect(() => {
-			//Logger.Log("CharacterResource", this.Name, this._maxValue);
+			//Logger.Log(script,"CharacterResource", this.Name, this._maxValue);
 			this._onResourceChange();
 		});
 	}

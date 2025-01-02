@@ -14,7 +14,7 @@ export class ParticleGroupManager {
 	public static GetParticleGroup(name: string): ParticleEmitter[] {
 		const particleGroup = GameStorage.cloneParticleGroupAttachment(name).GetDescendants().filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
 		if (particleGroup === undefined) {
-			Logger.Log("ParticleGroupManager", "Particle Group not found", name);
+			Logger.Log(script,"ParticleGroupManager", "Particle Group not found", name);
 		}
 		return particleGroup;
 	}
@@ -30,7 +30,7 @@ export class ParticleGroupManager {
 	public static SpawnParticleGroup(name: string, parent: Instance): void {
 		const particleGroup = GameStorage.cloneParticleGroupAttachment(name).GetDescendants().filter((child) => child.IsA("ParticleEmitter")) as ParticleEmitter[];
 		if (particleGroup === undefined) {
-			Logger.Log("ParticleGroupManager", "Particle Group not found", name);
+			Logger.Log(script,"ParticleGroupManager", "Particle Group not found", name);
 		}
 		particleGroup.forEach((particle) => {
 			particle.Parent = parent;
@@ -42,7 +42,7 @@ export class ParticleGroupManager {
 	public static EnableParticleEmitters(particleEmitter: [ParticleEmitter]): void {
 		particleEmitter.forEach((particle) => {
 			particle.Enabled = true;
-			Logger.Log("BasicMelee", "Enabling Particle Emitter", particle.Name);
+			Logger.Log(script,"BasicMelee", "Enabling Particle Emitter", particle.Name);
 		});
 	}
 

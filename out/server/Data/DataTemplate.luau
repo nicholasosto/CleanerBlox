@@ -1,4 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local ESkillNames = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").ESkillNames
 local DataTemplate = {
 	key = "Datatemplate",
 	version = 2,
@@ -33,16 +35,16 @@ local DataTemplate = {
 	} },
 	SkillSlots = { {
 		SlotId = "Slot_1",
-		SkillId = "Spotlights",
+		SkillId = ESkillNames.BasicMelee,
 	}, {
 		SlotId = "Slot_2",
-		SkillId = "BigRed",
+		SkillId = ESkillNames.BasicHold,
 	}, {
 		SlotId = "Slot_3",
-		SkillId = "Empty",
+		SkillId = ESkillNames.Spotlights,
 	}, {
 		SlotId = "Slot_4",
-		SkillId = "Empty",
+		SkillId = ESkillNames.BigRed,
 	}, {
 		SlotId = "Slot_5",
 		SkillId = "Empty",

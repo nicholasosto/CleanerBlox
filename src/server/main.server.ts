@@ -10,7 +10,7 @@ import { DataManager } from "./Data/DataManager";
 import { InventoryService } from "./Services/InventoryService";
 import { EntityManager } from "./GameCharacter/EntityManager";
 import { NotificationManager } from "./Notification/NotificationManager";
-import { PackageManager, EPackageIDs } from "shared/PackageManager";
+import { PackageManager, EPackageIDs } from "shared/GameAssetManagers";
 import { Logger } from "shared/Utility/Logger";
 
 //Services Needing to Start

@@ -28,29 +28,29 @@ do
 	function HumanoidDescriptionFactory:constructor()
 		-- Private constructor to prevent instantiation
 		CollectionService:GetInstanceAddedSignal("HDROBOT"):Connect(function(instance)
-			Logger:Log("HumanoidDescriptionFactory", `Instance added: {instance.Name}`)
+			Logger:Log(script, "HumanoidDescriptionFactory", `Instance added: {instance.Name}`)
 			local humanoid = instance:FindFirstChildOfClass("Humanoid")
 			if humanoid == nil then
-				Logger:Log("HumanoidDescriptionFactory", `Humanoid not found in instance.`)
+				Logger:Log(script, "HumanoidDescriptionFactory", `Humanoid not found in instance.`)
 				return nil
 			end
 			local humanoidDescription = humanoid:GetAppliedDescription()
 			if humanoidDescription == nil then
-				Logger:Log("HumanoidDescriptionFactory", `Humanoid cache not found in storage.`)
+				Logger:Log(script, "HumanoidDescriptionFactory", `Humanoid cache not found in storage.`)
 				return nil
 			end
 			HumanoidDescriptionFactory:ApplyHumanoidDescription(humanoid, EHumanoidDescription.RobotBase)
 		end)
 		CollectionService:GetInstanceAddedSignal("WolfForm"):Connect(function(instance)
-			Logger:Log("XXXHumanoidDescriptionFactory", `Instance added: {instance.Name}`)
+			Logger:Log(script, "XXXHumanoidDescriptionFactory", `Instance added: {instance.Name}`)
 			local humanoid = instance:FindFirstChildOfClass("Humanoid")
 			if humanoid == nil then
-				Logger:Log("XXXHumanoidDescriptionFactory", `Humanoid not found in instance.`)
+				Logger:Log(script, "XXXHumanoidDescriptionFactory", `Humanoid not found in instance.`)
 				return nil
 			end
 			local humanoidDescription = humanoid:GetAppliedDescription()
 			if humanoidDescription == nil then
-				Logger:Log("XXXHumanoidDescriptionFactory", `Humanoid cache not found in storage.`)
+				Logger:Log(script, "XXXHumanoidDescriptionFactory", `Humanoid cache not found in storage.`)
 				return nil
 			end
 			HumanoidDescriptionFactory:ApplyHumanoidDescription(humanoid, EHumanoidDescription.WolfForm)
@@ -81,7 +81,7 @@ do
 	function HumanoidDescriptionFactory:setHumanoidDescription(hdName)
 		local humanoidDescription = GameStorage:cloneHumanoidDescription(hdName)
 		if humanoidDescription == nil then
-			Logger:Log("HumanoidDescriptionFactory", `Humanoid {hdName} not found in storage.`)
+			Logger:Log(script, "HumanoidDescriptionFactory", `Humanoid {hdName} not found in storage.`)
 			return nil
 		end
 		local __humanoidDescriptions = HumanoidDescriptionFactory._humanoidDescriptions
@@ -92,10 +92,10 @@ do
 		local humanoidDescription = HumanoidDescriptionFactory:getHumanoidDescription(hdName)
 		local currenctDescription = humanoid:GetAppliedDescription()
 		if currenctDescription == nil then
-			Logger:Log("HumanoidDescriptionFactory", `Humanoid cache not found in storage.`)
+			Logger:Log(script, "HumanoidDescriptionFactory", `Humanoid cache not found in storage.`)
 		end
 		if humanoidDescription == nil then
-			Logger:Log("HumanoidDescriptionFactory", `Humanoid {hdName} not found in storage.`)
+			Logger:Log(script, "HumanoidDescriptionFactory", `Humanoid {hdName} not found in storage.`)
 			return nil
 		end
 		humanoid:ApplyDescription(humanoidDescription)

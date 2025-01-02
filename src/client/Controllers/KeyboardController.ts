@@ -33,7 +33,7 @@ export class KeyboardController {
 		KeyboardController.OnCharacterAdded(character as Model);
 		// CHARACTER ADDED
 		KeyboardController.characterAddedConnection = Player.CharacterAdded.Connect((character: Model) => {
-			//Logger.Log("KeyboardController", "Character Added");
+			//Logger.Log(script,"KeyboardController", "Character Added");
 			KeyboardController.OnCharacterAdded(character);
 		});
 	}

@@ -40,7 +40,7 @@ do
 		if _result ~= nil then
 			_result = _result.Parent
 		end
-		Logger:Log("Spotlight", "Toucher", _exp, _result)
+		Logger:Log(script, "Spotlight", "Toucher", _exp, _result)
 	end
 	function Spotlight:OnStateChanged()
 		--print("State Changed: ", this.instance.GetAttribute("State"));
@@ -70,20 +70,20 @@ do
 		until true
 	end
 	function Spotlight:OnActive()
-		Logger:Log("Spotlight", "[State]", self.instance:GetAttribute("State"))
+		Logger:Log(script, "Spotlight", "[State]", self.instance:GetAttribute("State"))
 		local primaryPart = self.instance.PrimaryPart
-		Logger:Log("Spotlight", "PrimaryPart", primaryPart)
+		Logger:Log(script, "Spotlight", "PrimaryPart", primaryPart)
 		--const tween = TTweener.tweenPartCFrame(this.instance.PrimaryPart as Part, new CFrame(0, 0, 0), 22);
 		--tween.Play();
 	end
 	function Spotlight:OnTriggered()
-		Logger:Log("Spotlight", "[State]", self.instance:GetAttribute("State"))
+		Logger:Log(script, "Spotlight", "[State]", self.instance:GetAttribute("State"))
 	end
 	function Spotlight:OnHoming()
-		Logger:Log("Spotlight", "[State]", self.instance:GetAttribute("State"))
+		Logger:Log(script, "Spotlight", "[State]", self.instance:GetAttribute("State"))
 	end
 	function Spotlight:OnExploding()
-		Logger:Log("Spotlight", "[State]", self.instance:GetAttribute("State"))
+		Logger:Log(script, "Spotlight", "[State]", self.instance:GetAttribute("State"))
 	end
 	function Spotlight:Destroy()
 		local _result = self.HitConnection

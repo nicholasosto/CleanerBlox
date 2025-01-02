@@ -27,7 +27,7 @@ export class DataCache {
 			this._playerData = DataTemplate;
 			this.Save();
 		} else {
-			Logger.Log("DM", "\n Data Loaded");
+			Logger.Log(script, "Data Loaded");
 		}
 	}
 
@@ -38,7 +38,7 @@ export class DataCache {
 		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
 		if (timeSinceLastSave <= this._minSaveInterval) {
 			// Do not save if the last save was less than 2 seconds ago
-			Logger.Log("SaveSkipped", timeSinceLastSave);
+			Logger.Log(script, "Skipped Save", timeSinceLastSave);
 			return "Save Skipped";
 		}
 		const success = this._dataStore.SetAsync(this._userId, this._playerData);
@@ -97,7 +97,7 @@ export class DataManager {
 		const userId = tostring(player.UserId);
 		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerData;
 		const dataCache = new DataCache(userId, DataManager.GameDataStore);
-		//Logger.Log("DM", "Player Registered: ", userId);
+		//Logger.Log(script,"DM", "Player Registered: ", userId);
 		this.PlayerCache.push(dataCache);
 	}
 

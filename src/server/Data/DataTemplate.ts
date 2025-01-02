@@ -1,4 +1,5 @@
 import { IPlayerData, TEquipmentSlot, TSkillSlot, TCurrency } from "shared/SharedReference";
+import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
 
 export const DataTemplate: IPlayerData = {
 	key: "Datatemplate",
@@ -38,10 +39,10 @@ export const DataTemplate: IPlayerData = {
 
 	// Skill Slots
 	SkillSlots: [
-		{ SlotId: "Slot_1", SkillId: "Spotlights" },
-		{ SlotId: "Slot_2", SkillId: "BigRed" },
-		{ SlotId: "Slot_3", SkillId: "Empty" },
-		{ SlotId: "Slot_4", SkillId: "Empty" },
+		{ SlotId: "Slot_1", SkillId: ESkillNames.BasicMelee },
+		{ SlotId: "Slot_2", SkillId: ESkillNames.BasicHold },
+		{ SlotId: "Slot_3", SkillId: ESkillNames.Spotlights },
+		{ SlotId: "Slot_4", SkillId: ESkillNames.BigRed },
 		{ SlotId: "Slot_5", SkillId: "Empty" },
 	] as TSkillSlot[],
 
