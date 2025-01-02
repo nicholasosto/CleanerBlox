@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { HttpService, Players } from "@rbxts/services";
-import { PlayerGameCharacter, BaseGameCharacter } from "./Implementation/GameCharacter";
+import { PlayerGameCharacter } from "./PlayerGameCharacter";
+import { BaseGameCharacter } from "./BaseGameCharacter";
 import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 import { Logger } from "shared/Utility/Logger";
 import Signal from "@rbxts/signal";

@@ -2,9 +2,8 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- eslint-disable prettier/prettier 
 local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
-local _GameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Implementation", "GameCharacter")
-local PlayerGameCharacter = _GameCharacter.PlayerGameCharacter
-local BaseGameCharacter = _GameCharacter.BaseGameCharacter
+local PlayerGameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "PlayerGameCharacter").PlayerGameCharacter
+local BaseGameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "BaseGameCharacter").BaseGameCharacter
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
 local EntityManager
 do

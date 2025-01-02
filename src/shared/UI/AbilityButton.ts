@@ -19,7 +19,7 @@ export class AbilityButton {
 
 		// Ability Button GUI Element
 		this._abilityButtonFrame = PackageManager.LoadGuiTemplate(EGuiTemplates.AbilityButton) as Frame;
-		this._abilityButtonFrame.Name = wcsSkill.GetName()+"_ButtonFrame";
+		this._abilityButtonFrame.Name = wcsSkill.GetName() + "_ButtonFrame";
 
 		// Action Bar Slot Reference
 		let actionBarSlot = actionBar.FindFirstChild("Slot" + slot) as Frame;

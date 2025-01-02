@@ -9,7 +9,7 @@ import { GameStorage } from "shared/Utility/GameStorage";
 import { Logger } from "shared/Utility/Logger";
 
 // Custom Imports
-import { BaseGameCharacter } from "./GameCharacter";
+import { BaseGameCharacter } from "../BaseGameCharacter";
 
 export enum EResourceTypes {
 	Health = "Health",
