@@ -15,12 +15,11 @@ export enum ESkillImage {
 	BasicHold = "rbxassetid://93554304810930",
 }
 
-
 export type TSkillConfiguration = {
 	[key: string]: {
 		DisplayName: string;
 		ImageId: string;
-		Animation:{
+		Animation: {
 			Activation: EAnimations;
 			Completion: EAnimations;
 		};
@@ -41,7 +40,7 @@ export type TSkillConfiguration = {
 		Damage: number;
 		HoldTime: number;
 		Cooldown: number;
-	}
+	};
 };
 
 export const SkillConfigurations: TSkillConfiguration = {
@@ -49,7 +48,7 @@ export const SkillConfigurations: TSkillConfiguration = {
 	["BasicMelee"]: {
 		DisplayName: "Basic Melee",
 		ImageId: ESkillImage.BasicMelee,
-		Animation:{
+		Animation: {
 			Activation: EAnimations.SKILL_BasicMelee,
 			Completion: EAnimations.SKILL_BasicMelee,
 		},
@@ -71,5 +70,4 @@ export const SkillConfigurations: TSkillConfiguration = {
 		HoldTime: 0,
 		Cooldown: 0.5,
 	},
-
 };

@@ -16,7 +16,7 @@ import { CharacterResource } from "../Subclasses/CharacterResource";
 
 // Data Related Imports
 import { TCoreStats } from "shared/SharedReference";
-import { AnimationHelper, EAnimations,} from "shared/_References/GameReference";
+import { AnimationHelper, EAnimations } from "shared/_References/GameReference";
 import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
 import { AbilityButton } from "shared/UI/AbilityButton";
 

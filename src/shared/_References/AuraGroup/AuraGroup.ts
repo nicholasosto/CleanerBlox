@@ -1,5 +1,5 @@
 export enum EAuraGroup {
-    BasicMelee = "BasicMelee",
-    BasicRanged = "BasicRanged",
-    BasicHold = "BasicHold",
+	BasicMelee = "BasicMelee",
+	BasicRanged = "BasicRanged",
+	BasicHold = "BasicHold",
 }

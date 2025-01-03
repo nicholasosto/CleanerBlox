@@ -9,7 +9,7 @@ export class AnimationHelper {
 		return animationTrack;
 	}
 
-    public static PlayAnimation(animationTrack: AnimationTrack): void {
-        animationTrack.Play();
-    }
+	public static PlayAnimation(animationTrack: AnimationTrack): void {
+		animationTrack.Play();
+	}
 }
