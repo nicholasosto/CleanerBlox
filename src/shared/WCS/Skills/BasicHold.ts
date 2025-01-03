@@ -1,6 +1,5 @@
 import { HoldableSkill, SkillDecorator } from "@rbxts/wcs";
 import { Logger } from "shared/Utility/Logger";
-import { SkillConfiguration } from "./ISkill";
 
 @SkillDecorator
 export class BasicHold extends HoldableSkill {
@@ -60,7 +59,7 @@ export class BasicHold extends HoldableSkill {
 
 	// Skill Stages
 	private ActivationStage() {
-		Logger.Log(script,"BasicHold", "Activation Stage\n");
+		Logger.Log(script, "BasicHold", "Activation Stage\n");
 	}
 
 	private Stage1() {

@@ -25,13 +25,13 @@ export class GameStorage {
 
 		// Validate the humanoid
 		if (_humanoid === undefined) {
-			Logger.Log(script,"GameStorage", `Humanoid ${humanoidName} not found in storage.`);
+			Logger.Log(script, "GameStorage", `Humanoid ${humanoidName} not found in storage.`);
 			return;
 		}
 
 		// Clone the humanoid
 		const _clonedHumanoid = _humanoid.Clone();
-		Logger.Log(script,"XXX Found", _clonedHumanoid);
+		Logger.Log(script, "XXX Found", _clonedHumanoid);
 		return _clonedHumanoid;
 	}
 
@@ -42,7 +42,7 @@ export class GameStorage {
 
 		// Validate the accessory
 		if (_accessory === undefined) {
-			Logger.Log(script,"GameStorage", `Accessory ${accessoryName} not found in storage.`);
+			Logger.Log(script, "GameStorage", `Accessory ${accessoryName} not found in storage.`);
 			return;
 		}
 		// Clone the accessory
@@ -52,7 +52,10 @@ export class GameStorage {
 	}
 
 	public static getEvent(event: string): RemoteEvent {
-		const _event = ReplicatedStorage.WaitForChild("Remotes").FindFirstChild(event, true) as RemoteEvent;
+		const _event = ReplicatedStorage.WaitForChild("Asset Package - Remotes").FindFirstChild(
+			event,
+			true,
+		) as RemoteEvent;
 		if (!_event) {
 			error(`Event ${event} not found in storage.`);
 		}
@@ -95,7 +98,7 @@ export class GameStorage {
 		const _sound = this._audioStorage.FindFirstChild(instanceName, true) as Sound;
 
 		if (_sound === undefined) {
-			Logger.Log(script,"GameStorage", `Sound ${instanceName} not found in storage.`);
+			Logger.Log(script, "GameStorage", `Sound ${instanceName} not found in storage.`);
 			return;
 		}
 		const _clonedSound = _sound.Clone();

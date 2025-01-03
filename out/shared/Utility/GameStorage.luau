@@ -43,7 +43,7 @@ do
 		return _clonedAccessory
 	end
 	function GameStorage:getEvent(event)
-		local _event = ReplicatedStorage:WaitForChild("Remotes"):FindFirstChild(event, true)
+		local _event = ReplicatedStorage:WaitForChild("Asset Package - Remotes"):FindFirstChild(event, true)
 		if not _event then
 			error(`Event {event} not found in storage.`)
 		end

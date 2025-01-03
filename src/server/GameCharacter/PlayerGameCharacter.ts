@@ -1,11 +1,15 @@
 import { Skill } from "@rbxts/wcs";
 import { BaseGameCharacter } from "./BaseGameCharacter";
-import { GuiReferenceHandler, EGUIElements, EScreenGuis } from "shared/GameAssetManagers";
+import { GuiReferenceHandler, EventManager, EGUIElements, EScreenGuis } from "shared/GameAssetManagers";
 import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
 
 import { DataCache, DataManager } from "server/Data/DataManager";
 import { AbilityButton } from "shared/UI/AbilityButton";
 import { Logger } from "shared/Utility/Logger";
+
+// Skills
+import { BasicMelee } from "shared/WCS/Skills/BasicMelee";
+import { BasicHold } from "shared/WCS/Skills/BasicHold";
 
 // PlayerGameCharacter (Inherits from BaseGameCharacter)
 export class PlayerGameCharacter extends BaseGameCharacter {
@@ -52,8 +56,6 @@ export class PlayerGameCharacter extends BaseGameCharacter {
 			EGUIElements.CharacterFrame,
 		) as Frame;
 
-		// Create Ability Buttons
-		this.createAbilityButton(ESkillNames.BasicMelee, 1);
 
 		Logger.Log(
 			script,
@@ -65,9 +67,9 @@ export class PlayerGameCharacter extends BaseGameCharacter {
 			this._hudGui,
 		);
 
-		this.WCS_Character.GetSkills().forEach((skill) => {
-			print(" - ", skill.GetName());
-		});
+		const PlayerCharacterCreated = EventManager.GetEvent("PLAYER_CharacterCreated");
+
+		PlayerCharacterCreated.FireClient(player);
 		return this;
 	}
 
@@ -81,6 +83,11 @@ export class PlayerGameCharacter extends BaseGameCharacter {
 		const abilityButton = new AbilityButton(this._actionBar, skill, slot);
 
 		this._abilityButtons.set(skillName, abilityButton);
+	}
+
+	protected CreateMoveset() {
+		//this.WCS_Character.AddSkill(BasicMelee);
+		//this.WCS_Character.AddSkill(BasicHold);
 	}
 
 	// Destroy

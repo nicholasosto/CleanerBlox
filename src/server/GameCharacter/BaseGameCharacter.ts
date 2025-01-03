@@ -1,19 +1,17 @@
 // GameCharacter.ts: Game Character Classes
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
-
-import { HttpService, ReplicatedStorage } from "@rbxts/services";
-import { DataCache, DataManager } from "server/Data/DataManager";
-import { Character, DamageContainer, Skill, StatusEffect, UnknownStatus } from "@rbxts/wcs";
 import {
-	GuiReferenceHandler,
-	PackageManager,
-	EGuiTemplates,
-	EPackageIDs,
-	EGUIElements,
-	EScreenGuis,
-} from "shared/GameAssetManagers";
-
+	Character,
+	DamageContainer,
+	Moveset,
+	Skill,
+	StatusEffect,
+	UnknownStatus,
+	CreateMoveset,
+	SkillBase,
+	UnknownSkill,
+} from "@rbxts/wcs";
 import { CharacterResource } from "./Subclasses/CharacterResource";
 
 // Data Related Imports
@@ -24,6 +22,9 @@ import { AbilityButton } from "shared/UI/AbilityButton";
 // Utility Imports
 import { ResourceCalculator } from "./Subclasses/Calculators";
 import { Logger } from "shared/Utility/Logger";
+import { BasicHold } from "shared/WCS/Skills/BasicHold";
+import { BasicRanged } from "shared/WCS/Skills/BasicRanged";
+import { BasicMelee } from "shared/WCS/Skills/BasicMelee";
 
 // BaseGameCharacter (NPCs and Players inherit from this)
 export class BaseGameCharacter {
@@ -54,7 +55,7 @@ export class BaseGameCharacter {
 
 	// Protected Properties
 	protected _State: string = "Idle";
-	protected _MovesetName = "DefaultMoveset";
+	protected _Moveset: Moveset;
 
 	// Connections
 	private _connectionCharacterTakeDamage: RBXScriptConnection | undefined;
@@ -77,6 +78,8 @@ export class BaseGameCharacter {
 
 		// Create WCS Character
 		this.WCS_Character = new Character(characterModel);
+		this._Moveset = CreateMoveset("DefaultMoveset", [BasicMelee, BasicHold]);
+		this.WCS_Character.ApplyMoveset(this._Moveset);
 
 		// Create Resources: Health, Mana, Stamina
 		this.Health = new CharacterResource(this, "Health");
@@ -84,14 +87,16 @@ export class BaseGameCharacter {
 		this.Stamina = new CharacterResource(this, "Stamina");
 
 		// Apply Default Moveset
-		this.WCS_Character.ApplyMoveset(this._MovesetName);
-
-		// TODO: Add skill buttons to action bar in player gui
+		//this.WCS_Character.ApplyMoveset(this._MovesetName);
 
 		// Initialize Connections
 		this.initializeConnections();
 
 		return this;
+	}
+
+	protected _AssignSkills(skillNames: string[]) {
+		// TODO: Assign skills via skill names
 	}
 
 	protected onStateChange(newState: string) {

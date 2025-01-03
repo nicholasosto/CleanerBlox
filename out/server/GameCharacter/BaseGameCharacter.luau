@@ -3,12 +3,16 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- GameCharacter.ts: Game Character Classes
 -- BaseGameCharacter: Base Class for Game Characters
 -- PlayerGameCharacter: Player Character
-local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
+local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
+local Character = _wcs.Character
+local CreateMoveset = _wcs.CreateMoveset
 local CharacterResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "CharacterResource").CharacterResource
 -- Data Related Imports
 -- Utility Imports
 local ResourceCalculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "Calculators").ResourceCalculator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+local BasicHold = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicHold").BasicHold
+local BasicMelee = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicMelee").BasicMelee
 -- BaseGameCharacter (NPCs and Players inherit from this)
 local BaseGameCharacter
 do
@@ -38,7 +42,6 @@ do
 			AttributePoints = 0,
 		}
 		self._State = "Idle"
-		self._MovesetName = "DefaultMoveset"
 		-- Assign Character Name
 		self.CharacterName = characterName
 		-- Assign Character Model
@@ -48,16 +51,20 @@ do
 		end
 		-- Create WCS Character
 		self.WCS_Character = Character.new(characterModel)
+		self._Moveset = CreateMoveset("DefaultMoveset", { BasicMelee, BasicHold })
+		self.WCS_Character:ApplyMoveset(self._Moveset)
 		-- Create Resources: Health, Mana, Stamina
 		self.Health = CharacterResource.new(self, "Health")
 		self.Mana = CharacterResource.new(self, "Mana")
 		self.Stamina = CharacterResource.new(self, "Stamina")
 		-- Apply Default Moveset
-		self.WCS_Character:ApplyMoveset(self._MovesetName)
-		-- TODO: Add skill buttons to action bar in player gui
+		--this.WCS_Character.ApplyMoveset(this._MovesetName);
 		-- Initialize Connections
 		self:initializeConnections()
 		return self
+	end
+	function BaseGameCharacter:_AssignSkills(skillNames)
+		-- TODO: Assign skills via skill names
 	end
 	function BaseGameCharacter:onStateChange(newState)
 		Logger:Log(script, "SuperClass-OnStateChange(): " .. newState)

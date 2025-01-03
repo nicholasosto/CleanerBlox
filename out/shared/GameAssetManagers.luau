@@ -45,6 +45,7 @@ local EGUIElements = {
 	ActionBar = "ActionBarMain",
 	CharacterFrame = "CharacterFrame",
 }
+-- Package Manager
 local PackageManager
 do
 	PackageManager = setmetatable({}, {
@@ -74,6 +75,28 @@ do
 		return guiTemplateInstance
 	end
 end
+-- Event Manager
+local EventManager
+do
+	EventManager = setmetatable({}, {
+		__tostring = function()
+			return "EventManager"
+		end,
+	})
+	EventManager.__index = EventManager
+	function EventManager.new(...)
+		local self = setmetatable({}, EventManager)
+		return self:constructor(...) or self
+	end
+	function EventManager:constructor()
+	end
+	function EventManager:GetEvent(eventName)
+		local event = EventManager.EventsFolder:FindFirstChild(eventName, true)
+		return event
+	end
+	EventManager.EventsFolder = game:GetService("ReplicatedStorage"):WaitForChild("Asset Package - Remotes")
+end
+-- GUI Reference Handler
 local GuiReferenceHandler
 do
 	GuiReferenceHandler = setmetatable({}, {
@@ -118,5 +141,6 @@ return {
 	EScreenGuis = EScreenGuis,
 	EGUIElements = EGUIElements,
 	PackageManager = PackageManager,
+	EventManager = EventManager,
 	GuiReferenceHandler = GuiReferenceHandler,
 }

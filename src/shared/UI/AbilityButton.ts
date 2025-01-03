@@ -37,20 +37,13 @@ export class AbilityButton {
 		//Skill Configuration
 		this._wcsSkill = wcsSkill;
 
-		this.setConnections();
+		this._imageButton.Activated.Connect((inputObj) => {
+			Logger.Log(script, "Ability Button Activated: ", inputObj);
+		});
 
 		Logger.Log(script, "Skill Name: ", this._wcsSkill.GetName());
 		Logger.Log(script, "Skill Frame: ", this._abilityButtonFrame);
 		return this;
-	}
-
-	// Set Connections
-	private setConnections() {
-		// Set the connections
-		this._connection = this._imageButton.Activated.Connect(() => {
-			this._wcsSkill.Start();
-			print("Ability Button Activated");
-		});
 	}
 
 	public SetCooldown(percentRemaining: number) {

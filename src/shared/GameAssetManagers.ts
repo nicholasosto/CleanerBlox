@@ -37,7 +37,9 @@ export enum EGUIElements {
 	CharacterFrame = "CharacterFrame",
 }
 
+// Package Manager
 export class PackageManager {
+	// Load Entire Package
 	public static LoadPackage(packageID: EPackageIDs): Model | undefined {
 		const packageContainer = InsertService.LoadAsset(packageID);
 		if (packageContainer === undefined) {
@@ -46,6 +48,7 @@ export class PackageManager {
 		return packageContainer;
 	}
 
+	// Load Asset from GUI Templates Package
 	public static LoadGuiTemplate(guiTemplate: EGuiTemplates): Instance | undefined {
 		const guiTemplateInstance = InsertService.LoadAsset(EPackageIDs.UITemplates).FindFirstChild(guiTemplate, true);
 		if (guiTemplateInstance === undefined) {
@@ -55,6 +58,16 @@ export class PackageManager {
 	}
 }
 
+// Event Manager
+export class EventManager {
+	public static EventsFolder = game.GetService("ReplicatedStorage").WaitForChild("Asset Package - Remotes");
+	public static GetEvent(eventName: string): RemoteEvent {
+		const event = EventManager.EventsFolder.FindFirstChild(eventName, true) as RemoteEvent;
+		return event;
+	}
+}
+
+// GUI Reference Handler
 export class GuiReferenceHandler {
 	// Get Screen GUI
 	public static getScreenGui(player: Player, guiName: EScreenGuis): ScreenGui {

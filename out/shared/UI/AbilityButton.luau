@@ -34,17 +34,12 @@ do
 		self._cooldownBar = self._abilityButtonFrame:FindFirstChild("CooldownBar")
 		--Skill Configuration
 		self._wcsSkill = wcsSkill
-		self:setConnections()
+		self._imageButton.Activated:Connect(function(inputObj)
+			Logger:Log(script, "Ability Button Activated: ", inputObj)
+		end)
 		Logger:Log(script, "Skill Name: ", self._wcsSkill:GetName())
 		Logger:Log(script, "Skill Frame: ", self._abilityButtonFrame)
 		return self
-	end
-	function AbilityButton:setConnections()
-		-- Set the connections
-		self._connection = self._imageButton.Activated:Connect(function()
-			self._wcsSkill:Start()
-			print("Ability Button Activated")
-		end)
 	end
 	function AbilityButton:SetCooldown(percentRemaining)
 		self._cooldownBar:SetAttribute("BarPercent", percentRemaining)

@@ -4,6 +4,7 @@ local ESkillNames = {
 	BigRed = "BigRed",
 	Spotlights = "Spotlights",
 	BasicMelee = "BasicMelee",
+	BasicRanged = "BasicRanged",
 	BasicHold = "BasicHold",
 }
 local SkillConfigurations = {
