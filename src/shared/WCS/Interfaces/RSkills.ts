@@ -17,6 +17,10 @@ type TSkillConfiguration = {
 	};
 };
 
+export function GetSkillConfiguration(skillName: ESkillNames): TSkillConfiguration[ESkillNames] {
+	return SkillConfigurations[skillName];
+}
+
 export const SkillConfigurations: TSkillConfiguration = {
 	["DevilBeam"]: {
 		imageId: "rbxassetid://0",

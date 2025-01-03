@@ -1,12 +1,17 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- Begin: KeyboardController.ts
-local UserInputService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").UserInputService
+local _services = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services")
+local Players = _services.Players
+local UserInputService = _services.UserInputService
 local ClientInventoryService = TS.import(script, script.Parent.Parent, "Services", "ClientInventoryService").ClientInventoryService
 local ClientSkillService = TS.import(script, script.Parent.Parent, "Services", "ClientSkillService").ClientSkillService
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
 local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "SharedReference").InventoryReference
+local _GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
+local AnimationHelper = _GameReference.AnimationHelper
+local EAnimations = _GameReference.EAnimations
 -- Set the skills here
 local Skills = {}
 local _q = Enum.KeyCode.Q
@@ -17,6 +22,14 @@ local _r = Enum.KeyCode.R
 Skills[_r] = "BigRed"
 local _t = Enum.KeyCode.T
 Skills[_t] = "ShapeTester"
+-- Set Animations Here
+local Animations = {}
+local _q_1 = Enum.KeyCode.Q
+local _mELEE_Backflip = EAnimations.MELEE_Backflip
+Animations[_q_1] = _mELEE_Backflip
+local _t_1 = Enum.KeyCode.T
+local _cHARACTER_Charging = EAnimations.CHARACTER_Charging
+Animations[_t_1] = _cHARACTER_Charging
 CommunicationGod:Summon()
 local KeyboardController
 do
@@ -60,6 +73,10 @@ do
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan:Connect(function(input, isProcessed)
 			local _exp = input.KeyCode
 			repeat
+				if _exp == (Enum.KeyCode.Z) then
+					AnimationHelper:CreateAnimationTrack(character, EAnimations.MELEE_Backflip):Play()
+					break
+				end
 				if _exp == (Enum.KeyCode.V) then
 					print("V Pressed")
 					ClientSkillService:AssignSlotRequest("1", "Basic")
@@ -67,6 +84,7 @@ do
 				end
 				if _exp == (Enum.KeyCode.G) then
 					print("G Pressed")
+					AnimationHelper:CreateAnimationTrack(character, EAnimations.COMBAT_Damage):Play()
 					break
 				end
 				if _exp == (Enum.KeyCode.H) then
@@ -116,10 +134,12 @@ do
 		end)
 	end
 	function KeyboardController:InputBegan(input, isProcessed)
-		KeyboardController:onKeyPress(input.KeyCode, true)
+		KeyboardController:toggleSkillOnKeyPress(input.KeyCode, true)
+		KeyboardController:toggleAnimationOnKeyPress(input.KeyCode, true)
 	end
 	function KeyboardController:InputEnded(input, isProcessed)
-		KeyboardController:onKeyPress(input.KeyCode, false)
+		KeyboardController:toggleSkillOnKeyPress(input.KeyCode, false)
+		KeyboardController:toggleAnimationOnKeyPress(input.KeyCode, false)
 	end
 	function KeyboardController:InventoryToggle(equipmentSlot, weaponName, begin)
 		if begin then
@@ -142,10 +162,37 @@ do
 			end
 		end
 	end
-	function KeyboardController:onKeyPress(key, begin)
+	function KeyboardController:AnimationToggle(animation, begin)
+		local character = Players.LocalPlayer.Character or (Players.LocalPlayer.CharacterAdded:Wait())
+		local animator = character:FindFirstChild("Animator", true)
+		local _exp = animator:GetPlayingAnimationTracks()
+		-- ▼ ReadonlyArray.forEach ▼
+		local _callback = function(track)
+			track:Stop()
+		end
+		for _k, _v in _exp do
+			_callback(_v, _k - 1, _exp)
+		end
+		-- ▲ ReadonlyArray.forEach ▲
+		local animationTrack = AnimationHelper:CreateAnimationTrack(character, animation)
+		if begin then
+			animationTrack:Play()
+		else
+			animationTrack:Stop()
+		end
+	end
+	function KeyboardController:toggleSkillOnKeyPress(key, begin)
 		local _key = key
 		local skillName = Skills[_key]
 		self:SkillToggle(skillName, begin)
+	end
+	function KeyboardController:toggleAnimationOnKeyPress(key, begin)
+		local _key = key
+		local animation = Animations[_key]
+		if animation == nil then
+			return nil
+		end
+		self:AnimationToggle(animation, begin)
 	end
 end
 -- End: KeyboardController.ts

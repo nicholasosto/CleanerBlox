@@ -1,5 +1,5 @@
 // Roblox Services
-import { Players, HttpService, Workspace } from "@rbxts/services";
+import { Players, HttpService, Workspace, CollectionService } from "@rbxts/services";
 
 // WCS System
 import { Character, CreateServer } from "@rbxts/wcs";
@@ -8,10 +8,14 @@ import { WCSFolders } from "shared/WCS/Folders";
 // Custom Imports
 import { DataManager } from "./Data/DataManager";
 import { InventoryService } from "./Services/InventoryService";
-import { EntityManager } from "./GameCharacter/EntityManager";
+import { EntityManager } from "./GameCharacter/CharacterManager";
 import { NotificationManager } from "./Notification/NotificationManager";
 import { PackageManager, EPackageIDs } from "shared/GameAssetManagers";
 import { Logger } from "shared/Utility/Logger";
+
+//Test Imports
+import { BaseGameCharacter } from "./GameCharacter/Classes/BaseGameCharacter";
+//END OF IMPORTS
 
 //Services Needing to Start
 DataManager.Start();
@@ -31,6 +35,16 @@ WCSServer.RegisterDirectory(WCSFolders.Skills);
 WCSServer.RegisterDirectory(WCSFolders.Movesets);
 WCSServer.RegisterDirectory(WCSFolders.StatusEffects);
 WCSServer.Start();
+
+// TESTING
+
+const NPCCollection = CollectionService.GetTagged("NPCCharacter");
+NPCCollection.forEach((npc) => {
+	const npcCharacter = new BaseGameCharacter(npc as Model);
+	Logger.Log(script.Name, "NPC Character: ", npcCharacter.CharacterName);
+});
+
+// END OF TESTING
 
 // Handle Character Added
 function handleCharacterAdded(character: Model) {

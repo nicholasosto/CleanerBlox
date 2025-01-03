@@ -1,10 +1,11 @@
 // Begin: KeyboardController.ts
-import { HttpService, UserInputService, Workspace } from "@rbxts/services";
+import { HttpService, Players, UserInputService, Workspace } from "@rbxts/services";
 import { ClientInventoryService } from "client/Services/ClientInventoryService";
 import { ClientSkillService } from "client/Services/ClientSkillService";
 import { Character, Skill } from "@rbxts/wcs";
 import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 import { InventoryReference } from "shared/SharedReference";
+import { SkillConfigurations, AnimationHelper, EAnimations } from "shared/_References/GameReference";
 
 // Set the skills here
 const Skills: Map<Enum.KeyCode, string> = new Map<Enum.KeyCode, string>();
@@ -12,6 +13,11 @@ Skills.set(Enum.KeyCode.Q, "BasicMelee");
 Skills.set(Enum.KeyCode.E, "CleanHold");
 Skills.set(Enum.KeyCode.R, "BigRed");
 Skills.set(Enum.KeyCode.T, "ShapeTester");
+
+// Set Animations Here
+const Animations: Map<Enum.KeyCode, EAnimations> = new Map<Enum.KeyCode, EAnimations>();
+Animations.set(Enum.KeyCode.Q, EAnimations.MELEE_Backflip);
+Animations.set(Enum.KeyCode.T, EAnimations.CHARACTER_Charging);
 
 CommunicationGod.Summon();
 
@@ -49,12 +55,16 @@ export class KeyboardController {
 		KeyboardController.inputBeganConnection = UserInputService.InputBegan.Connect(
 			(input: InputObject, isProcessed: boolean) => {
 				switch (input.KeyCode) {
+					case Enum.KeyCode.Z:
+						AnimationHelper.CreateAnimationTrack(character, EAnimations.MELEE_Backflip).Play();
+						break;
 					case Enum.KeyCode.V:
 						print("V Pressed");
 						ClientSkillService.AssignSlotRequest("1", "Basic");
 						break;
 					case Enum.KeyCode.G:
 						print("G Pressed");
+						AnimationHelper.CreateAnimationTrack(character, EAnimations.COMBAT_Damage).Play();
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
@@ -103,11 +113,13 @@ export class KeyboardController {
 	}
 
 	private static InputBegan(input: InputObject, isProcessed: boolean) {
-		KeyboardController.onKeyPress(input.KeyCode, true);
+		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, true);
+		KeyboardController.toggleAnimationOnKeyPress(input.KeyCode, true);
 	}
 
 	private static InputEnded(input: InputObject, isProcessed: boolean) {
-		KeyboardController.onKeyPress(input.KeyCode, false);
+		KeyboardController.toggleSkillOnKeyPress(input.KeyCode, false);
+		KeyboardController.toggleAnimationOnKeyPress(input.KeyCode, false);
 	}
 
 	private static InventoryToggle(
@@ -141,10 +153,33 @@ export class KeyboardController {
 		}
 	}
 
+	private static AnimationToggle(animation: EAnimations, begin: boolean): void {
+		const character = Players.LocalPlayer.Character || Players.LocalPlayer.CharacterAdded.Wait()[0];
+		const animator = character.FindFirstChild("Animator", true) as Animator;
+		animator.GetPlayingAnimationTracks().forEach((track) => {
+			track.Stop();
+		});
+		const animationTrack = AnimationHelper.CreateAnimationTrack(character, animation);
+		if (begin) {
+			animationTrack.Play();
+		} else {
+			animationTrack.Stop();
+		}
+	}
+
 	// Main Function: onKeyPress
-	private static onKeyPress(key: Enum.KeyCode, begin: boolean): void {
+	private static toggleSkillOnKeyPress(key: Enum.KeyCode, begin: boolean): void {
 		const skillName = Skills.get(key);
 		this.SkillToggle(skillName as string, begin);
+	}
+
+	// Main Function: onKeyPress
+	private static toggleAnimationOnKeyPress(key: Enum.KeyCode, begin: boolean): void {
+		const animation = Animations.get(key);
+		if (animation === undefined) {
+			return;
+		}
+		this.AnimationToggle(animation as EAnimations, begin);
 	}
 }
 // End: KeyboardController.ts

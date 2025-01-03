@@ -37,7 +37,7 @@ wcsClient.Start();
 KeyboardController.Start();
 FlightController.Start();
 GUIController.Start();
-CommunicationGod.Summon();
+//CommunicationGod.Summon();
 
 // Variables
 let WCSCharacter: Character | undefined;

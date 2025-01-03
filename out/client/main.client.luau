@@ -18,7 +18,6 @@ local GUIController = TS.import(script, script.Parent, "Controllers", "GUIContro
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
-local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
 local EventManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameAssetManagers").EventManager
 -- Start Services
 ClientInventoryService:Start()
@@ -34,7 +33,7 @@ wcsClient:Start()
 KeyboardController:Start()
 FlightController:Start()
 GUIController:Start()
-CommunicationGod:Summon()
+--CommunicationGod.Summon();
 -- Variables
 local WCSCharacter
 -- Handle Character Added

@@ -7,7 +7,11 @@ local ESkillNames = {
 	BasicRanged = "BasicRanged",
 	BasicHold = "BasicHold",
 }
-local SkillConfigurations = {
+local SkillConfigurations
+local function GetSkillConfiguration(skillName)
+	return SkillConfigurations[skillName]
+end
+SkillConfigurations = {
 	DevilBeam = {
 		imageId = "rbxassetid://0",
 		cooldownTime = 3,
@@ -38,6 +42,7 @@ local SkillConfigurations = {
 	},
 }
 return {
+	GetSkillConfiguration = GetSkillConfiguration,
 	ESkillNames = ESkillNames,
 	SkillConfigurations = SkillConfigurations,
 }
