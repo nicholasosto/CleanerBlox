@@ -17,7 +17,7 @@ do
 	end
 	function AnimationHelper:CreateAnimationTrack(characterModel, animationId)
 		local animator = characterModel:FindFirstChild("Animator", true)
-		local animation = CharacterAnimations[animationId]
+		local animation = Instance.new("Animation")
 		local animationTrack = animator:LoadAnimation(animation)
 		return animationTrack
 	end

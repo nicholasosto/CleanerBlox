@@ -8,7 +8,7 @@ import { WCSFolders } from "shared/WCS/Folders";
 // Custom Imports
 import { DataManager } from "./Data/DataManager";
 import { InventoryService } from "./Services/InventoryService";
-import { EntityManager } from "./GameCharacter/CharacterManager";
+import { GameCharacterRegistry } from "./GameCharacter/CharacterManager";
 import { NotificationManager } from "./Notification/NotificationManager";
 import { PackageManager, EPackageIDs } from "shared/GameAssetManagers";
 import { Logger } from "shared/Utility/Logger";
@@ -24,7 +24,7 @@ DataManager.Start();
 InventoryService.Start();
 
 // Entity Manager
-EntityManager.Start();
+GameCharacterRegistry.Start();
 
 // Notification Manager
 NotificationManager.Start();

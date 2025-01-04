@@ -1,6 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local ESkillNames = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").ESkillNames
+local getDefaultPlayerSkillsData = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Skills", "SkillsV2").getDefaultPlayerSkillsData
 local DataTemplate = {
 	key = "Datatemplate",
 	version = 2,
@@ -23,6 +23,7 @@ local DataTemplate = {
 		Constitution = 200,
 		AttributePoints = 0,
 	},
+	Skills = getDefaultPlayerSkillsData(),
 	Currencies = { {
 		CurrencyId = "Souls",
 		CurrencyAmount = 140,
@@ -32,22 +33,6 @@ local DataTemplate = {
 	}, {
 		CurrencyId = "SSZeno",
 		CurrencyAmount = 1,
-	} },
-	SkillSlots = { {
-		SlotId = "Slot_1",
-		SkillId = ESkillNames.BasicMelee,
-	}, {
-		SlotId = "Slot_2",
-		SkillId = ESkillNames.BasicHold,
-	}, {
-		SlotId = "Slot_3",
-		SkillId = ESkillNames.Spotlights,
-	}, {
-		SlotId = "Slot_4",
-		SkillId = ESkillNames.BigRed,
-	}, {
-		SlotId = "Slot_5",
-		SkillId = "Empty",
 	} },
 	EquipmentSlots = { {
 		SlotId = "Weapon",
@@ -68,7 +53,6 @@ local DataTemplate = {
 		SlotId = "Accessory",
 		EquipmentId = "None",
 	} },
-	SkillInventory = { "Attack", "Block", "Spotlights", "Heal", "Buff", "Debuff", "Stun" },
 	WeaponInventory = { "Fists", "Dagger", "Sword", "Axe", "Bow", "Staff" },
 	ArmorInventory = { "Cloth", "Leather", "Chainmail", "Plate" },
 	HelmetInventory = { "None", "Hood", "Helmet", "Crown" },

@@ -6,16 +6,12 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local CharacterResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "CharacterResource").CharacterResource
 -- Data Related Imports
-local _GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
-local AnimationHelper = _GameReference.AnimationHelper
-local EAnimations = _GameReference.EAnimations
-local ESkillNames = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").ESkillNames
 -- Utility Imports
 local ResourceCalculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "Calculators").ResourceCalculator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local BasicHold = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicHold").BasicHold
+local BasicRanged = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicRanged").BasicRanged
 local BasicMelee = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicMelee").BasicMelee
-local GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
 -- BaseGameCharacter (NPCs and Players inherit from this)
 local BaseGameCharacter
 do
@@ -59,18 +55,14 @@ do
 		end
 		-- Create WCS Character
 		self.WCS_Character = Character.new(characterModel)
-		--this._Moveset = CreateMoveset("_DefaultMoveset", [BasicMelee, BasicHold]);
-		--this.WCS_Character.ApplyMoveset(this._Moveset);
 		-- Create Resources: Health, Mana, Stamina
 		self.Health = CharacterResource.new(self, "Health")
 		self.Mana = CharacterResource.new(self, "Mana")
 		self.Stamina = CharacterResource.new(self, "Stamina")
-		-- Apply Default Moveset
-		--this.WCS_Character.ApplyMoveset(this._MovesetName);
+		-- Assign Skills
 		BasicMelee.new(self.WCS_Character)
 		BasicHold.new(self.WCS_Character)
-		local skillConfig = GameReference.SkillConfigurations[ESkillNames.BasicRanged]
-		Logger:Log(script, "Message", skillConfig.ImageId)
+		BasicRanged.new(self.WCS_Character)
 		-- Initialize Connections
 		self:initializeConnections()
 		return self
@@ -120,12 +112,6 @@ do
 		warn("BaseEntity: Current Health: " .. tostring(currentHealth))
 		warn("BaseEntity: New Health: " .. tostring(newHealth))
 		self.Health:SetCurrent(newHealth)
-	end
-	function BaseGameCharacter:loadAnimationTracks()
-		-- Load Animation Tracks
-		local animationTrack = AnimationHelper:CreateAnimationTrack(self.CharacterModel, EAnimations.COMBAT_Damage)
-		animationTrack.Looped = true
-		animationTrack:Play()
 	end
 	function BaseGameCharacter:handleCharacterDealtDamage(enemy, damageContainer)
 		Logger:Log(script, "BaseEntity: Dealt Damage: ", damageContainer.Damage)

@@ -3,13 +3,13 @@ import { Players, DataStoreService, HttpService } from "@rbxts/services";
 
 // My Imports
 import { Logger } from "../../shared/Utility/Logger";
-import { IPlayerData } from "shared/SharedReference";
+import { IPlayerDataV2 } from "shared/SharedReference";
 import { DataTemplate } from "./DataTemplate";
 
 // Data Cache Class for use in the DataManager
 export class DataCache {
 	public _userId: string;
-	public _playerData: IPlayerData;
+	public _playerData: IPlayerDataV2;
 	private _lastSaveTimestamp: number = 0;
 	private _minSaveInterval: number = 2;
 	private _dataStore: DataStore;
@@ -20,7 +20,7 @@ export class DataCache {
 		this._dataStore = dataStore;
 
 		// Attempt to load the player data from the DataStore
-		this._playerData = dataStore.GetAsync(userId)[0] as IPlayerData;
+		this._playerData = dataStore.GetAsync(userId)[0] as IPlayerDataV2;
 
 		// If the player data is not found, create a new player data based on the DataTemplate
 		if (this._playerData === undefined) {
@@ -50,7 +50,7 @@ export class DataCache {
 	}
 
 	// Updates the DataCache with the provided player data
-	public SetDataCache(dataCache: IPlayerData) {
+	public SetDataCache(dataCache: IPlayerDataV2) {
 		this._playerData = dataCache;
 		const timeSinceLastSave = os.time() - this._lastSaveTimestamp;
 		if (timeSinceLastSave <= 2) {
@@ -62,7 +62,7 @@ export class DataCache {
 		}
 	}
 
-	public GetDataCache(): IPlayerData {
+	public GetDataCache(): IPlayerDataV2 {
 		return this._playerData;
 	}
 
@@ -95,7 +95,7 @@ export class DataManager {
 	public static RegisterPlayer(player: Player): void {
 		// 01 - Get the player data from the DataStore or Cache
 		const userId = tostring(player.UserId);
-		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerData;
+		const storedData = DataManager.GameDataStore.GetAsync(userId)[0] as IPlayerDataV2;
 		const dataCache = new DataCache(userId, DataManager.GameDataStore);
 		//Logger.Log(script,"DM", "Player Registered: ", userId);
 		this.PlayerCache.push(dataCache);

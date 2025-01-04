@@ -1,5 +1,5 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
-import { SkillConfigurations } from "shared/_References/GameReference";
+import { SkillConfigurations } from "shared/_References/Skills/Skills";
 import { Logger } from "shared/Utility/Logger";
 
 @SkillDecorator

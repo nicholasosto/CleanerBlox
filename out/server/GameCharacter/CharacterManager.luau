@@ -5,60 +5,65 @@ local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_i
 local PlayerGameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Classes", "PlayerGameCharacter").PlayerGameCharacter
 local BaseGameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Classes", "BaseGameCharacter").BaseGameCharacter
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
-local EntityManager
+local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
+local GameCharacterRegistry
 do
-	EntityManager = setmetatable({}, {
+	GameCharacterRegistry = setmetatable({}, {
 		__tostring = function()
-			return "EntityManager"
+			return "GameCharacterRegistry"
 		end,
 	})
-	EntityManager.__index = EntityManager
-	function EntityManager.new(...)
-		local self = setmetatable({}, EntityManager)
+	GameCharacterRegistry.__index = GameCharacterRegistry
+	function GameCharacterRegistry.new(...)
+		local self = setmetatable({}, GameCharacterRegistry)
 		return self:constructor(...) or self
 	end
-	function EntityManager:constructor()
+	function GameCharacterRegistry:constructor()
 		-- Handle Character Added
-		EntityManager._connectionCharacterAdded = Players.PlayerAdded:Connect(function(player)
+		GameCharacterRegistry._connectionCharacterAdded = Players.PlayerAdded:Connect(function(player)
 			player.CharacterAdded:Connect(function(character)
 				local playerGameCharacter = PlayerGameCharacter.new(player)
-				--Logger.Log(script, HttpService.JSONEncode(playerGameCharacter).find("CharacterFrame"));
-			end)
-			player.CharacterAdded:Connect(function(character)
-				--const entity = new BaseEntity(character);
-				--warn("EntityManager - Player Added", player.Name, "entityCreation triggered");
-				--EntityManager._entities.set(character.Name, entity);
+				Logger:Log(script, "Registering Player: ", playerGameCharacter._player.Name)
+				local __playerCharacterMap = GameCharacterRegistry._playerCharacterMap
+				local _arg0 = tostring(player.UserId)
+				__playerCharacterMap[_arg0] = playerGameCharacter
 			end)
 		end)
 	end
-	function EntityManager:Start()
+	function GameCharacterRegistry:Start()
 		self:GetInstance()
 	end
-	function EntityManager:GetInstance()
-		if EntityManager._instance == nil then
-			EntityManager._instance = EntityManager.new()
+	function GameCharacterRegistry:GetInstance()
+		if GameCharacterRegistry._instance == nil then
+			GameCharacterRegistry._instance = GameCharacterRegistry.new()
 		end
-		return EntityManager._instance
+		return GameCharacterRegistry._instance
 	end
-	function EntityManager:CreateEntity(rig)
+	function GameCharacterRegistry:CreateEntity(rig)
 		local entity = BaseGameCharacter.new(rig)
-		local __entities = EntityManager._entities
+		local __characterMap = GameCharacterRegistry._characterMap
 		local _name = rig.Name
-		__entities[_name] = entity
+		__characterMap[_name] = entity
 	end
-	function EntityManager:GetEntity(name)
-		local __entities = EntityManager._entities
+	function GameCharacterRegistry:GetEntity(name)
+		local __characterMap = GameCharacterRegistry._characterMap
 		local _name = name
-		return __entities[_name]
+		return __characterMap[_name]
 	end
-	function EntityManager:RemoveEntity(name)
-		local __entities = EntityManager._entities
+	function GameCharacterRegistry:GetPlayerCharacter(userId)
+		local __playerCharacterMap = GameCharacterRegistry._playerCharacterMap
+		local _arg0 = tostring(userId)
+		return __playerCharacterMap[_arg0]
+	end
+	function GameCharacterRegistry:RemoveEntity(name)
+		local __characterMap = GameCharacterRegistry._characterMap
 		local _name = name
-		__entities[_name] = nil
+		__characterMap[_name] = nil
 	end
-	EntityManager._entities = {}
-	EntityManager._entityCreatedEvent = CommunicationGod.ServerSignals.Entity_Created
+	GameCharacterRegistry._characterMap = {}
+	GameCharacterRegistry._playerCharacterMap = {}
+	GameCharacterRegistry._entityCreatedEvent = CommunicationGod.ServerSignals.Entity_Created
 end
 return {
-	EntityManager = EntityManager,
+	GameCharacterRegistry = GameCharacterRegistry,
 }

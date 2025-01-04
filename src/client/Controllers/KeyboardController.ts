@@ -5,19 +5,21 @@ import { ClientSkillService } from "client/Services/ClientSkillService";
 import { Character, Skill } from "@rbxts/wcs";
 import { CommunicationGod } from "shared/Experimental/CommunicationGod";
 import { InventoryReference } from "shared/SharedReference";
-import { SkillConfigurations, AnimationHelper, EAnimations } from "shared/_References/GameReference";
+import { EAnimations } from "shared/_References/Animation/Animations";
+import { SkillConfigurations, ESkillName } from "shared/_References/Skills/Skills";
+import { AnimationHelper } from "shared/_References/Animation/AnimationHelper";
 
 // Set the skills here
-const Skills: Map<Enum.KeyCode, string> = new Map<Enum.KeyCode, string>();
-Skills.set(Enum.KeyCode.Q, "BasicMelee");
-Skills.set(Enum.KeyCode.E, "CleanHold");
-Skills.set(Enum.KeyCode.R, "BigRed");
-Skills.set(Enum.KeyCode.T, "ShapeTester");
+const Skills: Map<Enum.KeyCode, ESkillName> = new Map<Enum.KeyCode, ESkillName>();
+Skills.set(Enum.KeyCode.Q, ESkillName.BasicMelee);
+Skills.set(Enum.KeyCode.E, ESkillName.BasicRanged);
+Skills.set(Enum.KeyCode.R, ESkillName.BasicHold);
 
 // Set Animations Here
 const Animations: Map<Enum.KeyCode, EAnimations> = new Map<Enum.KeyCode, EAnimations>();
-Animations.set(Enum.KeyCode.Q, EAnimations.MELEE_Backflip);
-Animations.set(Enum.KeyCode.T, EAnimations.CHARACTER_Charging);
+Animations.set(Enum.KeyCode.Q, SkillConfigurations.BasicMelee.Animation.Activation);
+Animations.set(Enum.KeyCode.E, SkillConfigurations.BasicRanged.Animation.Activation);
+Animations.set(Enum.KeyCode.R, SkillConfigurations.BasicHold.Animation.Activation);
 
 CommunicationGod.Summon();
 

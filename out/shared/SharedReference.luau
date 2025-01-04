@@ -21,8 +21,6 @@ local EStatEvent = {
 -- Equipment Slot
 -- Currency Type
 -- Character Class
--- Core Stats
--- Player Data Interface
 return {
 	InventoryReference = InventoryReference,
 	ESkillEvent = ESkillEvent,

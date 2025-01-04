@@ -9,27 +9,33 @@ local ClientSkillService = TS.import(script, script.Parent.Parent, "Services", "
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
 local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "SharedReference").InventoryReference
-local _GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
-local AnimationHelper = _GameReference.AnimationHelper
-local EAnimations = _GameReference.EAnimations
+local EAnimations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animation", "Animations").EAnimations
+local _Skills = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Skills", "Skills")
+local SkillConfigurations = _Skills.SkillConfigurations
+local ESkillName = _Skills.ESkillName
+local AnimationHelper = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animation", "AnimationHelper").AnimationHelper
 -- Set the skills here
 local Skills = {}
 local _q = Enum.KeyCode.Q
-Skills[_q] = "BasicMelee"
+local _basicMelee = ESkillName.BasicMelee
+Skills[_q] = _basicMelee
 local _e = Enum.KeyCode.E
-Skills[_e] = "CleanHold"
+local _basicRanged = ESkillName.BasicRanged
+Skills[_e] = _basicRanged
 local _r = Enum.KeyCode.R
-Skills[_r] = "BigRed"
-local _t = Enum.KeyCode.T
-Skills[_t] = "ShapeTester"
+local _basicHold = ESkillName.BasicHold
+Skills[_r] = _basicHold
 -- Set Animations Here
 local Animations = {}
 local _q_1 = Enum.KeyCode.Q
-local _mELEE_Backflip = EAnimations.MELEE_Backflip
-Animations[_q_1] = _mELEE_Backflip
-local _t_1 = Enum.KeyCode.T
-local _cHARACTER_Charging = EAnimations.CHARACTER_Charging
-Animations[_t_1] = _cHARACTER_Charging
+local _activation = SkillConfigurations.BasicMelee.Animation.Activation
+Animations[_q_1] = _activation
+local _e_1 = Enum.KeyCode.E
+local _activation_1 = SkillConfigurations.BasicRanged.Animation.Activation
+Animations[_e_1] = _activation_1
+local _r_1 = Enum.KeyCode.R
+local _activation_2 = SkillConfigurations.BasicHold.Animation.Activation
+Animations[_r_1] = _activation_2
 CommunicationGod:Summon()
 local KeyboardController
 do

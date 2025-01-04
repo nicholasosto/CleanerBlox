@@ -13,7 +13,7 @@ local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS",
 -- Custom Imports
 local DataManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataManager").DataManager
 local InventoryService = TS.import(script, game:GetService("ServerScriptService"), "TS", "Services", "InventoryService").InventoryService
-local EntityManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "CharacterManager").EntityManager
+local GameCharacterRegistry = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "CharacterManager").GameCharacterRegistry
 local NotificationManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Notification", "NotificationManager").NotificationManager
 local _GameAssetManagers = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameAssetManagers")
 local PackageManager = _GameAssetManagers.PackageManager
@@ -27,7 +27,7 @@ DataManager:Start()
 -- Inventory Service
 InventoryService:Start()
 -- Entity Manager
-EntityManager:Start()
+GameCharacterRegistry:Start()
 -- Notification Manager
 NotificationManager:Start()
 -- WCS Server Start

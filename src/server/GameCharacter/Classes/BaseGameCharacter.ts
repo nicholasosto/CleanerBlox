@@ -1,24 +1,11 @@
 // GameCharacter.ts: Game Character Classes
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
-import {
-	Character,
-	DamageContainer,
-	Moveset,
-	Skill,
-	StatusEffect,
-	UnknownStatus,
-	CreateMoveset,
-	SkillBase,
-	UnknownSkill,
-} from "@rbxts/wcs";
+import { Character, DamageContainer, UnknownStatus } from "@rbxts/wcs";
 import { CharacterResource } from "../Subclasses/CharacterResource";
 
 // Data Related Imports
 import { TCoreStats } from "shared/SharedReference";
-import { AnimationHelper, EAnimations } from "shared/_References/GameReference";
-import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
-import { AbilityButton } from "shared/UI/AbilityButton";
 
 // Utility Imports
 import { ResourceCalculator } from "../Subclasses/Calculators";
@@ -26,7 +13,6 @@ import { Logger } from "shared/Utility/Logger";
 import { BasicHold } from "shared/WCS/Skills/BasicHold";
 import { BasicRanged } from "shared/WCS/Skills/BasicRanged";
 import { BasicMelee } from "shared/WCS/Skills/BasicMelee";
-import * as GameReference from "shared/_References/GameReference";
 
 // BaseGameCharacter (NPCs and Players inherit from this)
 export class BaseGameCharacter {
@@ -86,21 +72,16 @@ export class BaseGameCharacter {
 		}
 		// Create WCS Character
 		this.WCS_Character = new Character(characterModel);
-		//this._Moveset = CreateMoveset("_DefaultMoveset", [BasicMelee, BasicHold]);
-		//this.WCS_Character.ApplyMoveset(this._Moveset);
 
 		// Create Resources: Health, Mana, Stamina
 		this.Health = new CharacterResource(this, "Health");
 		this.Mana = new CharacterResource(this, "Mana");
 		this.Stamina = new CharacterResource(this, "Stamina");
 
-		// Apply Default Moveset
-		//this.WCS_Character.ApplyMoveset(this._MovesetName);
+		// Assign Skills
 		new BasicMelee(this.WCS_Character);
 		new BasicHold(this.WCS_Character);
-		const skillConfig = GameReference.SkillConfigurations[ESkillNames.BasicRanged];
-		Logger.Log(script, "Message", skillConfig.ImageId);
-
+		new BasicRanged(this.WCS_Character);
 		// Initialize Connections
 		this.initializeConnections();
 
@@ -166,14 +147,6 @@ export class BaseGameCharacter {
 		warn("BaseEntity: New Health: " + newHealth);
 
 		this.Health.SetCurrent(newHealth);
-	}
-
-	// Load Animation Tracks
-	private loadAnimationTracks() {
-		// Load Animation Tracks
-		const animationTrack = AnimationHelper.CreateAnimationTrack(this.CharacterModel, EAnimations.COMBAT_Damage);
-		animationTrack.Looped = true;
-		animationTrack.Play();
 	}
 
 	// Dealt Damage

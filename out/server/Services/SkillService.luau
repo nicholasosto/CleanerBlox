@@ -67,14 +67,6 @@ do
 		local userId = tostring(player.UserId)
 		local playerData = DataManager:GetDataCache(userId)._playerData
 		local playerSkills = playerData.SkillSlots
-		-- ▼ ReadonlyArray.forEach ▼
-		local _callback = function(skillSlot)
-			Logger:Log(script, "SkillService", "Assigning Skill: " .. skillSlot.SkillId)
-		end
-		for _k, _v in playerSkills do
-			_callback(_v, _k - 1, playerSkills)
-		end
-		-- ▲ ReadonlyArray.forEach ▲
 	end
 	function SkillService:ClearSlot(player, slotId)
 		local response = {

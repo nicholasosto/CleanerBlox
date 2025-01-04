@@ -1,6 +1,8 @@
 import * as InventoryReference from "./Refrences/InventoryReference";
+import { TCoreStats } from "./_References/Data/PlayerDataV2";
+import { IPlayerDataV2 } from "./_References/Data/PlayerDataV2";
 
-export { InventoryReference };
+export { InventoryReference, TCoreStats, IPlayerDataV2 };
 
 /* [[[[[[  Notifications ]]]]]] */
 export type TEventSuccessResponse = {
@@ -20,12 +22,10 @@ export enum ESkillEvent {
 	AssignSlotResponse = "SKILL_AssignSlotResponse",
 }
 
-
 export enum EStatEvent {
 	IncreaseStatRequest = "STAT_IncreaseStatRequest",
 	IncreaseStatResponse = "STAT_IncreaseStatResponse",
 }
-
 
 /* [[[[[[  Player Data ]]]]]] */
 
@@ -55,47 +55,3 @@ export type TCharacterClass = {
 	ClassExperience: number;
 	ClassExperienceToNextLevel: number;
 };
-
-// Core Stats
-export type TCoreStats = {
-	Level: number;
-	Experience: number;
-	ExperienceToNextLevel: number;
-	Strength: number;
-	Speed: number;
-	Dexterity: number;
-	Intelligence: number;
-	Constitution: number;
-	AttributePoints: number;
-};
-
-
-
-// Player Data Interface
-export interface IPlayerData {
-	[str: string]: unknown;
-
-	// Datastore Info
-	key: string;
-	version: number;
-
-	// Character Info
-	CharacterName: string;
-	CharacterClass: TCharacterClass;
-
-	// Core Stats
-	Stats: TCoreStats;
-
-	// Currency, Skill, Equipment Slots
-	Currencies: Array<TCurrency>;
-	SkillSlots: Array<TSkillSlot>;
-	EquipmentSlots: Array<TEquipmentSlot>;
-
-	// Inventory
-	SkillInventory: string[];
-	WeaponInventory: string[];
-	ArmorInventory: string[];
-	HelmetInventory: string[];
-	FamiliarInventory: string[];
-	AccessoryInventory: string[];
-}

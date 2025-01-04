@@ -1,7 +1,8 @@
-import { IPlayerData, TEquipmentSlot, TSkillSlot, TCurrency } from "shared/SharedReference";
+import { IPlayerDataV2, TEquipmentSlot, TSkillSlot, TCurrency } from "shared/SharedReference";
+import { getDefaultPlayerSkillsData, PlayerSkillsData } from "shared/_References/Skills/SkillsV2";
 import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
 
-export const DataTemplate: IPlayerData = {
+export const DataTemplate: IPlayerDataV2 = {
 	key: "Datatemplate",
 	version: 2,
 
@@ -30,6 +31,8 @@ export const DataTemplate: IPlayerData = {
 		AttributePoints: 0,
 	},
 
+	Skills: getDefaultPlayerSkillsData(),
+
 	// Currencies
 	Currencies: [
 		{ CurrencyId: "Souls", CurrencyAmount: 140 },
@@ -38,13 +41,7 @@ export const DataTemplate: IPlayerData = {
 	] as TCurrency[],
 
 	// Skill Slots
-	SkillSlots: [
-		{ SlotId: "Slot_1", SkillId: ESkillNames.BasicMelee },
-		{ SlotId: "Slot_2", SkillId: ESkillNames.BasicHold },
-		{ SlotId: "Slot_3", SkillId: ESkillNames.Spotlights },
-		{ SlotId: "Slot_4", SkillId: ESkillNames.BigRed },
-		{ SlotId: "Slot_5", SkillId: "Empty" },
-	] as TSkillSlot[],
+	//SkillData: PlayerSkillsData,
 
 	// Equipment Slots
 	EquipmentSlots: [
@@ -57,7 +54,6 @@ export const DataTemplate: IPlayerData = {
 	] as TEquipmentSlot[],
 
 	// Character Inventory
-	SkillInventory: ["Attack", "Block", "Spotlights", "Heal", "Buff", "Debuff", "Stun"],
 	WeaponInventory: ["Fists", "Dagger", "Sword", "Axe", "Bow", "Staff"],
 	ArmorInventory: ["Cloth", "Leather", "Chainmail", "Plate"],
 	HelmetInventory: ["None", "Hood", "Helmet", "Crown"],

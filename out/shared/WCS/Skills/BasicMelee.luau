@@ -3,7 +3,7 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 local _wcs = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out")
 local Skill = _wcs.Skill
 local SkillDecorator = _wcs.SkillDecorator
-local SkillConfigurations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference").SkillConfigurations
+local SkillConfigurations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Skills", "Skills").SkillConfigurations
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local BasicMelee
 do
