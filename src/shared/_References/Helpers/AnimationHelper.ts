@@ -1,8 +1,9 @@
-import { EAnimations, CharacterAnimations, TAnimation, CreateAnimation } from "../Animations";
+import { CharacterAnimations, TAnimation, CreateAnimation } from "../Animations";
+import { AnimationIds } from "../Indexes/AssetIndex";
 
 export class AnimationHelper {
 	public static CharacterAnimations: TAnimation = CharacterAnimations;
-	public static CreateAnimationTrack(characterModel: Model, animationId: EAnimations): AnimationTrack {
+	public static CreateAnimationTrack(characterModel: Model, animationId: AnimationIds): AnimationTrack {
 		const animator = characterModel.FindFirstChild("Animator", true) as Animator;
 		const animation = new Instance("Animation");
 

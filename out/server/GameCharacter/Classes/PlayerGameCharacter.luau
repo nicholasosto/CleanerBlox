@@ -1,5 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+-- eslint-disable prettier/prettier 
 local BaseGameCharacter = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Classes", "BaseGameCharacter").BaseGameCharacter
 local EventManager = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "GameAssetManagers").EventManager
 local SkillsRef = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Character", "Skills")
@@ -33,11 +34,7 @@ do
 		self._player = player
 		-- DataCache
 		self._dataCache = DataManager:GetDataCache(tostring(player.UserId))
-		--Logger.Log(script, "DataCache: ", this._dataCache._playerData as unknown as string);
 		Logger:Log(script, "Skills: ", self._dataCache._playerData.Skills)
-		--const skillDefinitions = SkillsRef.getAssignedSkillDefinitions(this._dataCache._playerData.Skills);
-		--Logger.Log(script, "Skill Definitions: ", skillDefinitions as unknown as string);
-		-- Fire: Player Character Created Event
 		local PlayerCharacterCreated = EventManager:GetEvent("PLAYER_CharacterCreated")
 		PlayerCharacterCreated:FireClient(player)
 		return self

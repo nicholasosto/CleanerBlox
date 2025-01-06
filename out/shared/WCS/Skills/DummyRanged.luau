@@ -26,13 +26,10 @@ do
 	end
 	function BasicRanged:OnConstruct()
 		Logger:Log(script, "BasicRanged Construct")
-		Logger:Log(script, "BasicRanged Construct")
 	end
 	function BasicRanged:OnConstructServer()
 		Logger:Log(script, "BasicRanged Server")
 		Logger:Log(script, "BasicRanged Client", self._skillInfo)
-		--this.DamageContainer = new DamageContainer(this, "Melee", 10);
-		Logger:Log(script, "BasicRanged Server")
 		--this.DamageContainer = new DamageContainer(this, "Melee", 10);
 	end
 	function BasicRanged:OnConstructClient()

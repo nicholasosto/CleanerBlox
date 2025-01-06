@@ -1,7 +1,7 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local CollectionService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").CollectionService
-local SoulSeaker = TS.import(script, game:GetService("ServerScriptService"), "TS", "TagClasses", "SoulSeeker").SoulSeaker
+local SoulSeaker = TS.import(script, game:GetService("ServerScriptService"), "TS", "_Cleanup", "TagClasses", "SoulSeeker").SoulSeaker
 local ClassTags = {
 	SoulEntity = "SoulEntity",
 	SoulSeeker = "SoulSeeker",

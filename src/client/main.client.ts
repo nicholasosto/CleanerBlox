@@ -20,7 +20,7 @@ import { ItemType } from "shared/_References/Inventory";
 // References
 import { WCSFolders } from "shared/WCS/Folders";
 import { Logger } from "shared/Utility/Logger";
-import { CommunicationGod } from "shared/Experimental/CommunicationGod";
+import { CommunicationGod } from "shared/__Cleanup/Experimental/CommunicationGod";
 import { EventManager } from "shared/GameAssetManagers";
 import { AbilityButton } from "shared/UI/AbilityButton";
 

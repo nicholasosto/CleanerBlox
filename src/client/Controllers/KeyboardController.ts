@@ -3,9 +3,9 @@ import { HttpService, InsertService, Players, UserInputService, Workspace } from
 import { ClientInventoryService } from "client/Services/ClientInventoryService";
 import { ClientSkillService } from "client/Services/ClientSkillService";
 import { Character, Skill } from "@rbxts/wcs";
-import { CommunicationGod } from "shared/Experimental/CommunicationGod";
+import { CommunicationGod } from "shared/__Cleanup/Experimental/CommunicationGod";
 import { EInventorySlot } from "shared/_References/Inventory";
-import { EAnimations } from "shared/_References/Animations";
+import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
 import { SkillDefinitions, SkillId } from "shared/_References/Character/Skills";
 import { AnimationHelper } from "shared/_References/Helpers/AnimationHelper";
 
@@ -16,7 +16,7 @@ Skills.set(Enum.KeyCode.E, "BasicRanged");
 Skills.set(Enum.KeyCode.R, "BasicHold");
 
 // Set Animations Here
-const Animations: Map<Enum.KeyCode, EAnimations> = new Map<Enum.KeyCode, EAnimations>();
+const Animations: Map<Enum.KeyCode, AnimationIds> = new Map<Enum.KeyCode, AnimationIds>();
 
 CommunicationGod.Summon();
 
@@ -55,7 +55,7 @@ export class KeyboardController {
 			(input: InputObject, isProcessed: boolean) => {
 				switch (input.KeyCode) {
 					case Enum.KeyCode.Z:
-						AnimationHelper.CreateAnimationTrack(character, EAnimations.MELEE_Backflip).Play();
+						AnimationHelper.CreateAnimationTrack(character, AnimationIds.MELEE_Backflip).Play();
 						break;
 					case Enum.KeyCode.U:
 						ClientInventoryService.SendUnequipRequest(EInventorySlot.LeftHand);
@@ -77,7 +77,7 @@ export class KeyboardController {
 						break;
 					case Enum.KeyCode.G:
 						print("G Pressed");
-						AnimationHelper.CreateAnimationTrack(character, EAnimations.COMBAT_Damage).Play();
+						AnimationHelper.CreateAnimationTrack(character, AnimationIds.COMBAT_Damage).Play();
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
@@ -162,7 +162,7 @@ export class KeyboardController {
 		}
 	}
 
-	private static AnimationToggle(animation: EAnimations, begin: boolean): void {
+	private static AnimationToggle(animation: AnimationIds, begin: boolean): void {
 		const character = Players.LocalPlayer.Character || Players.LocalPlayer.CharacterAdded.Wait()[0];
 		const animator = character.FindFirstChild("Animator", true) as Animator;
 		animator.GetPlayingAnimationTracks().forEach((track) => {
@@ -188,7 +188,7 @@ export class KeyboardController {
 		if (animation === undefined) {
 			return;
 		}
-		this.AnimationToggle(animation as EAnimations, begin);
+		this.AnimationToggle(animation as AnimationIds, begin);
 	}
 }
 // End: KeyboardController.ts

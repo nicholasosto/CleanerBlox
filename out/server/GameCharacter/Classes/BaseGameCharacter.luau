@@ -5,10 +5,9 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- PlayerGameCharacter: Player Character
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local CharacterResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "CharacterResource").CharacterResource
-local _Animations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animations")
-local EAnimations = _Animations.EAnimations
-local CharacterAnimations = _Animations.CharacterAnimations
+local CharacterAnimations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animations").CharacterAnimations
 local getDefaultCharacterStats = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Character", "CharacterStats").getDefaultCharacterStats
+local AnimationIds = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Indexes", "AssetIndex").AnimationIds
 -- Utility Imports
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local BasicHold = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicHold").BasicHold
@@ -65,7 +64,7 @@ do
 		self:_LoadAnimations()
 		repeat
 			do
-				self:_PlayAnimation(EAnimations.SKILL_BasicMelee)
+				self:_PlayAnimation(AnimationIds.SKILL_BasicMelee)
 				wait(1)
 			end
 		until not (self.AnimationTracks ~= nil)

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BaseGameCharacter } from "./BaseGameCharacter";
 import { EventManager } from "shared/GameAssetManagers";
 import * as SkillsRef from "shared/_References/Character/Skills";
@@ -27,18 +28,9 @@ export class PlayerGameCharacter extends BaseGameCharacter {
 
 		// Assign Player
 		this._player = player;
-
 		// DataCache
 		this._dataCache = DataManager.GetDataCache(tostring(player.UserId));
-		//Logger.Log(script, "DataCache: ", this._dataCache._playerData as unknown as string);
-
 		Logger.Log(script, "Skills: ", this._dataCache._playerData.Skills as unknown as string);
-
-		//const skillDefinitions = SkillsRef.getAssignedSkillDefinitions(this._dataCache._playerData.Skills);
-
-		//Logger.Log(script, "Skill Definitions: ", skillDefinitions as unknown as string);
-
-		// Fire: Player Character Created Event
 		const PlayerCharacterCreated = EventManager.GetEvent("PLAYER_CharacterCreated");
 		PlayerCharacterCreated.FireClient(player);
 		return this;

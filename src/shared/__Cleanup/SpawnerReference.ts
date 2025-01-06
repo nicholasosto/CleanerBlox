@@ -1,9 +1,10 @@
--- Compiled with roblox-ts v3.0.0
-local ESpawnerEvent = {
+/*
+export enum ESpawnerEvent {
 	SpawnRequest = "SPAWNER_SpawnRequest",
 	SpawnResponse = "SPAWNER_SpawnResponse",
 }
-local ESpawnerInstance = {
+
+export enum ESpawnerInstance {
 	NPC = "SPAWNER_NPC",
 	Loot_Common = "SPAWNER_Loot_Common",
 	Loot_Uncommon = "SPAWNER_Loot_Uncommon",
@@ -16,7 +17,4 @@ local ESpawnerInstance = {
 	Hazard_Fire = "SPAWNER_Hazard_Fire",
 	Hazard_Void = "SPAWNER_Hazard_Void",
 }
-return {
-	ESpawnerEvent = ESpawnerEvent,
-	ESpawnerInstance = ESpawnerInstance,
-}
+*/
