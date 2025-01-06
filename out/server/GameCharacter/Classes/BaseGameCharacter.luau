@@ -13,6 +13,7 @@ local getDefaultCharacterStats = TS.import(script, game:GetService("ReplicatedSt
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local BasicHold = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicHold").BasicHold
 local BasicRanged = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicRanged").BasicRanged
+local BasicRanged = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicRanged").BasicRanged
 local BasicMelee = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicMelee").BasicMelee
 -- BaseGameCharacter (NPCs and Players inherit from this)
 local BaseGameCharacter
@@ -54,8 +55,10 @@ do
 		self.Mana = CharacterResource.new(self, "Mana")
 		self.Stamina = CharacterResource.new(self, "Stamina")
 		-- Assign Skills
+		-- Assign Skills
 		BasicMelee.new(self.WCS_Character)
 		BasicHold.new(self.WCS_Character)
+		BasicRanged.new(self.WCS_Character)
 		BasicRanged.new(self.WCS_Character)
 		-- Initialize Connections
 		self:initializeConnections()

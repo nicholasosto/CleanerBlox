@@ -22,6 +22,7 @@ DataManager:Start()
 --InventoryService.Start();
 -- Entity Manager
 GameCharacterRegistry:Start()
+GameCharacterRegistry:Start()
 -- Notification Manager
 --NotificationManager.Start();
 -- WCS Server Start

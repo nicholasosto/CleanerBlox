@@ -2,6 +2,7 @@
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
 import { Character, DamageContainer, UnknownStatus } from "@rbxts/wcs";
+import { Character, DamageContainer, UnknownStatus } from "@rbxts/wcs";
 import { CharacterResource } from "../Subclasses/CharacterResource";
 import { EAnimations, CharacterAnimations } from "shared/_References/Animations";
 import { CharacterStats, getDefaultCharacterStats } from "shared/_References/Character/CharacterStats";
@@ -81,8 +82,10 @@ export class BaseGameCharacter {
 		this.Stamina = new CharacterResource(this, "Stamina");
 
 		// Assign Skills
+		// Assign Skills
 		new BasicMelee(this.WCS_Character);
 		new BasicHold(this.WCS_Character);
+		new BasicRanged(this.WCS_Character);
 		new BasicRanged(this.WCS_Character);
 		// Initialize Connections
 		this.initializeConnections();
