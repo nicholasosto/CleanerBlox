@@ -2,7 +2,7 @@
 import { HttpService, Players } from "@rbxts/services";
 import { PlayerGameCharacter } from "./Classes/PlayerGameCharacter";
 import { BaseGameCharacter } from "./Classes/BaseGameCharacter";
-import { CommunicationGod } from "shared/Experimental/CommunicationGod";
+import { CommunicationGod } from "shared/__Cleanup/Experimental/CommunicationGod";
 import { Logger } from "shared/Utility/Logger";
 import Signal from "@rbxts/signal";
 

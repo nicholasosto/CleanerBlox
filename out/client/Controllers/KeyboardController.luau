@@ -7,9 +7,9 @@ local UserInputService = _services.UserInputService
 local ClientInventoryService = TS.import(script, script.Parent.Parent, "Services", "ClientInventoryService").ClientInventoryService
 local ClientSkillService = TS.import(script, script.Parent.Parent, "Services", "ClientSkillService").ClientSkillService
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
-local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
+local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "__Cleanup", "Experimental", "CommunicationGod").CommunicationGod
 local EInventorySlot = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Inventory").EInventorySlot
-local EAnimations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animations").EAnimations
+local AnimationIds = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Indexes", "AssetIndex").AnimationIds
 local AnimationHelper = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Helpers", "AnimationHelper").AnimationHelper
 -- Set the skills here
 local Skills = {}
@@ -65,7 +65,7 @@ do
 			local _exp = input.KeyCode
 			repeat
 				if _exp == (Enum.KeyCode.Z) then
-					AnimationHelper:CreateAnimationTrack(character, EAnimations.MELEE_Backflip):Play()
+					AnimationHelper:CreateAnimationTrack(character, AnimationIds.MELEE_Backflip):Play()
 					break
 				end
 				if _exp == (Enum.KeyCode.U) then
@@ -91,7 +91,7 @@ do
 				end
 				if _exp == (Enum.KeyCode.G) then
 					print("G Pressed")
-					AnimationHelper:CreateAnimationTrack(character, EAnimations.COMBAT_Damage):Play()
+					AnimationHelper:CreateAnimationTrack(character, AnimationIds.COMBAT_Damage):Play()
 					break
 				end
 				if _exp == (Enum.KeyCode.H) then

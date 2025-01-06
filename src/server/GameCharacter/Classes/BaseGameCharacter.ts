@@ -3,9 +3,9 @@
 // PlayerGameCharacter: Player Character
 import { Character, DamageContainer, UnknownStatus } from "@rbxts/wcs";
 import { CharacterResource } from "../Subclasses/CharacterResource";
-import { EAnimations, CharacterAnimations } from "shared/_References/Animations";
+import { CharacterAnimations } from "shared/_References/Animations";
 import { CharacterStats, getDefaultCharacterStats } from "shared/_References/Character/CharacterStats";
-
+import { AnimationIds } from "shared/_References/Indexes/AssetIndex";
 
 // Utility Imports
 import { Logger } from "shared/Utility/Logger";
@@ -31,7 +31,7 @@ export class BaseGameCharacter {
 	public CharacterModel: Model;
 	public Animator: Animator;
 	public Animations = CharacterAnimations;
-	public AnimationTracks = new Map<EAnimations, AnimationTrack>();
+	public AnimationTracks = new Map<AnimationIds, AnimationTrack>();
 	public WCS_Character: Character;
 	public Target: Model | undefined;
 
@@ -87,8 +87,8 @@ export class BaseGameCharacter {
 		// Initialize Connections
 		this.initializeConnections();
 		this._LoadAnimations();
-		do{
-			this._PlayAnimation(EAnimations.SKILL_BasicMelee);
+		do {
+			this._PlayAnimation(AnimationIds.SKILL_BasicMelee);
 			wait(1);
 		} while (this.AnimationTracks !== undefined);
 
@@ -106,11 +106,10 @@ export class BaseGameCharacter {
 			animation.Parent = this.CharacterModel;
 			animation.Name = animationName as string;
 			const animationTrack = this.Animator.LoadAnimation(animation);
-			this.AnimationTracks.set(animationName as EAnimations, animationTrack);
+			this.AnimationTracks.set(animationName as AnimationIds, animationTrack);
 		}
 	}
-	protected _PlayAnimation(animationName: EAnimations) {
-
+	protected _PlayAnimation(animationName: AnimationIds) {
 		Logger.Log(script, "SuperClass-PlayAnimation(): " + animationName);
 		this.AnimationTracks.forEach((animationTrack) => {
 			animationTrack.Stop();

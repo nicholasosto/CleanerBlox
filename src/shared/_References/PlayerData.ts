@@ -3,7 +3,6 @@ import { CharacterStats } from "./Character/CharacterStats";
 import { ProgressionStatsData } from "./ProgressionStats";
 import { ResourceStats } from "./Character/ResourceStats";
 
-
 // Player Data Interface
 export interface PlayerData {
 	[str: string]: unknown;
@@ -24,4 +23,3 @@ export interface PlayerData {
 	// Skills Data
 	Skills: PlayerSkillsData;
 }
-

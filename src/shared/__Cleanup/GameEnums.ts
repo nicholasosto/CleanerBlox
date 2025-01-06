@@ -4,7 +4,7 @@
 
 /* SkillNames
     This enum contains all the skill names used in the game.
-*/
+
 export enum SkillName {
 	BigRed = "BigRed", // Testing move to try new ideas for the game
 	SpotLights = "SpotLights", // Generates a spellcircle in front of the player with a detector light...
@@ -70,3 +70,4 @@ export enum EntityTypes {
 	Shopkeeper = "Shopkeeper",
 	QuestGiver = "QuestGiver",
 }
+*/
