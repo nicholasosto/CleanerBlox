@@ -15,6 +15,9 @@ local ClientSkillService = TS.import(script, script.Parent, "Services", "ClientS
 local KeyboardController = TS.import(script, script.Parent, "Controllers", "KeyboardController").KeyboardController
 local FlightController = TS.import(script, script.Parent, "Controllers", "FlightController").FlightController
 local GUIController = TS.import(script, script.Parent, "Controllers", "GUIController").GUIController
+-- TEST
+local InventoryPanel = TS.import(script, script.Parent, "ScreenControllers", "InventoryPanel").InventoryPanel
+--END TEST
 -- References
 local WCSFolders = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Folders").WCSFolders
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
@@ -57,6 +60,7 @@ Character.CharacterCreated:Connect(function(character)
 	WCSCharacter.SkillAdded:Connect(function(skill)
 		Logger:Log(script, "Client", "Skill Added: ", skill:GetMetadata())
 	end)
+	local inventoryPanel = InventoryPanel:CreatePanel("Skill")
 end)
 local PlayerCharacterCreated = EventManager:GetEvent("PLAYER_CharacterCreated")
 PlayerCharacterCreated.OnClientEvent:Connect(function()

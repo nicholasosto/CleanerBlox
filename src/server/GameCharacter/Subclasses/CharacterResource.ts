@@ -1,12 +1,5 @@
 // Roblox Services
-import { Players, RunService } from "@rbxts/services";
-
-// Plugin Services
-import { Character } from "@rbxts/wcs";
-
-// Utility Imports
-import { GameStorage } from "shared/Utility/GameStorage";
-import { Logger } from "shared/Utility/Logger";
+import { RunService } from "@rbxts/services";
 
 // Custom Imports
 import { BaseGameCharacter } from "../Classes/BaseGameCharacter";
@@ -47,11 +40,14 @@ export class CharacterResource {
 	// Resource Values
 	private _maxValue: number = 100;
 	private _currentValue: number = 100;
+
+	// Regen Values
 	private _regenRate: number = 1;
 	private _regenAmount: number = 10;
 	private _regenActive: boolean = true;
-
 	private _lastRegenTick: number = 0;
+
+	// Resource Bar instance
 	private _resourceBar: CharacterResourceBar | undefined;
 
 	// Connections

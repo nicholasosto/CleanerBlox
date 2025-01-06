@@ -2,8 +2,6 @@
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- Roblox Services
 local RunService = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").RunService
--- Plugin Services
--- Utility Imports
 -- Custom Imports
 local EResourceTypes = {
 	Health = "Health",

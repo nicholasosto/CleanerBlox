@@ -12,7 +12,11 @@ import { ClientSkillService } from "./Services/ClientSkillService";
 import { KeyboardController } from "./Controllers/KeyboardController";
 import { FlightController } from "./Controllers/FlightController";
 import { GUIController } from "./Controllers/GUIController";
+// TEST
+import { InventoryPanel } from "./ScreenControllers/InventoryPanel";
+import { ItemType } from "shared/_References/Inventory";
 
+//END TEST
 // References
 import { WCSFolders } from "shared/WCS/Folders";
 import { Logger } from "shared/Utility/Logger";
@@ -67,6 +71,8 @@ Character.CharacterCreated.Connect((character: Character) => {
 	WCSCharacter.SkillAdded.Connect((skill: UnknownSkill) => {
 		Logger.Log(script, "Client", "Skill Added: ", skill.GetMetadata() as unknown as string);
 	});
+
+	const inventoryPanel = InventoryPanel.CreatePanel("Skill");
 });
 
 const PlayerCharacterCreated = EventManager.GetEvent("PLAYER_CharacterCreated");

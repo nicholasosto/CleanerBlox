@@ -6,16 +6,18 @@ local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS"
 local DataManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Data", "DataManager").DataManager
 --import { EquipmentSlots } from "shared/Enums/GameEnums";
 local NotificationManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Notification", "NotificationManager").NotificationManager
-local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "SharedReference").InventoryReference
+local _Inventory = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Inventory")
+local EInventoryEvent = _Inventory.EInventoryEvent
+local EInventorySlot = _Inventory.EInventorySlot
 -- Events
 -- Requests
-local eventEquipRequest = GameStorage:getEvent(InventoryReference.EInventoryEvent.EquipRequest)
-local eventUnequipRequest = GameStorage:getEvent(InventoryReference.EInventoryEvent.UnequipRequest)
-local eventUnlockRequest = GameStorage:getEvent(InventoryReference.EInventoryEvent.UnlockRequest)
+local eventEquipRequest = GameStorage:getEvent(EInventoryEvent.EquipRequest)
+local eventUnequipRequest = GameStorage:getEvent(EInventoryEvent.UnequipRequest)
+local eventUnlockRequest = GameStorage:getEvent(EInventoryEvent.UnlockRequest)
 -- Responses
-local eventEquipResponse = GameStorage:getEvent(InventoryReference.EInventoryEvent.EquipResponse)
-local eventUnequipResponse = GameStorage:getEvent(InventoryReference.EInventoryEvent.UnequipResponse)
-local eventUnlockResponse = GameStorage:getEvent(InventoryReference.EInventoryEvent.UnlockResponse)
+local eventEquipResponse = GameStorage:getEvent(EInventoryEvent.EquipResponse)
+local eventUnequipResponse = GameStorage:getEvent(EInventoryEvent.UnequipResponse)
+local eventUnlockResponse = GameStorage:getEvent(EInventoryEvent.UnlockResponse)
 -- Equipment Manager
 local InventoryService
 do
@@ -182,27 +184,19 @@ do
 		-- Get the Player Data
 		local userId = tostring(player.UserId)
 		local playerData = DataManager:GetDataCache(userId)._playerData
-		local InventorySlot = InventoryReference.EInventorySlot
+		local InventorySlot = EInventorySlot
 		-- Map the Inventory to the Equipment Category
 		local inventoryMap = {}
-		local _helmet = InventorySlot.Helmet
-		local _helmetInventory = playerData.HelmetInventory
-		inventoryMap[_helmet] = _helmetInventory
-		local _leftHand = InventorySlot.LeftHand
-		local _weaponInventory = playerData.WeaponInventory
-		inventoryMap[_leftHand] = _weaponInventory
-		local _rightHand = InventorySlot.RightHand
-		local _weaponInventory_1 = playerData.WeaponInventory
-		inventoryMap[_rightHand] = _weaponInventory_1
-		local _body = InventorySlot.Body
-		local _armorInventory = playerData.ArmorInventory
-		inventoryMap[_body] = _armorInventory
-		local _familiar = InventorySlot.Familiar
-		local _familiarInventory = playerData.FamiliarInventory
-		inventoryMap[_familiar] = _familiarInventory
-		local _accessory = InventorySlot.Accessory
-		local _accessoryInventory = playerData.AccessoryInventory
-		inventoryMap[_accessory] = _accessoryInventory
+		--[[
+			
+					inventoryMap.set(InventorySlot.Helmet, playerData.HelmetInventory);
+					inventoryMap.set(InventorySlot.LeftHand, playerData.WeaponInventory);
+					inventoryMap.set(InventorySlot.RightHand, playerData.WeaponInventory);
+					inventoryMap.set(InventorySlot.Body, playerData.ArmorInventory);
+					inventoryMap.set(InventorySlot.Familiar, playerData.FamiliarInventory);
+					inventoryMap.set(InventorySlot.Accessory, playerData.AccessoryInventory);
+					
+		]]
 		-- Set the Inventory
 		local _equipmentCategory = equipmentCategory
 		local inventory = inventoryMap[_equipmentCategory]

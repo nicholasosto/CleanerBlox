@@ -3,13 +3,14 @@ import { Logger } from "shared/Utility/Logger";
 import { GameStorage } from "shared/Utility/GameStorage";
 import { DataManager } from "../Data/DataManager";
 import { NotificationManager } from "server/Notification/NotificationManager";
-import { TEventSuccessResponse, InventoryReference } from "shared/SharedReference";
+import { TEventSuccessResponse } from "shared/SharedReference";
+import { EInventoryEvent } from "shared/_References/Inventory";
 
 // Requests
-const eventSpawnRequest = GameStorage.getEvent(InventoryReference.EInventoryEvent.EquipRequest);
+const eventSpawnRequest = GameStorage.getEvent(EInventoryEvent.EquipRequest);
 
 // Responses
-const eventSpawnResponse = GameStorage.getEvent(InventoryReference.EInventoryEvent.EquipResponse);
+const eventSpawnResponse = GameStorage.getEvent(EInventoryEvent.EquipResponse);
 
 export class SpawnerService {
 	private static _instance: SpawnerService;

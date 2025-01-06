@@ -1,4 +1,3 @@
-import { EAnimations } from "shared/_References/GameReference";
 const ReplicatedFirst = game.GetService("ReplicatedFirst");
 const ContentProvider = game.GetService("ContentProvider");
 

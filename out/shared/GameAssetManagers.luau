@@ -29,6 +29,7 @@ local EGuiTemplates = {
 	AbilityButton = "AbilityButton_Template",
 	AttributeLabel = "AttributeLabel_Template",
 	CharacterFrame = "CharacterFrame_Template",
+	InventoryPanel = "InventoryPanel_Template",
 }
 -- Aura Names
 local EAuraNames = {
@@ -68,7 +69,19 @@ do
 		return packageContainer
 	end
 	function PackageManager:LoadGuiTemplate(guiTemplate)
+		if game:GetService("RunService"):IsServer() then
+			Logger:Log(script.Name, "Cannot load GUI template on the server")
+			return nil
+		end
 		local guiTemplateInstance = InsertService:LoadAsset(EPackageIDs.UITemplates):FindFirstChild(guiTemplate, true)
+		if guiTemplateInstance == nil then
+			Logger:Log(script.Name, "Failed to load GUI template with name: ", guiTemplate)
+		end
+		return guiTemplateInstance
+	end
+	function PackageManager:GetGuiTemplate(guiTemplate)
+		local packageFolder = game:GetService("ReplicatedStorage"):WaitForChild("Asset Package - UI Templates")
+		local guiTemplateInstance = packageFolder:FindFirstChild(guiTemplate, true)
 		if guiTemplateInstance == nil then
 			Logger:Log(script.Name, "Failed to load GUI template with name: ", guiTemplate)
 		end

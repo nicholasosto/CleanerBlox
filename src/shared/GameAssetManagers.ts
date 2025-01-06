@@ -1,5 +1,6 @@
 import { InsertService, Players } from "@rbxts/services";
 import { Logger } from "./Utility/Logger";
+import { Inventory } from "./UI/UIEnums";
 
 // Package IDs
 export enum EPackageIDs {
@@ -17,6 +18,7 @@ export enum EGuiTemplates {
 	AbilityButton = "AbilityButton_Template",
 	AttributeLabel = "AttributeLabel_Template",
 	CharacterFrame = "CharacterFrame_Template",
+	InventoryPanel = "InventoryPanel_Template",
 }
 
 // Aura Names
@@ -50,13 +52,27 @@ export class PackageManager {
 
 	// Load Asset from GUI Templates Package
 	public static LoadGuiTemplate(guiTemplate: EGuiTemplates): Instance | undefined {
+		if (game.GetService("RunService").IsServer()) {
+			Logger.Log(script.Name, "Cannot load GUI template on the server");
+			return undefined;
+		}
 		const guiTemplateInstance = InsertService.LoadAsset(EPackageIDs.UITemplates).FindFirstChild(guiTemplate, true);
 		if (guiTemplateInstance === undefined) {
 			Logger.Log(script.Name, "Failed to load GUI template with name: ", guiTemplate);
 		}
 		return guiTemplateInstance;
 	}
+
+	public static GetGuiTemplate(guiTemplate: EGuiTemplates): Instance {
+		const packageFolder = game.GetService("ReplicatedStorage").WaitForChild("Asset Package - UI Templates");
+		const guiTemplateInstance = packageFolder.FindFirstChild(guiTemplate, true) as Instance;
+		if (guiTemplateInstance === undefined) {
+			Logger.Log(script.Name, "Failed to load GUI template with name: ", guiTemplate);
+		}
+		return guiTemplateInstance;
+	}
 }
+
 
 // Event Manager
 export class EventManager {

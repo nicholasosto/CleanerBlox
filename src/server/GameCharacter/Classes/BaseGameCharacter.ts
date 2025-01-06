@@ -1,32 +1,27 @@
 // GameCharacter.ts: Game Character Classes
 // BaseGameCharacter: Base Class for Game Characters
 // PlayerGameCharacter: Player Character
-import {
-	Character,
-	DamageContainer,
-	Moveset,
-	Skill,
-	StatusEffect,
-	UnknownStatus,
-	CreateMoveset,
-	SkillBase,
-	UnknownSkill,
-} from "@rbxts/wcs";
+import { Character, DamageContainer, UnknownStatus } from "@rbxts/wcs";
 import { CharacterResource } from "../Subclasses/CharacterResource";
+import { EAnimations, CharacterAnimations } from "shared/_References/Animations";
+import { CharacterStats, getDefaultCharacterStats } from "shared/_References/Character/CharacterStats";
 
-// Data Related Imports
-import { TCoreStats } from "shared/SharedReference";
-import { AnimationHelper, EAnimations } from "shared/_References/GameReference";
-import { ESkillNames } from "shared/WCS/Interfaces/RSkills";
-import { AbilityButton } from "shared/UI/AbilityButton";
 
 // Utility Imports
-import { ResourceCalculator } from "../Subclasses/Calculators";
 import { Logger } from "shared/Utility/Logger";
 import { BasicHold } from "shared/WCS/Skills/BasicHold";
 import { BasicRanged } from "shared/WCS/Skills/BasicRanged";
 import { BasicMelee } from "shared/WCS/Skills/BasicMelee";
-import * as GameReference from "shared/_References/GameReference";
+
+export type CharacterState =
+	| "Idle"
+	| "Walking"
+	| "Running"
+	| "Jumping"
+	| "Falling"
+	| "Crouching"
+	| "Sprinting"
+	| "Dead";
 
 // BaseGameCharacter (NPCs and Players inherit from this)
 export class BaseGameCharacter {
@@ -35,21 +30,13 @@ export class BaseGameCharacter {
 	public CharacterName: string;
 	public CharacterModel: Model;
 	public Animator: Animator;
+	public Animations = CharacterAnimations;
+	public AnimationTracks = new Map<EAnimations, AnimationTrack>();
 	public WCS_Character: Character;
 	public Target: Model | undefined;
 
 	// Stats
-	public StatsData: TCoreStats = {
-		Strength: 10,
-		Dexterity: 10,
-		Intelligence: 10,
-		Constitution: 10,
-		Speed: 10,
-		Level: 1,
-		Experience: 0,
-		ExperienceToNextLevel: 100,
-		AttributePoints: 0,
-	};
+	public CharacterStats: CharacterStats;
 
 	// Resources
 	public Health: CharacterResource;
@@ -57,10 +44,10 @@ export class BaseGameCharacter {
 	public Stamina: CharacterResource;
 
 	// Protected Properties
-	protected _State: string = "Idle";
+	protected _State: CharacterState = "Idle";
 	//protected _Moveset: Moveset;
 
-	// Connections
+	// WCS Character Connections
 	private _connectionCharacterTakeDamage: RBXScriptConnection | undefined;
 	private _connectionCharacterDealtDamage: RBXScriptConnection | undefined;
 	private _connectionStatusEffectAdded: RBXScriptConnection | undefined;
@@ -72,6 +59,7 @@ export class BaseGameCharacter {
 	constructor(characterModel: Model, characterName: string = "Default Character Name") {
 		// Assign Character Name
 		this.CharacterName = characterName;
+		this.CharacterStats = getDefaultCharacterStats();
 
 		// Assign Character Model
 		this.CharacterModel = characterModel;
@@ -86,23 +74,23 @@ export class BaseGameCharacter {
 		}
 		// Create WCS Character
 		this.WCS_Character = new Character(characterModel);
-		//this._Moveset = CreateMoveset("_DefaultMoveset", [BasicMelee, BasicHold]);
-		//this.WCS_Character.ApplyMoveset(this._Moveset);
 
 		// Create Resources: Health, Mana, Stamina
 		this.Health = new CharacterResource(this, "Health");
 		this.Mana = new CharacterResource(this, "Mana");
 		this.Stamina = new CharacterResource(this, "Stamina");
 
-		// Apply Default Moveset
-		//this.WCS_Character.ApplyMoveset(this._MovesetName);
+		// Assign Skills
 		new BasicMelee(this.WCS_Character);
 		new BasicHold(this.WCS_Character);
-		const skillConfig = GameReference.SkillConfigurations[ESkillNames.BasicRanged];
-		Logger.Log(script, "Message", skillConfig.ImageId);
-
+		new BasicRanged(this.WCS_Character);
 		// Initialize Connections
 		this.initializeConnections();
+		this._LoadAnimations();
+		do{
+			this._PlayAnimation(EAnimations.SKILL_BasicMelee);
+			wait(1);
+		} while (this.AnimationTracks !== undefined);
 
 		return this;
 	}
@@ -111,15 +99,48 @@ export class BaseGameCharacter {
 		// TODO: Assign skills via skill names
 	}
 
+	// Animation Methods
+	protected _LoadAnimations() {
+		// Load Animations
+		for (const [animationName, animation] of pairs(CharacterAnimations)) {
+			animation.Parent = this.CharacterModel;
+			animation.Name = animationName as string;
+			const animationTrack = this.Animator.LoadAnimation(animation);
+			this.AnimationTracks.set(animationName as EAnimations, animationTrack);
+		}
+	}
+	protected _PlayAnimation(animationName: EAnimations) {
+
+		Logger.Log(script, "SuperClass-PlayAnimation(): " + animationName);
+		this.AnimationTracks.forEach((animationTrack) => {
+			animationTrack.Stop();
+		});
+
+		const animationTrack = this.AnimationTracks.get(animationName);
+		if (animationTrack) {
+			animationTrack.Play();
+		}
+	}
+
+	// State System Methods
 	protected onStateChange(newState: string) {
 		Logger.Log(script, "SuperClass-OnStateChange(): " + newState);
 	}
 
-	// Set State
 	public SetState(state: string) {
 		Logger.Log(script, "SuperClass-SetState(): " + state);
 		this.CharacterModel.SetAttribute("State", state);
-		this._State = this.CharacterModel.GetAttribute("State") as string;
+		this._State = this.CharacterModel.GetAttribute("State") as CharacterState;
+	}
+
+	// Update Attributes
+	public updateAttributes() {
+		// Set the Stats Attributes
+		this.CharacterModel.SetAttribute("Strength", this.CharacterStats.Strength);
+		this.CharacterModel.SetAttribute("Dexterity", this.CharacterStats.Dexterity);
+		this.CharacterModel.SetAttribute("Intelligence", this.CharacterStats.Intelligence);
+		this.CharacterModel.SetAttribute("Constitution", this.CharacterStats.Constitution);
+		this.CharacterModel.SetAttribute("Speed", this.CharacterStats.Speed);
 	}
 
 	// Initialize Connections
@@ -161,19 +182,7 @@ export class BaseGameCharacter {
 		Logger.Log(script, "BaseEntity: Take Damage: " + damageContainer.Damage);
 		const currentHealth = this.CharacterModel.GetAttribute("HealthCurrent") as number;
 		const newHealth = currentHealth - damageContainer.Damage;
-
-		warn("BaseEntity: Current Health: " + currentHealth);
-		warn("BaseEntity: New Health: " + newHealth);
-
 		this.Health.SetCurrent(newHealth);
-	}
-
-	// Load Animation Tracks
-	private loadAnimationTracks() {
-		// Load Animation Tracks
-		const animationTrack = AnimationHelper.CreateAnimationTrack(this.CharacterModel, EAnimations.COMBAT_Damage);
-		animationTrack.Looped = true;
-		animationTrack.Play();
 	}
 
 	// Dealt Damage
@@ -199,21 +208,6 @@ export class BaseGameCharacter {
 	// Status Effects - Ended
 	private handleStatusEffectEnded(statusEffect: UnknownStatus) {
 		Logger.Log(script, "BaseEntity: Status Effect Ended: ", statusEffect.Name);
-	}
-
-	// Update Attributes
-	public updateAttributes() {
-		// Set the Max Values
-		const MaxStamina = ResourceCalculator.calculateMaxStamina(this.StatsData.Speed, this.StatsData.Level);
-		const MaxMana = ResourceCalculator.calculateMaxMana(this.StatsData.Intelligence, this.StatsData.Level);
-		const MaxHealth = ResourceCalculator.calculateMaxHealth(this.StatsData.Constitution, this.StatsData.Level);
-
-		// Set the Stats Attributes
-		this.CharacterModel.SetAttribute("Strength", this.StatsData.Strength);
-		this.CharacterModel.SetAttribute("Dexterity", this.StatsData.Dexterity);
-		this.CharacterModel.SetAttribute("Intelligence", this.StatsData.Intelligence);
-		this.CharacterModel.SetAttribute("Constitution", this.StatsData.Constitution);
-		this.CharacterModel.SetAttribute("Speed", this.StatsData.Speed);
 	}
 
 	// Destroy Connections

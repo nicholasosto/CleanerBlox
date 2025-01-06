@@ -3,11 +3,11 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- Note: Spawner Service
 local GameStorage = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "GameStorage").GameStorage
 local NotificationManager = TS.import(script, game:GetService("ServerScriptService"), "TS", "Notification", "NotificationManager").NotificationManager
-local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "SharedReference").InventoryReference
+local EInventoryEvent = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Inventory").EInventoryEvent
 -- Requests
-local eventSpawnRequest = GameStorage:getEvent(InventoryReference.EInventoryEvent.EquipRequest)
+local eventSpawnRequest = GameStorage:getEvent(EInventoryEvent.EquipRequest)
 -- Responses
-local eventSpawnResponse = GameStorage:getEvent(InventoryReference.EInventoryEvent.EquipResponse)
+local eventSpawnResponse = GameStorage:getEvent(EInventoryEvent.EquipResponse)
 local SpawnerService
 do
 	SpawnerService = setmetatable({}, {

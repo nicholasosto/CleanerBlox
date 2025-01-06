@@ -1,20 +1,30 @@
-import { Skill, SkillDecorator, Message } from "@rbxts/wcs";
-import { Stun } from "shared/WCS/StatusEffects/Stun";
+import { Skill, SkillDecorator } from "@rbxts/wcs";
+import { Logger } from "shared/Utility/Logger";
 
 @SkillDecorator
 export class Dash extends Skill {
-	@Message({
-		Type: "Event",
-		Destination: "Client",
-	})
-	protected updateCooldown() {
-		//Logger.Log`Cooldown updated. ${this.GetDebounceEndTimestamp()}`);
+	// 00. CONSTRUCT
+	public OnConstruct() {
+		Logger.Log(script, "- Construct");
 	}
+
+	public OnConstructServer(): void {
+		Logger.Log(script, " - Server");
+		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
+	}
+
+	// 01. CONSTRUCT CLIENT
+	public OnConstructClient(): void {
+		Logger.Log(script, "- Client");
+	}
+
+	// MOVE START
 	public OnStartServer() {
-		const stun = new Stun(this.Character);
-		this.ApplyCooldown(5);
-		stun.Start(1);
-		this.updateCooldown();
-		// Logger.Log(script,"Hi, dash just started!");
+		Logger.Log(script, "Start Server");
+	}
+
+	// END SERVER
+	public OnEndServer() {
+		Logger.Log(script, "End Server");
 	}
 }

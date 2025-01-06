@@ -1,9 +1,13 @@
 -- Compiled with roblox-ts v3.0.0
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local ESkillNames = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").ESkillNames
+local getDefaultPlayerSkillsData = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Character", "Skills").getDefaultPlayerSkillsData
+local getDefaultCharacterStats = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Character", "CharacterStats").getDefaultCharacterStats
+local getDefaultProgressionStatsData = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "ProgressionStats").getDefaultProgressionStatsData
+local getDefaultResourceStats = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Character", "ResourceStats").getDefaultResourceStats
+-- Equipment Slot
 local DataTemplate = {
 	key = "Datatemplate",
-	version = 2,
+	version = 5,
 	CharacterName = "Default Name",
 	CharacterClass = {
 		ClassId = "Vampire",
@@ -12,68 +16,10 @@ local DataTemplate = {
 		ClassExperience = 0,
 		ClassExperienceToNextLevel = 100,
 	},
-	Stats = {
-		Level = 1,
-		Experience = 0,
-		ExperienceToNextLevel = 100,
-		Strength = 10,
-		Speed = 10,
-		Dexterity = 10,
-		Intelligence = 10,
-		Constitution = 200,
-		AttributePoints = 0,
-	},
-	Currencies = { {
-		CurrencyId = "Souls",
-		CurrencyAmount = 140,
-	}, {
-		CurrencyId = "GodShard",
-		CurrencyAmount = 14,
-	}, {
-		CurrencyId = "SSZeno",
-		CurrencyAmount = 1,
-	} },
-	SkillSlots = { {
-		SlotId = "Slot_1",
-		SkillId = ESkillNames.BasicMelee,
-	}, {
-		SlotId = "Slot_2",
-		SkillId = ESkillNames.BasicHold,
-	}, {
-		SlotId = "Slot_3",
-		SkillId = ESkillNames.Spotlights,
-	}, {
-		SlotId = "Slot_4",
-		SkillId = ESkillNames.BigRed,
-	}, {
-		SlotId = "Slot_5",
-		SkillId = "Empty",
-	} },
-	EquipmentSlots = { {
-		SlotId = "Weapon",
-		EquipmentId = "Fists",
-	}, {
-		SlotId = "Armor",
-		EquipmentId = "Cloth",
-	}, {
-		SlotId = "Helmet",
-		EquipmentId = "None",
-	}, {
-		SlotId = "Boots",
-		EquipmentId = "None",
-	}, {
-		SlotId = "Familiar",
-		EquipmentId = "None",
-	}, {
-		SlotId = "Accessory",
-		EquipmentId = "None",
-	} },
-	SkillInventory = { "Attack", "Block", "Spotlights", "Heal", "Buff", "Debuff", "Stun" },
-	WeaponInventory = { "Fists", "Dagger", "Sword", "Axe", "Bow", "Staff" },
-	ArmorInventory = { "Cloth", "Leather", "Chainmail", "Plate" },
-	HelmetInventory = { "None", "Hood", "Helmet", "Crown" },
-	FamiliarInventory = { "None", "Bat", "Cat", "Dog", "Owl" },
-	AccessoryInventory = { "None", "Ring", "Amulet", "Bracelet", "Belt" },
+	CharacterStats = getDefaultCharacterStats(),
+	ProgressionStats = getDefaultProgressionStatsData(),
+	ResourceStats = getDefaultResourceStats(),
+	Skills = getDefaultPlayerSkillsData(),
 }
 return {
 	DataTemplate = DataTemplate,

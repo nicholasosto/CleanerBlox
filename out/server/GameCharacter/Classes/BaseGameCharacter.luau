@@ -5,17 +5,15 @@ local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_incl
 -- PlayerGameCharacter: Player Character
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local CharacterResource = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "CharacterResource").CharacterResource
--- Data Related Imports
-local _GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
-local AnimationHelper = _GameReference.AnimationHelper
-local EAnimations = _GameReference.EAnimations
-local ESkillNames = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Interfaces", "RSkills").ESkillNames
+local _Animations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animations")
+local EAnimations = _Animations.EAnimations
+local CharacterAnimations = _Animations.CharacterAnimations
+local getDefaultCharacterStats = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Character", "CharacterStats").getDefaultCharacterStats
 -- Utility Imports
-local ResourceCalculator = TS.import(script, game:GetService("ServerScriptService"), "TS", "GameCharacter", "Subclasses", "Calculators").ResourceCalculator
 local Logger = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Utility", "Logger").Logger
 local BasicHold = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicHold").BasicHold
+local BasicRanged = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicRanged").BasicRanged
 local BasicMelee = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "WCS", "Skills", "BasicMelee").BasicMelee
-local GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
 -- BaseGameCharacter (NPCs and Players inherit from this)
 local BaseGameCharacter
 do
@@ -33,20 +31,12 @@ do
 		if characterName == nil then
 			characterName = "Default Character Name"
 		end
-		self.StatsData = {
-			Strength = 10,
-			Dexterity = 10,
-			Intelligence = 10,
-			Constitution = 10,
-			Speed = 10,
-			Level = 1,
-			Experience = 0,
-			ExperienceToNextLevel = 100,
-			AttributePoints = 0,
-		}
+		self.Animations = CharacterAnimations
+		self.AnimationTracks = {}
 		self._State = "Idle"
 		-- Assign Character Name
 		self.CharacterName = characterName
+		self.CharacterStats = getDefaultCharacterStats()
 		-- Assign Character Model
 		self.CharacterModel = characterModel
 		if self.CharacterModel == nil then
@@ -59,24 +49,54 @@ do
 		end
 		-- Create WCS Character
 		self.WCS_Character = Character.new(characterModel)
-		--this._Moveset = CreateMoveset("_DefaultMoveset", [BasicMelee, BasicHold]);
-		--this.WCS_Character.ApplyMoveset(this._Moveset);
 		-- Create Resources: Health, Mana, Stamina
 		self.Health = CharacterResource.new(self, "Health")
 		self.Mana = CharacterResource.new(self, "Mana")
 		self.Stamina = CharacterResource.new(self, "Stamina")
-		-- Apply Default Moveset
-		--this.WCS_Character.ApplyMoveset(this._MovesetName);
+		-- Assign Skills
 		BasicMelee.new(self.WCS_Character)
 		BasicHold.new(self.WCS_Character)
-		local skillConfig = GameReference.SkillConfigurations[ESkillNames.BasicRanged]
-		Logger:Log(script, "Message", skillConfig.ImageId)
+		BasicRanged.new(self.WCS_Character)
 		-- Initialize Connections
 		self:initializeConnections()
+		self:_LoadAnimations()
+		repeat
+			do
+				self:_PlayAnimation(EAnimations.SKILL_BasicMelee)
+				wait(1)
+			end
+		until not (self.AnimationTracks ~= nil)
 		return self
 	end
 	function BaseGameCharacter:_AssignSkills(skillNames)
 		-- TODO: Assign skills via skill names
+	end
+	function BaseGameCharacter:_LoadAnimations()
+		-- Load Animations
+		for animationName, animation in pairs(CharacterAnimations) do
+			animation.Parent = self.CharacterModel
+			animation.Name = animationName
+			local animationTrack = self.Animator:LoadAnimation(animation)
+			self.AnimationTracks[animationName] = animationTrack
+		end
+	end
+	function BaseGameCharacter:_PlayAnimation(animationName)
+		Logger:Log(script, "SuperClass-PlayAnimation(): " .. animationName)
+		local _exp = self.AnimationTracks
+		-- ▼ ReadonlyMap.forEach ▼
+		local _callback = function(animationTrack)
+			animationTrack:Stop()
+		end
+		for _k, _v in _exp do
+			_callback(_v, _k, _exp)
+		end
+		-- ▲ ReadonlyMap.forEach ▲
+		local _animationTracks = self.AnimationTracks
+		local _animationName = animationName
+		local animationTrack = _animationTracks[_animationName]
+		if animationTrack then
+			animationTrack:Play()
+		end
 	end
 	function BaseGameCharacter:onStateChange(newState)
 		Logger:Log(script, "SuperClass-OnStateChange(): " .. newState)
@@ -85,6 +105,14 @@ do
 		Logger:Log(script, "SuperClass-SetState(): " .. state)
 		self.CharacterModel:SetAttribute("State", state)
 		self._State = self.CharacterModel:GetAttribute("State")
+	end
+	function BaseGameCharacter:updateAttributes()
+		-- Set the Stats Attributes
+		self.CharacterModel:SetAttribute("Strength", self.CharacterStats.Strength)
+		self.CharacterModel:SetAttribute("Dexterity", self.CharacterStats.Dexterity)
+		self.CharacterModel:SetAttribute("Intelligence", self.CharacterStats.Intelligence)
+		self.CharacterModel:SetAttribute("Constitution", self.CharacterStats.Constitution)
+		self.CharacterModel:SetAttribute("Speed", self.CharacterStats.Speed)
 	end
 	function BaseGameCharacter:initializeConnections()
 		self:destroyConnections()
@@ -117,15 +145,7 @@ do
 		Logger:Log(script, "BaseEntity: Take Damage: " .. tostring(damageContainer.Damage))
 		local currentHealth = self.CharacterModel:GetAttribute("HealthCurrent")
 		local newHealth = currentHealth - damageContainer.Damage
-		warn("BaseEntity: Current Health: " .. tostring(currentHealth))
-		warn("BaseEntity: New Health: " .. tostring(newHealth))
 		self.Health:SetCurrent(newHealth)
-	end
-	function BaseGameCharacter:loadAnimationTracks()
-		-- Load Animation Tracks
-		local animationTrack = AnimationHelper:CreateAnimationTrack(self.CharacterModel, EAnimations.COMBAT_Damage)
-		animationTrack.Looped = true
-		animationTrack:Play()
 	end
 	function BaseGameCharacter:handleCharacterDealtDamage(enemy, damageContainer)
 		Logger:Log(script, "BaseEntity: Dealt Damage: ", damageContainer.Damage)
@@ -141,18 +161,6 @@ do
 	end
 	function BaseGameCharacter:handleStatusEffectEnded(statusEffect)
 		Logger:Log(script, "BaseEntity: Status Effect Ended: ", statusEffect.Name)
-	end
-	function BaseGameCharacter:updateAttributes()
-		-- Set the Max Values
-		local MaxStamina = ResourceCalculator:calculateMaxStamina(self.StatsData.Speed, self.StatsData.Level)
-		local MaxMana = ResourceCalculator:calculateMaxMana(self.StatsData.Intelligence, self.StatsData.Level)
-		local MaxHealth = ResourceCalculator:calculateMaxHealth(self.StatsData.Constitution, self.StatsData.Level)
-		-- Set the Stats Attributes
-		self.CharacterModel:SetAttribute("Strength", self.StatsData.Strength)
-		self.CharacterModel:SetAttribute("Dexterity", self.StatsData.Dexterity)
-		self.CharacterModel:SetAttribute("Intelligence", self.StatsData.Intelligence)
-		self.CharacterModel:SetAttribute("Constitution", self.StatsData.Constitution)
-		self.CharacterModel:SetAttribute("Speed", self.StatsData.Speed)
 	end
 	function BaseGameCharacter:destroyConnections()
 		local _result = self._connectionCharacterTakeDamage

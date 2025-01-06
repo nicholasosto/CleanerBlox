@@ -4,18 +4,19 @@ import { GameStorage } from "shared/Utility/GameStorage";
 import { DataManager } from "../Data/DataManager";
 //import { EquipmentSlots } from "shared/Enums/GameEnums";
 import { NotificationManager } from "server/Notification/NotificationManager";
-import { TEventSuccessResponse, InventoryReference } from "shared/SharedReference";
+import { EInventoryEvent, EInventorySlot } from "shared/_References/Inventory";
+import { TEventSuccessResponse } from "shared/SharedReference";
 
 // Events
 
 // Requests
-const eventEquipRequest = GameStorage.getEvent(InventoryReference.EInventoryEvent.EquipRequest);
-const eventUnequipRequest = GameStorage.getEvent(InventoryReference.EInventoryEvent.UnequipRequest);
-const eventUnlockRequest = GameStorage.getEvent(InventoryReference.EInventoryEvent.UnlockRequest);
+const eventEquipRequest = GameStorage.getEvent(EInventoryEvent.EquipRequest);
+const eventUnequipRequest = GameStorage.getEvent(EInventoryEvent.UnequipRequest);
+const eventUnlockRequest = GameStorage.getEvent(EInventoryEvent.UnlockRequest);
 // Responses
-const eventEquipResponse = GameStorage.getEvent(InventoryReference.EInventoryEvent.EquipResponse);
-const eventUnequipResponse = GameStorage.getEvent(InventoryReference.EInventoryEvent.UnequipResponse);
-const eventUnlockResponse = GameStorage.getEvent(InventoryReference.EInventoryEvent.UnlockResponse);
+const eventEquipResponse = GameStorage.getEvent(EInventoryEvent.EquipResponse);
+const eventUnequipResponse = GameStorage.getEvent(EInventoryEvent.UnequipResponse);
+const eventUnlockResponse = GameStorage.getEvent(EInventoryEvent.UnlockResponse);
 
 // Equipment Manager
 export class InventoryService {
@@ -36,7 +37,7 @@ export class InventoryService {
 				print("Getting player data", args);
 
 				// Get Category and Equipment Id
-				const category = args[0] as InventoryReference.EInventorySlot;
+				const category = args[0] as EInventorySlot;
 				const equipmentId = args[1] as string;
 
 				const response = InventoryService._handleEquipRequest(player, category, equipmentId);
@@ -53,7 +54,7 @@ export class InventoryService {
 				print("Unequip Item", args);
 
 				// Get Slot
-				const equipmentSlot = args[0] as InventoryReference.EInventorySlot;
+				const equipmentSlot = args[0] as EInventorySlot;
 
 				// Unequip Item
 				const response = InventoryService._handleUnequipRequest(player, equipmentSlot);
@@ -69,13 +70,13 @@ export class InventoryService {
 		if (InventoryService._instance === undefined) {
 			InventoryService._instance = new InventoryService();
 		} else {
-			Logger.Log(script,"InventoryService", "Already started");
+			Logger.Log(script, "InventoryService", "Already started");
 		}
 	}
 
 	// Equip: Handler
 	// eslint-disable-next-line prettier/prettier
-	private static _handleEquipRequest(player: Player, category: InventoryReference.EInventorySlot, equipmentId: string): TEventSuccessResponse {
+	private static _handleEquipRequest(player: Player, category: EInventorySlot, equipmentId: string): TEventSuccessResponse {
 		// Validate Equipment
 		let response = InventoryService.ValidatePlayerInventory(player, category, equipmentId);
 		if (!response.success) {
@@ -90,7 +91,7 @@ export class InventoryService {
 
 	// Equip: Function
 	// eslint-disable-next-line prettier/prettier
-	public static EquipCharacterModel(characterRig: Model, category: InventoryReference.EInventorySlot, equipmentId: string): TEventSuccessResponse {
+	public static EquipCharacterModel(characterRig: Model, category: EInventorySlot, equipmentId: string): TEventSuccessResponse {
 		// Get Response Ready
 		const response: TEventSuccessResponse = {
 			success: true,
@@ -130,7 +131,7 @@ export class InventoryService {
 
 	// Handle Unequip Request
 	// eslint-disable-next-line prettier/prettier
-	private static _handleUnequipRequest(player: Player, equipmentSlot: InventoryReference.EInventorySlot): TEventSuccessResponse {
+	private static _handleUnequipRequest(player: Player, equipmentSlot: EInventorySlot): TEventSuccessResponse {
 		// Get the Response Ready
 		const eventResponse: TEventSuccessResponse = {
 			success: true,
@@ -150,7 +151,7 @@ export class InventoryService {
 
 	// Unequip Player
 	// eslint-disable-next-line prettier/prettier
-	public static UnequipCharacterModel(characterRig: Model, equipmentSlot: InventoryReference.EInventorySlot): TEventSuccessResponse {
+	public static UnequipCharacterModel(characterRig: Model, equipmentSlot: EInventorySlot): TEventSuccessResponse {
 		// Get the Response Ready
 		const eventResponse: TEventSuccessResponse = {
 			success: true,
@@ -176,22 +177,23 @@ export class InventoryService {
 	}
 
 	// eslint-disable-next-line prettier/prettier
-	private static ValidatePlayerInventory(player: Player, equipmentCategory: InventoryReference.EInventorySlot, equipmentId: string): TEventSuccessResponse {
+	private static ValidatePlayerInventory(player: Player, equipmentCategory: EInventorySlot, equipmentId: string): TEventSuccessResponse {
 		// Get the Player Data
 		const userId = tostring(player.UserId);
 		const playerData = DataManager.GetDataCache(userId)._playerData;
 
-		const InventorySlot = InventoryReference.EInventorySlot;
+		const InventorySlot = EInventorySlot;
 
 		// Map the Inventory to the Equipment Category
-		const inventoryMap = new Map<InventoryReference.EInventorySlot, Array<string>>();
+		const inventoryMap = new Map<EInventorySlot, Array<string>>();
+		/*
 		inventoryMap.set(InventorySlot.Helmet, playerData.HelmetInventory);
 		inventoryMap.set(InventorySlot.LeftHand, playerData.WeaponInventory);
 		inventoryMap.set(InventorySlot.RightHand, playerData.WeaponInventory);
 		inventoryMap.set(InventorySlot.Body, playerData.ArmorInventory);
 		inventoryMap.set(InventorySlot.Familiar, playerData.FamiliarInventory);
 		inventoryMap.set(InventorySlot.Accessory, playerData.AccessoryInventory);
-
+		*/
 		// Set the Inventory
 		const inventory = inventoryMap.get(equipmentCategory);
 

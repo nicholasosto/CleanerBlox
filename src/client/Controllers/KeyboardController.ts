@@ -1,23 +1,22 @@
 // Begin: KeyboardController.ts
-import { HttpService, Players, UserInputService, Workspace } from "@rbxts/services";
+import { HttpService, InsertService, Players, UserInputService, Workspace } from "@rbxts/services";
 import { ClientInventoryService } from "client/Services/ClientInventoryService";
 import { ClientSkillService } from "client/Services/ClientSkillService";
 import { Character, Skill } from "@rbxts/wcs";
 import { CommunicationGod } from "shared/Experimental/CommunicationGod";
-import { InventoryReference } from "shared/SharedReference";
-import { SkillConfigurations, AnimationHelper, EAnimations } from "shared/_References/GameReference";
+import { EInventorySlot } from "shared/_References/Inventory";
+import { EAnimations } from "shared/_References/Animations";
+import { SkillDefinitions, SkillId } from "shared/_References/Character/Skills";
+import { AnimationHelper } from "shared/_References/Helpers/AnimationHelper";
 
 // Set the skills here
-const Skills: Map<Enum.KeyCode, string> = new Map<Enum.KeyCode, string>();
+const Skills: Map<Enum.KeyCode, SkillId> = new Map<Enum.KeyCode, SkillId>();
 Skills.set(Enum.KeyCode.Q, "BasicMelee");
-Skills.set(Enum.KeyCode.E, "CleanHold");
-Skills.set(Enum.KeyCode.R, "BigRed");
-Skills.set(Enum.KeyCode.T, "ShapeTester");
+Skills.set(Enum.KeyCode.E, "BasicRanged");
+Skills.set(Enum.KeyCode.R, "BasicHold");
 
 // Set Animations Here
 const Animations: Map<Enum.KeyCode, EAnimations> = new Map<Enum.KeyCode, EAnimations>();
-Animations.set(Enum.KeyCode.Q, EAnimations.MELEE_Backflip);
-Animations.set(Enum.KeyCode.T, EAnimations.CHARACTER_Charging);
 
 CommunicationGod.Summon();
 
@@ -58,6 +57,20 @@ export class KeyboardController {
 					case Enum.KeyCode.Z:
 						AnimationHelper.CreateAnimationTrack(character, EAnimations.MELEE_Backflip).Play();
 						break;
+					case Enum.KeyCode.U:
+						ClientInventoryService.SendUnequipRequest(EInventorySlot.LeftHand);
+						ClientInventoryService.SendUnequipRequest(EInventorySlot.RightHand);
+						ClientInventoryService.SendUnequipRequest(EInventorySlot.Helmet);
+						ClientInventoryService.SendUnequipRequest(EInventorySlot.Body);
+						ClientInventoryService.SendUnequipRequest(EInventorySlot.Familiar);
+						ClientInventoryService.SendUnequipRequest(EInventorySlot.Accessory);
+						break;
+					case Enum.KeyCode.Q:
+						ClientInventoryService.SendEquipRequest(EInventorySlot.LeftHand, "Scythe_Epic_Black");
+						ClientInventoryService.SendEquipRequest(EInventorySlot.RightHand, "Scythe_Epic_Black");
+						ClientInventoryService.SendEquipRequest(EInventorySlot.Helmet, "Demon Lord Halo");
+						ClientInventoryService.SendEquipRequest(EInventorySlot.Body, "Plate_Legendary_RB");
+						break;
 					case Enum.KeyCode.V:
 						print("V Pressed");
 						ClientSkillService.AssignSlotRequest("1", "Basic");
@@ -68,13 +81,13 @@ export class KeyboardController {
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.Body, "Plate_Legendary_RB", true);
-						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet, "Demon Lord Halo", true);
+						this.InventoryToggle(EInventorySlot.Body, "Plate_Legendary_RB", true);
+						this.InventoryToggle(EInventorySlot.Helmet, "Demon Lord Halo", true);
 						break;
 					case Enum.KeyCode.J:
 						print("J Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand, "Scythe_Epic_Black", true);
-						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand, "Scythe_Epic_Black", true);
+						this.InventoryToggle(EInventorySlot.LeftHand, "Scythe_Epic_Black", true);
+						this.InventoryToggle(EInventorySlot.RightHand, "Scythe_Epic_Black", true);
 						break;
 					default:
 						KeyboardController.InputBegan(input, isProcessed);
@@ -96,13 +109,13 @@ export class KeyboardController {
 						break;
 					case Enum.KeyCode.H:
 						print("H Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.Body, "Plate_Legendary_RB", false);
-						this.InventoryToggle(InventoryReference.EInventorySlot.Helmet, "Demon Lord Halo", false);
+						this.InventoryToggle(EInventorySlot.Body, "Plate_Legendary_RB", false);
+						this.InventoryToggle(EInventorySlot.Helmet, "Demon Lord Halo", false);
 						break;
 					case Enum.KeyCode.J:
 						print("J Pressed");
-						this.InventoryToggle(InventoryReference.EInventorySlot.LeftHand, "Scythe_Epic_Black", false);
-						this.InventoryToggle(InventoryReference.EInventorySlot.RightHand, "Scythe_Epic_Black", false);
+						this.InventoryToggle(EInventorySlot.LeftHand, "Scythe_Epic_Black", false);
+						this.InventoryToggle(EInventorySlot.RightHand, "Scythe_Epic_Black", false);
 						break;
 					default:
 						KeyboardController.InputEnded(input, isProcessed);
@@ -122,11 +135,7 @@ export class KeyboardController {
 		KeyboardController.toggleAnimationOnKeyPress(input.KeyCode, false);
 	}
 
-	private static InventoryToggle(
-		equipmentSlot: InventoryReference.EInventorySlot,
-		weaponName: string,
-		begin: boolean,
-	) {
+	private static InventoryToggle(equipmentSlot: EInventorySlot, weaponName: string, begin: boolean) {
 		if (begin) {
 			ClientInventoryService.SendEquipRequest(equipmentSlot, weaponName);
 		} else {

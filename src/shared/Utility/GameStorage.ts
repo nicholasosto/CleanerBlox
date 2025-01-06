@@ -1,6 +1,6 @@
 import { ReplicatedStorage, AssetService } from "@rbxts/services";
 import { Logger } from "./Logger";
-import { EHumanoidDescription } from "shared/Refrences/Humanoids";
+import { EHumanoidDescription } from "shared/_References/Humanoids";
 import * as WCS from "@rbxts/wcs";
 
 export class GameStorage {

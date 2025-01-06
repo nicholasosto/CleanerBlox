@@ -8,28 +8,19 @@ local ClientInventoryService = TS.import(script, script.Parent.Parent, "Services
 local ClientSkillService = TS.import(script, script.Parent.Parent, "Services", "ClientSkillService").ClientSkillService
 local Character = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "wcs", "out").Character
 local CommunicationGod = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Experimental", "CommunicationGod").CommunicationGod
-local InventoryReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "SharedReference").InventoryReference
-local _GameReference = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "GameReference")
-local AnimationHelper = _GameReference.AnimationHelper
-local EAnimations = _GameReference.EAnimations
+local EInventorySlot = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Inventory").EInventorySlot
+local EAnimations = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Animations").EAnimations
+local AnimationHelper = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "_References", "Helpers", "AnimationHelper").AnimationHelper
 -- Set the skills here
 local Skills = {}
 local _q = Enum.KeyCode.Q
 Skills[_q] = "BasicMelee"
 local _e = Enum.KeyCode.E
-Skills[_e] = "CleanHold"
+Skills[_e] = "BasicRanged"
 local _r = Enum.KeyCode.R
-Skills[_r] = "BigRed"
-local _t = Enum.KeyCode.T
-Skills[_t] = "ShapeTester"
+Skills[_r] = "BasicHold"
 -- Set Animations Here
 local Animations = {}
-local _q_1 = Enum.KeyCode.Q
-local _mELEE_Backflip = EAnimations.MELEE_Backflip
-Animations[_q_1] = _mELEE_Backflip
-local _t_1 = Enum.KeyCode.T
-local _cHARACTER_Charging = EAnimations.CHARACTER_Charging
-Animations[_t_1] = _cHARACTER_Charging
 CommunicationGod:Summon()
 local KeyboardController
 do
@@ -77,6 +68,22 @@ do
 					AnimationHelper:CreateAnimationTrack(character, EAnimations.MELEE_Backflip):Play()
 					break
 				end
+				if _exp == (Enum.KeyCode.U) then
+					ClientInventoryService:SendUnequipRequest(EInventorySlot.LeftHand)
+					ClientInventoryService:SendUnequipRequest(EInventorySlot.RightHand)
+					ClientInventoryService:SendUnequipRequest(EInventorySlot.Helmet)
+					ClientInventoryService:SendUnequipRequest(EInventorySlot.Body)
+					ClientInventoryService:SendUnequipRequest(EInventorySlot.Familiar)
+					ClientInventoryService:SendUnequipRequest(EInventorySlot.Accessory)
+					break
+				end
+				if _exp == (Enum.KeyCode.Q) then
+					ClientInventoryService:SendEquipRequest(EInventorySlot.LeftHand, "Scythe_Epic_Black")
+					ClientInventoryService:SendEquipRequest(EInventorySlot.RightHand, "Scythe_Epic_Black")
+					ClientInventoryService:SendEquipRequest(EInventorySlot.Helmet, "Demon Lord Halo")
+					ClientInventoryService:SendEquipRequest(EInventorySlot.Body, "Plate_Legendary_RB")
+					break
+				end
 				if _exp == (Enum.KeyCode.V) then
 					print("V Pressed")
 					ClientSkillService:AssignSlotRequest("1", "Basic")
@@ -89,14 +96,14 @@ do
 				end
 				if _exp == (Enum.KeyCode.H) then
 					print("H Pressed")
-					self:InventoryToggle(InventoryReference.EInventorySlot.Body, "Plate_Legendary_RB", true)
-					self:InventoryToggle(InventoryReference.EInventorySlot.Helmet, "Demon Lord Halo", true)
+					self:InventoryToggle(EInventorySlot.Body, "Plate_Legendary_RB", true)
+					self:InventoryToggle(EInventorySlot.Helmet, "Demon Lord Halo", true)
 					break
 				end
 				if _exp == (Enum.KeyCode.J) then
 					print("J Pressed")
-					self:InventoryToggle(InventoryReference.EInventorySlot.LeftHand, "Scythe_Epic_Black", true)
-					self:InventoryToggle(InventoryReference.EInventorySlot.RightHand, "Scythe_Epic_Black", true)
+					self:InventoryToggle(EInventorySlot.LeftHand, "Scythe_Epic_Black", true)
+					self:InventoryToggle(EInventorySlot.RightHand, "Scythe_Epic_Black", true)
 					break
 				end
 				KeyboardController:InputBegan(input, isProcessed)
@@ -118,14 +125,14 @@ do
 				end
 				if _exp == (Enum.KeyCode.H) then
 					print("H Pressed")
-					self:InventoryToggle(InventoryReference.EInventorySlot.Body, "Plate_Legendary_RB", false)
-					self:InventoryToggle(InventoryReference.EInventorySlot.Helmet, "Demon Lord Halo", false)
+					self:InventoryToggle(EInventorySlot.Body, "Plate_Legendary_RB", false)
+					self:InventoryToggle(EInventorySlot.Helmet, "Demon Lord Halo", false)
 					break
 				end
 				if _exp == (Enum.KeyCode.J) then
 					print("J Pressed")
-					self:InventoryToggle(InventoryReference.EInventorySlot.LeftHand, "Scythe_Epic_Black", false)
-					self:InventoryToggle(InventoryReference.EInventorySlot.RightHand, "Scythe_Epic_Black", false)
+					self:InventoryToggle(EInventorySlot.LeftHand, "Scythe_Epic_Black", false)
+					self:InventoryToggle(EInventorySlot.RightHand, "Scythe_Epic_Black", false)
 					break
 				end
 				KeyboardController:InputEnded(input, isProcessed)

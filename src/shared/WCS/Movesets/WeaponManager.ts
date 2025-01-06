@@ -24,43 +24,43 @@ export class WeaponManager {
 		return weapon as Accessory;
 	}
 
-    public static EquipWCSCharacterWeapon(character: Character, weaponName: string): void {
-        const player = character.Player;
-        if (player === undefined) {
-            return;
-        }
-        const playerBackpack: Backpack = player.FindFirstChildOfClass("Backpack") as Backpack;
-        if (playerBackpack === undefined) {
-            return;
-        }
-        const weapon = playerBackpack.FindFirstChild(weaponName);
-        if (weapon === undefined) {
-            return;
-        }
-        weapon.Parent = character.Instance;
-    }
+	public static EquipWCSCharacterWeapon(character: Character, weaponName: string): void {
+		const player = character.Player;
+		if (player === undefined) {
+			return;
+		}
+		const playerBackpack: Backpack = player.FindFirstChildOfClass("Backpack") as Backpack;
+		if (playerBackpack === undefined) {
+			return;
+		}
+		const weapon = playerBackpack.FindFirstChild(weaponName);
+		if (weapon === undefined) {
+			return;
+		}
+		weapon.Parent = character.Instance;
+	}
 
-    public static UnEquipWCSCharacterWeapon(player: Player, weapon:Accessory): void {
-        if(player === undefined || weapon === undefined){
-            return;
-        }
-        Logger.Log(script,"BasicMelee", "UnEquipping Weapon");
-        weapon.Parent = player.FindFirstChildOfClass("Backpack") as Backpack;
-    }
+	public static UnEquipWCSCharacterWeapon(player: Player, weapon: Accessory): void {
+		if (player === undefined || weapon === undefined) {
+			return;
+		}
+		Logger.Log(script, "BasicMelee", "UnEquipping Weapon");
+		weapon.Parent = player.FindFirstChildOfClass("Backpack") as Backpack;
+	}
 
-    public static UnloadWCSCharacterWeapon(character: Character, weaponName: string): void {
-        const player = character.Player;
-        if (player === undefined) {
-            return;
-        }
-        const playerBackpack: Backpack = player.FindFirstChildOfClass("Backpack") as Backpack;
-        if (playerBackpack === undefined) {
-            return;
-        }
-        const weapon = playerBackpack.FindFirstChild(weaponName);
-        if (weapon === undefined) {
-            return;
-        }
-        weapon.Destroy();
-    }
+	public static UnloadWCSCharacterWeapon(character: Character, weaponName: string): void {
+		const player = character.Player;
+		if (player === undefined) {
+			return;
+		}
+		const playerBackpack: Backpack = player.FindFirstChildOfClass("Backpack") as Backpack;
+		if (playerBackpack === undefined) {
+			return;
+		}
+		const weapon = playerBackpack.FindFirstChild(weaponName);
+		if (weapon === undefined) {
+			return;
+		}
+		weapon.Destroy();
+	}
 }

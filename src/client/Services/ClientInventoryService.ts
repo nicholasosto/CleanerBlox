@@ -1,12 +1,12 @@
-import { InventoryReference } from "shared/SharedReference";
+import { EInventoryEvent, EInventorySlot } from "shared/_References/Inventory";
 import { GameStorage } from "shared/Utility/GameStorage";
 
 // Events
 
-const eventEquipRequest = GameStorage.getEvent(InventoryReference.EInventoryEvent.EquipRequest);
-const eventUnequipRequest = GameStorage.getEvent(InventoryReference.EInventoryEvent.UnequipRequest);
-const eventEquipResponse = GameStorage.getEvent(InventoryReference.EInventoryEvent.EquipResponse);
-const eventUnequipResponse = GameStorage.getEvent(InventoryReference.EInventoryEvent.UnequipResponse);
+const eventEquipRequest = GameStorage.getEvent(EInventoryEvent.EquipRequest);
+const eventUnequipRequest = GameStorage.getEvent(EInventoryEvent.UnequipRequest);
+const eventEquipResponse = GameStorage.getEvent(EInventoryEvent.EquipResponse);
+const eventUnequipResponse = GameStorage.getEvent(EInventoryEvent.UnequipResponse);
 
 export class ClientInventoryService {
 	private static _instance: ClientInventoryService;
@@ -39,12 +39,12 @@ export class ClientInventoryService {
 	}
 
 	// Send Equip Request
-	public static SendEquipRequest(category: InventoryReference.EInventorySlot, equipmentId: string) {
+	public static SendEquipRequest(category: EInventorySlot, equipmentId: string) {
 		eventEquipRequest.FireServer(category, equipmentId);
 	}
 
 	// Send Unequip Request
-	public static SendUnequipRequest(category: InventoryReference.EInventorySlot) {
+	public static SendUnequipRequest(category: EInventorySlot) {
 		eventUnequipRequest.FireServer(category);
 	}
 }
