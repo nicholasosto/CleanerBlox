@@ -11,6 +11,7 @@ import { Logger } from "shared/Utility/Logger";
 export class PlayerGameCharacter extends BaseGameCharacter {
 	// Private
 	public _player: Player;
+	public _player: Player;
 	private _dataCache: DataCache;
 
 	// Constructor

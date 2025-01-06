@@ -14,20 +14,29 @@ export class BasicHold extends Skill {
 	public OnConstructServer(): void {
 		Logger.Log(script, "BasicHold Server");
 		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
+		Logger.Log(script, "BasicHold Construct");
+	}
+
+	public OnConstructServer(): void {
+		Logger.Log(script, "BasicHold Server");
+		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
 	}
 
 	// 01. CONSTRUCT CLIENT
 	public OnConstructClient(): void {
+		Logger.Log(script, "BasicHold Client");
 		Logger.Log(script, "BasicHold Client");
 	}
 
 	// MOVE START
 	public OnStartServer() {
 		Logger.Log(script, "Start Server");
+		Logger.Log(script, "Start Server");
 	}
 
 	// END SERVER
 	public OnEndServer() {
+		Logger.Log(script, "End Server");
 		Logger.Log(script, "End Server");
 	}
 }

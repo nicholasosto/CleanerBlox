@@ -10,11 +10,14 @@ export class BasicRanged extends Skill {
 	// 00. CONSTRUCT
 	public OnConstruct() {
 		Logger.Log(script, "BasicRanged Construct");
+		Logger.Log(script, "BasicRanged Construct");
 	}
 
 	public OnConstructServer(): void {
 		Logger.Log(script, "BasicRanged Server");
 		Logger.Log(script, "BasicRanged Client", this._skillInfo as unknown as string);
+		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
+		Logger.Log(script, "BasicRanged Server");
 		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
 	}
 

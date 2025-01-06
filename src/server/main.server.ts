@@ -21,6 +21,7 @@ DataManager.Start();
 
 // Entity Manager
 GameCharacterRegistry.Start();
+GameCharacterRegistry.Start();
 
 // Notification Manager
 //NotificationManager.Start();

@@ -14,13 +14,25 @@ local AnimationHelper = TS.import(script, game:GetService("ReplicatedStorage"), 
 -- Set the skills here
 local Skills = {}
 local _q = Enum.KeyCode.Q
-Skills[_q] = "BasicMelee"
+local _basicMelee = ESkillName.BasicMelee
+Skills[_q] = _basicMelee
 local _e = Enum.KeyCode.E
-Skills[_e] = "BasicRanged"
+local _basicRanged = ESkillName.BasicRanged
+Skills[_e] = _basicRanged
 local _r = Enum.KeyCode.R
-Skills[_r] = "BasicHold"
+local _basicHold = ESkillName.BasicHold
+Skills[_r] = _basicHold
 -- Set Animations Here
 local Animations = {}
+local _q_1 = Enum.KeyCode.Q
+local _activation = SkillConfigurations.BasicMelee.Animation.Activation
+Animations[_q_1] = _activation
+local _e_1 = Enum.KeyCode.E
+local _activation_1 = SkillConfigurations.BasicRanged.Animation.Activation
+Animations[_e_1] = _activation_1
+local _r_1 = Enum.KeyCode.R
+local _activation_2 = SkillConfigurations.BasicHold.Animation.Activation
+Animations[_r_1] = _activation_2
 CommunicationGod:Summon()
 local KeyboardController
 do
