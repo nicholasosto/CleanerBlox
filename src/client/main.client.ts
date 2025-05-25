@@ -14,7 +14,7 @@ import { FlightController } from "./Controllers/FlightController";
 import { GUIController } from "./Controllers/GUIController";
 // TEST
 import { InventoryPanel } from "./ScreenControllers/InventoryPanel";
-import { ItemType } from "shared/_References/Inventory";
+import { DebugLogPanel } from "./ScreenControllers/DebugLogPanel";
 
 //END TEST
 // References
@@ -41,6 +41,7 @@ wcsClient.Start();
 KeyboardController.Start();
 FlightController.Start();
 GUIController.Start();
+DebugLogPanel.Create();
 //CommunicationGod.Summon();
 
 // Variables
