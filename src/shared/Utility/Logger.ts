@@ -12,21 +12,23 @@ export enum LogLevel {
 
 // Logger: Utility class for logging
 export class Logger {
-	// Private Variables
-	private static _logger: Logger = new Logger();
-	private static _logLevel: LogLevel = LogLevel.Info;
-	private static _enabled: boolean = true;
-	private static _filterTag: string = "";
+        // Private Variables
+        private static _logger: Logger = new Logger();
+        private static _logLevel: LogLevel = LogLevel.Info;
+        private static _enabled: boolean = true;
+        private static _filterTag: string = "";
+        private static _logEvent: BindableEvent = new Instance("BindableEvent");
 
 	// Log: Log messages to the console
-	public static Log(logTag: string | Instance, ...messages: Array<Printable>) {
-		if (!this._enabled) {
-			return;
-		}
-		warn(logTag);
-		print(...messages);
-		//warn(logTag, ...messages);
-	}
+        public static Log(logTag: string | Instance, ...messages: Array<Printable>) {
+                if (!this._enabled) {
+                        return;
+                }
+                warn(logTag);
+                print(...messages);
+                this._logEvent.Fire(logTag, ...messages);
+                //warn(logTag, ...messages);
+        }
 
 	// CFrame: Convert CFrame to string with rounded values
 	public static StringifyCFrame(cf: CFrame): string {
@@ -67,9 +69,13 @@ export class Logger {
 	}
 
 	// GetInstance: Get the instance of the logger
-	public static GetInstance(): Logger {
-		return this._logger;
-	}
+        public static GetInstance(): Logger {
+                return this._logger;
+        }
+
+        public static GetLogEvent(): BindableEvent {
+                return this._logEvent;
+        }
 
 	public static PrintSkillInfo(skill: Skill) {
 		warn(`Skill: ${skill.GetName()}\n`);
