@@ -109,44 +109,6 @@ do
 	end
 	EventManager.EventsFolder = game:GetService("ReplicatedStorage"):WaitForChild("Asset Package - Remotes")
 end
--- GUI Reference Handler
-local GuiReferenceHandler
-do
-	GuiReferenceHandler = setmetatable({}, {
-		__tostring = function()
-			return "GuiReferenceHandler"
-		end,
-	})
-	GuiReferenceHandler.__index = GuiReferenceHandler
-	function GuiReferenceHandler.new(...)
-		local self = setmetatable({}, GuiReferenceHandler)
-		return self:constructor(...) or self
-	end
-	function GuiReferenceHandler:constructor()
-	end
-	function GuiReferenceHandler:getScreenGui(player, guiName)
-		local guiInstance = player:WaitForChild("PlayerGui"):WaitForChild(guiName)
-		if guiInstance == nil then
-			Logger:Log(script.Name, "Failed to load GUI with name: ", guiName)
-		end
-		return guiInstance
-	end
-	function GuiReferenceHandler:ToggleScreenGui(player, guiName, toggle)
-		local guiInstance = player:WaitForChild("PlayerGui"):WaitForChild(guiName)
-		if guiInstance == nil then
-			Logger:Log(script.Name, "Failed to Toggle GUI with name: ", guiName)
-		end
-		guiInstance.Enabled = toggle
-	end
-	function GuiReferenceHandler:getUIElement(player, guiName, elementName)
-		local guiInstance = player:WaitForChild("PlayerGui"):WaitForChild(guiName)
-		local elementInstance = guiInstance:FindFirstChild(elementName, true)
-		if elementInstance == nil then
-			Logger:Log(script.Name, "Failed to load UI Element with name: ", elementName)
-		end
-		return elementInstance
-	end
-end
 return {
 	EPackageIDs = EPackageIDs,
 	EGuiTemplates = EGuiTemplates,
@@ -155,5 +117,4 @@ return {
 	EGUIElements = EGUIElements,
 	PackageManager = PackageManager,
 	EventManager = EventManager,
-	GuiReferenceHandler = GuiReferenceHandler,
 }

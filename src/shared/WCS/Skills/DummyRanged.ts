@@ -5,7 +5,7 @@ import { SkillDefinitions } from "shared/_References/Character/Skills";
 
 @SkillDecorator
 export class BasicRanged extends Skill {
-	//public static SkillConfiguration = SkillDefinitions.BasicRanged;
+	private _skillInfo = SkillDefinitions.BasicRanged;
 	private animationTrack?: AnimationTrack;
 	// 00. CONSTRUCT
 	public OnConstruct() {
@@ -15,6 +15,7 @@ export class BasicRanged extends Skill {
 
 	public OnConstructServer(): void {
 		Logger.Log(script, "BasicRanged Server");
+		Logger.Log(script, "BasicRanged Client", this._skillInfo as unknown as string);
 		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
 		Logger.Log(script, "BasicRanged Server");
 		//this.DamageContainer = new DamageContainer(this, "Melee", 10);
@@ -22,7 +23,6 @@ export class BasicRanged extends Skill {
 
 	// 01. CONSTRUCT CLIENT
 	public OnConstructClient(): void {
-		Logger.Log(script, "BasicRanged Client");
 		const characterModel = this.Character.Instance as Model;
 		const animator = characterModel.FindFirstChild("Animator", true) as Animator;
 		const animation = new Instance("Animation");
@@ -39,7 +39,6 @@ export class BasicRanged extends Skill {
 	// MOVE START
 	public OnStartServer() {
 		Logger.Log(script, "Start Server", SkillDefinitions.BasicRanged as unknown as string);
-		
 	}
 
 	// END SERVER

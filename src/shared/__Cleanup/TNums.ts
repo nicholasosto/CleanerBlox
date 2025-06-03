@@ -1,3 +1,6 @@
+
+/*
+
 export enum SkillNames {
 	MoveForward = "MoveForward",
 	MoveBackward = "MoveBackward",
@@ -16,3 +19,5 @@ export class TNums {
 	}
 	public static SkillNames = SkillNames;
 }
+
+*/
